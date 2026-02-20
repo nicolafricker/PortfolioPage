@@ -25,7 +25,7 @@
         playsinline
         @canplay="heroVideoLoaded = true"
       >
-        <source src="/video/hero.mp4" type="video/mp4" />
+        <source src="/video/GithubPortfolioPageHeroComp.mp4" type="video/mp4" />
       </video>
 
       <!-- Dark overlay so text stays legible over any video -->

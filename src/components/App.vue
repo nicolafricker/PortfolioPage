@@ -97,7 +97,6 @@
 
         <div class="about__content">
           <span class="about__label">About Me</span>
-          <h2 class="about__heading">Nicola<br>Fricker</h2>
           <div class="about__body">
             <p class="about__text">
               I'm Nicola, 28 years old and based in Bern, Switzerland.

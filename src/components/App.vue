@@ -16,54 +16,26 @@
     <!-- ─── Hero ───────────────────────────────────────────── -->
     <section class="hero">
 
-      <!-- Background marquee rows -->
-      <div class="hero__bg-marquee" aria-hidden="true">
+      <!-- Background video (place your file at public/video/hero.mp4) -->
+      <video
+        class="hero__video"
+        autoplay
+        loop
+        muted
+        playsinline
+        @canplay="heroVideoLoaded = true"
+      >
+        <source src="/video/hero.mp4" type="video/mp4" />
+      </video>
 
-        <div class="marquee-row marquee-row--fwd">
-          <div class="marquee-row__inner hero-marquee">
-            <span>NICOLA FRICKER</span><span>NICOLA FRICKER</span><span>NICOLA FRICKER</span><span>NICOLA FRICKER</span>
-          </div>
-          <div class="marquee-row__inner hero-marquee">
-            <span>NICOLA FRICKER</span><span>NICOLA FRICKER</span><span>NICOLA FRICKER</span><span>NICOLA FRICKER</span>
-          </div>
-        </div>
+      <!-- Dark overlay so text stays legible over any video -->
+      <div class="hero__video-overlay"></div>
 
-        <div class="marquee-row marquee-row--rev">
-          <div class="marquee-row__inner hero-marquee">
-            <span>APPLICATION DEVELOPER</span><span>APPLICATION DEVELOPER</span><span>APPLICATION DEVELOPER</span>
-          </div>
-          <div class="marquee-row__inner hero-marquee">
-            <span>APPLICATION DEVELOPER</span><span>APPLICATION DEVELOPER</span><span>APPLICATION DEVELOPER</span>
-          </div>
-        </div>
-
-        <div class="marquee-row marquee-row--fwd marquee-row--slow">
-          <div class="marquee-row__inner hero-marquee">
-            <span>DIGITAL BUSINESS</span><span>DIGITAL BUSINESS</span><span>DIGITAL BUSINESS</span><span>DIGITAL BUSINESS</span>
-          </div>
-          <div class="marquee-row__inner hero-marquee">
-            <span>DIGITAL BUSINESS</span><span>DIGITAL BUSINESS</span><span>DIGITAL BUSINESS</span><span>DIGITAL BUSINESS</span>
-          </div>
-        </div>
-
-        <div class="marquee-row marquee-row--rev">
-          <div class="marquee-row__inner hero-marquee">
-            <span>BERN SWITZERLAND</span><span>BERN SWITZERLAND</span><span>BERN SWITZERLAND</span><span>BERN SWITZERLAND</span>
-          </div>
-          <div class="marquee-row__inner hero-marquee">
-            <span>BERN SWITZERLAND</span><span>BERN SWITZERLAND</span><span>BERN SWITZERLAND</span><span>BERN SWITZERLAND</span>
-          </div>
-        </div>
-
-        <div class="marquee-row marquee-row--fwd marquee-row--fast">
-          <div class="marquee-row__inner hero-marquee">
-            <span>NICOLA FRICKER</span><span>NICOLA FRICKER</span><span>NICOLA FRICKER</span><span>NICOLA FRICKER</span>
-          </div>
-          <div class="marquee-row__inner hero-marquee">
-            <span>NICOLA FRICKER</span><span>NICOLA FRICKER</span><span>NICOLA FRICKER</span><span>NICOLA FRICKER</span>
-          </div>
-        </div>
-
+      <!-- Shown only while no video file is present -->
+      <div v-if="!heroVideoLoaded" class="hero__video-placeholder">
+        <span class="hero__video-placeholder__icon">▶</span>
+        <p class="hero__video-placeholder__label">Hero Video</p>
+        <code class="hero__video-placeholder__path">public/video/hero.mp4</code>
       </div>
 
       <!-- Foreground hero content -->
@@ -125,7 +97,6 @@
 
         <div class="about__content">
           <span class="about__label">About Me</span>
-          <h2 class="about__heading">Nicola<br>Fricker</h2>
           <div class="about__body">
             <p class="about__text">
               I'm Nicola, 28 years old and based in Bern, Switzerland.
@@ -214,6 +185,7 @@ export default {
   data() {
     return {
       isDark: false,
+      heroVideoLoaded: false,
     };
   },
   watch: {

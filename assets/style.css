@@ -1,10 +1,24 @@
 /* ─── Palette ───────────────────────────────────────────────
-   #F0F1F2  lightest  — page background, light text
-   #D9D3C7  warm sand — secondary surfaces, placeholders
-   #888C79  sage      — accents, labels, icons
-   #595959  mid-gray  — body text, subtle elements
-   #262626  near-black — hero background, primary headings
+   --deep-shadow  #1C1714  — deepest background
+   --dark-bark    #3D3022  — surface / card background
+   --forest-floor #6B7A52  — supporting green accent
+   --warm-haze    #D4C99A  — muted / secondary text
+   --golden-hour  #C49A3C  — primary accent + glow
+   --pale-mist    #EAE4D0  — primary light text
 ──────────────────────────────────────────────────────────── */
+
+:root {
+  --deep-shadow:  #1C1714;
+  --dark-bark:    #3D3022;
+  --forest-floor: #6B7A52;
+  --warm-haze:    #D4C99A;
+  --golden-hour:  #C49A3C;
+  --pale-mist:    #EAE4D0;
+
+  --glow-soft:    rgba(196, 154, 60, 0.25);
+  --glow-mid:     rgba(196, 154, 60, 0.45);
+  --glow-strong:  rgba(196, 154, 60, 0.70);
+}
 
 /* ─── Reset ──────────────────────────────────────────────── */
 *, *::before, *::after {
@@ -20,8 +34,8 @@ html {
 
 body {
   font-family: 'Georgia', 'Times New Roman', serif;
-  background-color: #F0F1F2;
-  color: #262626;
+  background-color: var(--deep-shadow);
+  color: var(--pale-mist);
   line-height: 1.6;
 }
 
@@ -38,13 +52,37 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-color: #262626;
+  background-color: var(--deep-shadow);
+
+  /* Dreamy warm radial atmosphere */
+  background-image:
+    radial-gradient(ellipse 70% 60% at 50% 45%,
+      rgba(61, 48, 34, 0.80) 0%,
+      transparent 70%),
+    radial-gradient(ellipse 40% 30% at 50% 40%,
+      rgba(196, 154, 60, 0.06) 0%,
+      transparent 65%);
+
   padding: 4rem 2rem;
+  overflow: hidden;
+}
+
+/* Subtle vignette overlay */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 100% 100% at 50% 50%,
+    transparent 40%,
+    rgba(28, 23, 20, 0.65) 100%);
+  pointer-events: none;
 }
 
 .hero__inner {
+  position: relative;
   text-align: center;
   max-width: 680px;
+  z-index: 1;
 }
 
 .hero__label {
@@ -52,9 +90,9 @@ body {
   font-family: 'Arial', sans-serif;
   font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 0.25em;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: #888C79;
+  color: var(--forest-floor);
   margin-bottom: 1.5rem;
 }
 
@@ -63,15 +101,29 @@ body {
   font-weight: 400;
   line-height: 1.05;
   letter-spacing: -0.01em;
-  color: #F0F1F2;
+  color: var(--pale-mist);
   margin-bottom: 2rem;
+
+  /* Dreamy soft text glow */
+  text-shadow:
+    0 0 40px rgba(212, 201, 154, 0.15),
+    0 0 80px rgba(196, 154, 60, 0.08);
 }
 
 .hero__divider {
   width: 48px;
   height: 2px;
-  background-color: #888C79;
   margin: 0 auto 1.5rem;
+
+  background: linear-gradient(90deg,
+    transparent,
+    var(--golden-hour),
+    transparent);
+
+  /* Glowing divider line */
+  box-shadow:
+    0 0 6px 1px var(--glow-soft),
+    0 0 18px 2px rgba(196, 154, 60, 0.15);
 }
 
 .hero__tagline {
@@ -79,7 +131,8 @@ body {
   font-size: 0.9rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: #595959;
+  color: var(--warm-haze);
+  opacity: 0.75;
 }
 
 /* Scroll hint arrow */
@@ -95,25 +148,35 @@ body {
   height: 40px;
   text-decoration: none;
   opacity: 0.5;
-  transition: opacity 0.2s;
+  transition: opacity 0.3s, filter 0.3s;
+  z-index: 1;
 }
 
 .hero__scroll-hint:hover {
   opacity: 1;
+  filter: drop-shadow(0 0 6px var(--golden-hour));
 }
 
 .hero__scroll-arrow {
   display: block;
   width: 12px;
   height: 12px;
-  border-right: 2px solid #D9D3C7;
-  border-bottom: 2px solid #D9D3C7;
+  border-right: 2px solid var(--warm-haze);
+  border-bottom: 2px solid var(--warm-haze);
   transform: rotate(45deg) translateY(-3px);
 }
 
 /* ─── About ──────────────────────────────────────────────── */
 .about {
-  background-color: #F0F1F2;
+  background-color: var(--dark-bark);
+
+  /* Subtle inner top glow to blend sections */
+  background-image: radial-gradient(
+    ellipse 80% 30% at 50% 0%,
+    rgba(196, 154, 60, 0.04) 0%,
+    transparent 70%
+  );
+
   padding: 6rem 2rem;
 }
 
@@ -134,26 +197,39 @@ body {
 .about__photo-placeholder {
   width: 260px;
   height: 320px;
-  background-color: #D9D3C7;
+  background-color: rgba(28, 23, 20, 0.6);
+  border: 1px solid rgba(196, 154, 60, 0.25);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 1rem;
-  border-radius: 2px;
+  border-radius: 4px;
+
+  /* Dreamy glow border */
+  box-shadow:
+    0 0 12px var(--glow-soft),
+    0 0 32px rgba(196, 154, 60, 0.08),
+    inset 0 0 24px rgba(28, 23, 20, 0.5);
 }
 
 .about__photo-icon {
   width: 64px;
   height: 64px;
-  opacity: 0.6;
+  opacity: 0.4;
+}
+
+.about__photo-icon circle,
+.about__photo-icon path {
+  stroke: var(--warm-haze);
 }
 
 .about__photo-hint {
   font-family: 'Arial', sans-serif;
   font-size: 0.75rem;
   letter-spacing: 0.08em;
-  color: #595959;
+  color: var(--warm-haze);
+  opacity: 0.5;
   text-align: center;
   padding: 0 1rem;
 }
@@ -170,8 +246,11 @@ body {
   font-weight: 600;
   letter-spacing: 0.25em;
   text-transform: uppercase;
-  color: #888C79;
+  color: var(--golden-hour);
   margin-bottom: 1.25rem;
+
+  /* Subtle label glow */
+  text-shadow: 0 0 12px var(--glow-soft);
 }
 
 .about__body {
@@ -182,19 +261,22 @@ body {
 
 .about__text {
   font-size: 1.0625rem;
-  color: #595959;
-  line-height: 1.75;
+  color: var(--warm-haze);
+  line-height: 1.8;
+  opacity: 0.88;
 }
 
 /* ─── Footer ─────────────────────────────────────────────── */
 .footer {
-  background-color: #262626;
+  background-color: var(--deep-shadow);
+  border-top: 1px solid rgba(196, 154, 60, 0.12);
   padding: 1.5rem 2rem;
   text-align: center;
   font-family: 'Arial', sans-serif;
   font-size: 0.75rem;
   letter-spacing: 0.1em;
-  color: #595959;
+  color: var(--warm-haze);
+  opacity: 0.5;
 }
 
 /* ─── Responsive ─────────────────────────────────────────── */

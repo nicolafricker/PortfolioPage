@@ -11,7 +11,7 @@ const App = {
           <span class="hero__label">Portfolio</span>
           <h1 class="hero__name">Nicola<br>Fricker</h1>
           <div class="hero__divider"></div>
-          <p class="hero__tagline">Designer &amp; Developer</p>
+          <p class="hero__tagline">Application Developer &amp; Digital Business Student</p>
         </div>
         <a href="#about" class="hero__scroll-hint" aria-label="Scroll to about section">
           <span class="hero__scroll-arrow"></span>
@@ -37,14 +37,18 @@ const App = {
           <div class="about__content">
             <h2 class="about__heading">About Me</h2>
             <div class="about__body">
-              <p class="about__placeholder">
-                This is where your story goes. Tell visitors who you are, what you do,
-                and what drives your work. Share your background, skills, and what makes
-                your perspective unique.
+              <p class="about__text">
+                I'm Nicola, 28 years old and based in Bern, Switzerland. My path into IT started
+                with a woodworking apprenticeship — from there I made a deliberate shift into
+                technology, completing an apprenticeship as an Application Developer, followed by
+                a degree at the Höhere Fachschule (HF). I'm currently studying Digital Business
+                and AI at the Berner Fachhochschule (BFH).
               </p>
-              <p class="about__placeholder">
-                You can talk about your experience, your passions, or the kind of
-                projects you love to work on. Keep it personal and authentic.
+              <p class="about__text">
+                Outside of work and studies, I'm passionate about staying active — you'll find me
+                at the gym, boxing, or out jogging. I also have a creative side: I enjoy
+                photography and videography, which gives me a good eye for detail and visual
+                storytelling.
               </p>
             </div>
           </div>

@@ -19,4 +19,4 @@ To run the application locally, follow these steps:
    npm start
    ```
 
-4. **Open your browser** and go to `http://localhost:3000` to view the application.
+4. **Open your browser** and go to `http://localhost:5173` to view the application.

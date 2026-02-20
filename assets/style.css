@@ -1,12 +1,28 @@
-* {
+/* ─── Palette ───────────────────────────────────────────────
+   #F0F1F2  lightest  — page background, light text
+   #D9D3C7  warm sand — secondary surfaces, placeholders
+   #888C79  sage      — accents, labels, icons
+   #595959  mid-gray  — body text, subtle elements
+   #262626  near-black — hero background, primary headings
+──────────────────────────────────────────────────────────── */
+
+/* ─── Reset ──────────────────────────────────────────────── */
+*, *::before, *::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* ─── Base ───────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  font-family: Arial, sans-serif;
-  color: #333;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  background-color: #F0F1F2;
+  color: #262626;
+  line-height: 1.6;
 }
 
 .app {
@@ -15,19 +31,191 @@ body {
   min-height: 100vh;
 }
 
-header {
-  padding: 1rem 2rem;
-  background-color: #4a90e2;
-  color: #fff;
+/* ─── Hero ───────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #262626;
+  padding: 4rem 2rem;
 }
 
-main {
-  flex: 1;
-  padding: 2rem;
-}
-
-footer {
-  padding: 1rem 2rem;
-  background-color: #f0f0f0;
+.hero__inner {
   text-align: center;
+  max-width: 680px;
+}
+
+.hero__label {
+  display: inline-block;
+  font-family: 'Arial', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #888C79;
+  margin-bottom: 1.5rem;
+}
+
+.hero__name {
+  font-size: clamp(3.5rem, 10vw, 8rem);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: #F0F1F2;
+  margin-bottom: 2rem;
+}
+
+.hero__divider {
+  width: 48px;
+  height: 2px;
+  background-color: #888C79;
+  margin: 0 auto 1.5rem;
+}
+
+.hero__tagline {
+  font-family: 'Arial', sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #595959;
+}
+
+/* Scroll hint arrow */
+.hero__scroll-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  text-decoration: none;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}
+
+.hero__scroll-hint:hover {
+  opacity: 1;
+}
+
+.hero__scroll-arrow {
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-right: 2px solid #D9D3C7;
+  border-bottom: 2px solid #D9D3C7;
+  transform: rotate(45deg) translateY(-3px);
+}
+
+/* ─── About ──────────────────────────────────────────────── */
+.about {
+  background-color: #F0F1F2;
+  padding: 6rem 2rem;
+}
+
+.about__inner {
+  display: flex;
+  gap: 4rem;
+  max-width: 960px;
+  margin: 0 auto;
+  align-items: flex-start;
+}
+
+/* Photo placeholder */
+.about__photo-wrap {
+  flex-shrink: 0;
+  width: 260px;
+}
+
+.about__photo-placeholder {
+  width: 260px;
+  height: 320px;
+  background-color: #D9D3C7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  border-radius: 2px;
+}
+
+.about__photo-icon {
+  width: 64px;
+  height: 64px;
+  opacity: 0.6;
+}
+
+.about__photo-hint {
+  font-family: 'Arial', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: #595959;
+  text-align: center;
+  padding: 0 1rem;
+}
+
+/* About text */
+.about__content {
+  flex: 1;
+  padding-top: 0.5rem;
+}
+
+.about__heading {
+  font-size: 0.75rem;
+  font-family: 'Arial', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #888C79;
+  margin-bottom: 1.25rem;
+}
+
+.about__body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.about__placeholder {
+  font-size: 1.0625rem;
+  color: #595959;
+  line-height: 1.75;
+}
+
+/* ─── Footer ─────────────────────────────────────────────── */
+.footer {
+  background-color: #262626;
+  padding: 1.5rem 2rem;
+  text-align: center;
+  font-family: 'Arial', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: #595959;
+}
+
+/* ─── Responsive ─────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .about__inner {
+    flex-direction: column;
+    align-items: center;
+    gap: 2.5rem;
+  }
+
+  .about__photo-wrap {
+    width: 100%;
+  }
+
+  .about__photo-placeholder {
+    width: 100%;
+    height: 280px;
+  }
+
+  .about__content {
+    width: 100%;
+    padding-top: 0;
+  }
 }

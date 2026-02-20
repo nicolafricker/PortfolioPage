@@ -21,27 +21,28 @@
 ──────────────────────────────────────────────────────────── */
 
 :root {
-  --bg:          #F4F3EF;
-  --bg-alt:      #EBEAE6;
-  --text:        #0A0A0A;
-  --text-muted:  #5C5C5C;
-  --accent:      #C8291E;
-  --border:      rgba(10, 10, 10, 0.10);
-  --border-hard: rgba(10, 10, 10, 0.60);
-  --marquee:     #E3E1DC;
+  --bg:          #F8F7F5;
+  --bg-alt:      #F0EEEA;
+  --text:        #3D3D3D;
+  --text-muted:  #757575;
+  --accent:      #E54030;
+  --border:      rgba(10, 10, 10, 0.08);
+  --border-hard: rgba(10, 10, 10, 0.45);
+  --marquee:     #EFEDE8;
 
   --font-cond: 'Barlow Condensed', 'Arial Narrow', sans-serif;
   --font-body: 'Barlow', 'Arial', sans-serif;
 }
 
 [data-theme="dark"] {
-  --bg:          #0C0C0C;
-  --bg-alt:      #141414;
-  --text:        #F4F3EF;
-  --text-muted:  #888888;
+  --bg:          #1A1A1A;
+  --bg-alt:      #232323;
+  --text:        #E8E6E0;
+  --text-muted:  #B0B0B0;
+  --accent:      #E86A4A;
   --border:      rgba(244, 243, 239, 0.10);
-  --border-hard: rgba(244, 243, 239, 0.55);
-  --marquee:     #161616;
+  --border-hard: rgba(244, 243, 239, 0.50);
+  --marquee:     #262626;
 }
 
 /* ─── Reset ──────────────────────────────────────────────── */
@@ -223,7 +224,7 @@ body {
 
 .hero-marquee {
   font-family: var(--font-cond);
-  font-size: clamp(6rem, 16vw, 14rem);
+  font-size: clamp(18rem, 16vw, 14rem);
   font-weight: 900;
   letter-spacing: -0.02em;
   line-height: 0.95;

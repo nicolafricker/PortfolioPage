@@ -38,17 +38,18 @@ const App = {
             <h2 class="about__heading">About Me</h2>
             <div class="about__body">
               <p class="about__text">
-                I'm Nicola, 28 years old and based in Bern, Switzerland. My path into IT started
-                with a woodworking apprenticeship — from there I made a deliberate shift into
-                technology, completing an apprenticeship as an Application Developer, followed by
-                a degree at the Höhere Fachschule (HF). I'm currently studying Digital Business
-                and AI at the Berner Fachhochschule (BFH).
+                I'm Nicola, 28 years old and based in Bern, Switzerland. 
+                My path into IT started with a woodworking apprenticeship, where I first discovered 
+                my passion for technology through writing CNC programs in vocational school. 
+                From there I made a deliberate shift into the field, completing an apprenticeship 
+                as an Application Developer, followed by a degree at the Höhere Fachschule für Technik Mittelland in Biel. 
+                I'm currently studying Digital Business and AI at the Bern University of Applied Sciences.
               </p>
               <p class="about__text">
-                Outside of work and studies, I'm passionate about staying active — you'll find me
-                at the gym, boxing, or out jogging. I also have a creative side: I enjoy
-                photography and videography, which gives me a good eye for detail and visual
-                storytelling.
+                Outside of work and studies, I'm passionate about staying active. 
+                You'll find me at the gym, boxing, or out jogging. 
+                I also have a creative side through photography and videography, 
+                which gives me a good eye for detail and visual storytelling.
               </p>
             </div>
           </div>

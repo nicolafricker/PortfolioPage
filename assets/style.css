@@ -293,10 +293,10 @@ body {
 
 .hero__name {
   font-family: var(--font-cond);
-  font-size: clamp(5.5rem, 17vw, 14rem);
-  font-weight: 900;
-  line-height: 0.88;
-  letter-spacing: -0.02em;
+  font-size: clamp(3rem, 9vw, 6.5rem);
+  font-weight: 700;
+  line-height: 0.92;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: #fff;
   margin-bottom: 1.75rem;
@@ -427,9 +427,9 @@ body {
 
 .about__heading {
   font-family: var(--font-cond);
-  font-size: clamp(3.5rem, 8vw, 7rem);
+  font-size: clamp(4.5rem, 10vw, 9rem);
   font-weight: 900;
-  line-height: 0.9;
+  line-height: 0.88;
   letter-spacing: -0.02em;
   text-transform: uppercase;
   color: var(--text);

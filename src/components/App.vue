@@ -501,6 +501,25 @@ export default {
     );
     this.fetchWeather();
   },
+  watch: {
+    isDark(val) {
+      document.documentElement.setAttribute(
+        "data-theme",
+        val ? "dark" : "light",
+      );
+    },
+  },
+  mounted() {
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)",
+    ).matches;
+    this.isDark = prefersDark;
+    document.documentElement.setAttribute(
+      "data-theme",
+      prefersDark ? "dark" : "light",
+    );
+    this.fetchWeather();
+  },
   methods: {
     fetchWeather() {
       this.weatherLoading = true;

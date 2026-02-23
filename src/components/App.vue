@@ -100,10 +100,9 @@
           <span class="about__label">About Me</span>
           <div class="about__body">
             <p class="about__text">
-              I'm Nicola, 28 years old and based in Bern, Switzerland. My path
-              into IT started with a woodworking apprenticeship, where I first
-              discovered my passion for technology through writing CNC programs
-              in vocational school.
+              I'm Nicola, 28 years old. My path into IT started with a
+              woodworking apprenticeship, where I first discovered my passion
+              for technology through writing CNC programs in vocational school.
             </p>
             <p class="about__text">
               After completing my apprenticeship as an Application Developer and
@@ -443,6 +442,34 @@
       </div>
     </section>
 
+    <!-- ─── Easter Egg / Weather ───────────────────────────── -->
+    <section class="quote-section">
+      <div class="quote-widget">
+        <span class="quote-widget__label">You made it to the bottom</span>
+        <p class="quote-widget__hint">
+          Curious where I'm based? The weather below might give it away.
+        </p>
+      </div>
+
+      <div class="weather-widget">
+        <div v-if="weatherLoading" class="weather-widget__loading">
+          Loading...
+        </div>
+        <div v-else-if="weatherError" class="weather-widget__loading">
+          Could not load weather.
+        </div>
+        <div v-else class="weather-widget__grid">
+          <div v-for="day in weatherDays" :key="day.date" class="weather-day">
+            <span class="weather-day__name">{{ day.name }}</span>
+            <span class="weather-day__icon">{{ day.icon }}</span>
+            <span class="weather-day__temp-max">{{ day.tempMax }}°</span>
+            <span class="weather-day__temp-min">{{ day.tempMin }}°</span>
+          </div>
+        </div>
+        <span class="weather-widget__location">📍 46.9480° N, 7.4474° E</span>
+      </div>
+    </section>
+
     <!-- ─── Footer ─────────────────────────────────────────── -->
     <footer class="footer">
       <p class="footer__copy">&copy; 2026 Nicola Fricker</p>
@@ -458,15 +485,10 @@ export default {
     return {
       isDark: false,
       heroVideoLoaded: false,
+      weatherDays: [],
+      weatherLoading: true,
+      weatherError: false,
     };
-  },
-  watch: {
-    isDark(val) {
-      document.documentElement.setAttribute(
-        "data-theme",
-        val ? "dark" : "light",
-      );
-    },
   },
   mounted() {
     const prefersDark = window.matchMedia(
@@ -477,6 +499,56 @@ export default {
       "data-theme",
       prefersDark ? "dark" : "light",
     );
+    this.fetchWeather();
+  },
+  methods: {
+    fetchWeather() {
+      this.weatherLoading = true;
+      this.weatherError = false;
+      fetch(
+        "https://api.open-meteo.com/v1/forecast?latitude=46.9480&longitude=7.4474&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=Europe/Zurich&forecast_days=5",
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+          const icons = {
+            0: "☀️",
+            1: "🌤",
+            2: "⛅",
+            3: "☁️",
+            45: "🌫",
+            48: "🌫",
+            51: "🌦",
+            53: "🌦",
+            55: "🌧",
+            61: "🌧",
+            63: "🌧",
+            65: "🌧",
+            71: "🌨",
+            73: "🌨",
+            75: "❄️",
+            80: "🌦",
+            81: "🌧",
+            82: "⛈",
+            95: "⛈",
+          };
+          this.weatherDays = data.daily.time.map((dateStr, i) => {
+            const date = new Date(dateStr);
+            return {
+              date: dateStr,
+              name: i === 0 ? "Today" : days[date.getDay()],
+              icon: icons[data.daily.weathercode[i]] || "🌡",
+              tempMax: Math.round(data.daily.temperature_2m_max[i]),
+              tempMin: Math.round(data.daily.temperature_2m_min[i]),
+            };
+          });
+          this.weatherLoading = false;
+        })
+        .catch(() => {
+          this.weatherError = true;
+          this.weatherLoading = false;
+        });
+    },
   },
 };
 </script>

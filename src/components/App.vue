@@ -402,7 +402,7 @@
         >
           <picture>
             <source :srcset="photo.webp" type="image/webp" />
-            <img :src="photo.jpg" :alt="photo.alt" class="media-gallery__image" />
+            <img :src="photo.jpg" :alt="photo.alt" class="media-gallery__image" :style="photo.objectPosition ? { objectPosition: photo.objectPosition } : {}" />
           </picture>
         </figure>
       </div>
@@ -461,10 +461,10 @@ export default {
         { webp: "/img/Work/nature-01.webp", jpg: "/img/Work/nature-01.jpg", alt: "Nature photo 1" },
         { webp: "/img/Work/nature-02.webp", jpg: "/img/Work/nature-02.jpg", alt: "Nature photo 2" },
         { webp: "/img/Work/nature-03.webp", jpg: "/img/Work/nature-03.jpg", alt: "Nature photo 3" },
-        { webp: "/img/Work/720-01.webp",    jpg: "/img/Work/720-01.jpg",    alt: "Work photo 1" },
+        { webp: "/img/Work/720-01.webp",    jpg: "/img/Work/720-01.jpg",    alt: "Work photo 1",  objectPosition: "center 70%" },
         { webp: "/img/Work/nature-04.webp", jpg: "/img/Work/nature-04.jpg", alt: "Nature photo 4" },
         { webp: "/img/Work/nature-05.webp", jpg: "/img/Work/nature-05.jpg", alt: "Nature photo 5" },
-        { webp: "/img/Work/720-02.webp",    jpg: "/img/Work/720-02.jpg",    alt: "Work photo 2" },
+        { webp: "/img/Work/720-02.webp",    jpg: "/img/Work/720-02.jpg",    alt: "Work photo 2",  objectPosition: "center 70%" },
         { webp: "/img/Work/nature-06.webp", jpg: "/img/Work/nature-06.jpg", alt: "Nature photo 6" },
         { webp: "/img/Work/nature-07.webp", jpg: "/img/Work/nature-07.jpg", alt: "Nature photo 7" },
         { webp: "/img/Work/nature-08.webp", jpg: "/img/Work/nature-08.jpg", alt: "Nature photo 8" },

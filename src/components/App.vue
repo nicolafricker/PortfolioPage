@@ -501,7 +501,7 @@ export default {
           webp: "/img/Work/720-02.webp",
           jpg: "/img/Work/720-02.jpg",
           alt: "Work photo 2",
-          objectPosition: "center 35%",
+          objectPosition: "center 40%",
         },
         {
           webp: "/img/Work/nature-06.webp",

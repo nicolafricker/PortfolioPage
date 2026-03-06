@@ -404,16 +404,6 @@
         </figure>
       </div>
 
-      <!-- Showreel video — end of media section -->
-      <div class="showreel">
-        <div class="showreel__header">
-          <span class="showreel__label">Showreel</span>
-        </div>
-        <div class="video-placeholder showreel__player">
-          <div class="video-placeholder__play">▶</div>
-          <p class="video-placeholder__label">Best of — Coming Soon</p>
-        </div>
-      </div>
     </section>
 
     <!-- ─── Easter Egg / Weather ───────────────────────────── -->
@@ -465,18 +455,18 @@ export default {
       isDark: false,
       heroVideoLoaded: false,
       mediaPhotos: [
-        { src: "/img/Work/Nature%20(1).jpg", alt: "Nature photo 1" },
-        { src: "/img/Work/Nature%20(3).jpg", alt: "Nature photo 2" },
-        { src: "/img/Work/Nature%20(4).jpg", alt: "Nature photo 3" },
-        { src: "/img/Work/720%20(1).jpg", alt: "Work photo 1" },
-        { src: "/img/Work/Nature%20(5).jpg", alt: "Nature photo 4" },
-        { src: "/img/Work/Nature%20(6).jpg", alt: "Nature photo 5" },
-        { src: "/img/Work/720%20(2).jpg", alt: "Work photo 2" },
-        { src: "/img/Work/Nature%20(8).jpg", alt: "Nature photo 6" },
-        { src: "/img/Work/Nature%20(9).jpg", alt: "Nature photo 7" },
-        { src: "/img/Work/Nature%20(10).jpg", alt: "Nature photo 8" },
-        { src: "/img/Work/TT%20(3).jpg", alt: "Work photo 3" },
-        { src: "/img/Work/Nature%20(11).jpg", alt: "Nature photo 9" },
+        { src: "/img/Work/nature-01.jpg", alt: "Nature photo 1" },
+        { src: "/img/Work/nature-02.jpg", alt: "Nature photo 2" },
+        { src: "/img/Work/nature-03.jpg", alt: "Nature photo 3" },
+        { src: "/img/Work/720-01.jpg", alt: "Work photo 1" },
+        { src: "/img/Work/nature-04.jpg", alt: "Nature photo 4" },
+        { src: "/img/Work/nature-05.jpg", alt: "Nature photo 5" },
+        { src: "/img/Work/720-02.jpg", alt: "Work photo 2" },
+        { src: "/img/Work/nature-06.jpg", alt: "Nature photo 6" },
+        { src: "/img/Work/nature-07.jpg", alt: "Nature photo 7" },
+        { src: "/img/Work/nature-08.jpg", alt: "Nature photo 8" },
+        { src: "/img/Work/tt-01.jpg", alt: "Work photo 3" },
+        { src: "/img/Work/nature-09.jpg", alt: "Nature photo 9" },
       ],
       // Skills proficiency data for Chart.js radar
       skillsData: {

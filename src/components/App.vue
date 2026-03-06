@@ -91,7 +91,7 @@
     <section id="about" class="about">
       <!-- Portrait photo — fills the right portion of the section -->
       <div class="about__photo-wrap">
-        <img src="/img/Me.JPEG" class="about__photo" alt="Nicola Fricker" />
+        <img src="/img/me.jpg" class="about__photo" alt="Nicola Fricker" />
       </div>
 
       <!-- Text with semi-transparent glass box overlapping the photo -->
@@ -430,16 +430,6 @@
         </div>
       </div>
 
-      <!-- Showreel video — end of page -->
-      <div class="showreel">
-        <div class="showreel__header">
-          <span class="showreel__label">Showreel</span>
-        </div>
-        <div class="video-placeholder showreel__player">
-          <div class="video-placeholder__play">▶</div>
-          <p class="video-placeholder__label">Best of — Coming Soon</p>
-        </div>
-      </div>
     </section>
 
     <!-- ─── Easter Egg / Weather ───────────────────────────── -->

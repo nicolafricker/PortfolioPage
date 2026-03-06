@@ -155,18 +155,6 @@ body {
   white-space: nowrap;
 }
 
-.marquee-row--rev .marquee-row__inner {
-  animation: marquee-rev 20s linear infinite;
-}
-
-.marquee-row--slow .marquee-row__inner {
-  animation-duration: 34s;
-}
-
-.marquee-row--fast .marquee-row__inner {
-  animation-duration: 14s;
-}
-
 /* Small — used in ticker */
 .marquee-row__inner--sm {
   font-family: var(--font-cond);
@@ -179,19 +167,6 @@ body {
   animation-duration: 65s;
 }
 
-/* Large — used in media section header */
-.marquee-row__inner--lg {
-  font-family: var(--font-cond);
-  font-size: clamp(5rem, 14vw, 11rem);
-  font-weight: 900;
-  letter-spacing: -0.02em;
-  line-height: 1;
-  text-transform: uppercase;
-  gap: 3rem;
-  padding-right: 3rem;
-  animation-duration: 22s;
-}
-
 @keyframes marquee-fwd {
   from {
     transform: translateX(0);
@@ -199,16 +174,6 @@ body {
 
   to {
     transform: translateX(-100%);
-  }
-}
-
-@keyframes marquee-rev {
-  from {
-    transform: translateX(-100%);
-  }
-
-  to {
-    transform: translateX(0);
   }
 }
 
@@ -578,26 +543,6 @@ body {
   background: #9b4f96;
 }
 
-.tech-tag--dotnet::before {
-  background: #512bd4;
-}
-
-.tech-tag--vs::before {
-  background: #5c2d91;
-}
-
-.tech-tag--vscode::before {
-  background: #007acc;
-}
-
-.tech-tag--js::before {
-  background: #f7df1e;
-}
-
-.tech-tag--vue::before {
-  background: #42b883;
-}
-
 .tech-tag--sql::before {
   background: #cc2927;
 }
@@ -752,7 +697,6 @@ body {
 }
 
 /* Shared placeholder styles */
-.video-placeholder,
 .photo-placeholder {
   width: 100%;
   height: 100%;
@@ -766,27 +710,10 @@ body {
   transition: background-color 0.2s ease;
 }
 
-.video-placeholder:hover,
 .photo-placeholder:hover {
   background-color: var(--bg);
 }
 
-.video-placeholder__play {
-  font-size: 2.5rem;
-  color: var(--text);
-  opacity: 0.2;
-  line-height: 1;
-  transition:
-    opacity 0.2s,
-    color 0.2s;
-}
-
-.video-placeholder:hover .video-placeholder__play {
-  opacity: 0.7;
-  color: var(--accent);
-}
-
-.video-placeholder__label,
 .photo-placeholder__label {
   font-family: var(--font-cond);
   font-size: 0.7rem;
@@ -795,37 +722,6 @@ body {
   text-transform: uppercase;
   color: var(--text-muted);
   transition: color 0.35s ease;
-}
-
-/* Showreel — full-width video at end of media section */
-.showreel {
-  margin-top: 1px;
-  background-color: var(--border-hard);
-  transition: background-color 0.35s ease;
-}
-
-.showreel__header {
-  padding: 2.25rem 2rem 1.25rem;
-  max-width: 1100px;
-  margin: 0 auto;
-  background-color: var(--bg-alt);
-  transition: background-color 0.35s ease;
-}
-
-.showreel__label {
-  font-family: var(--font-cond);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-
-.showreel__player {
-  width: 100%;
-  aspect-ratio: 21/9;
-  background-color: var(--bg-alt);
-  transition: background-color 0.35s ease;
 }
 
 /* ─── Footer ─────────────────────────────────────────────── */
@@ -1084,87 +980,6 @@ body {
   transition: color 0.35s ease;
 }
 
-/* ─── Quote section ──────────────────────────────────────── */
-.quote-section {
-  background-color: var(--bg);
-  border-top: 1px solid var(--border);
-  padding: 4rem 2rem;
-  display: flex;
-  justify-content: center;
-  transition:
-    background-color 0.35s ease,
-    border-color 0.35s ease;
-}
-
-.quote-widget {
-  max-width: 720px;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-  text-align: center;
-}
-
-.quote-widget__label {
-  font-family: var(--font-cond);
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-
-.quote-widget__text {
-  font-family: var(--font-cond);
-  font-size: clamp(1.4rem, 3vw, 2rem);
-  font-weight: 600;
-  line-height: 1.35;
-  color: var(--text);
-  font-style: italic;
-  transition: color 0.35s ease;
-}
-
-.quote-widget__author {
-  font-family: var(--font-cond);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  transition: color 0.35s ease;
-}
-
-.quote-widget__loading {
-  font-family: var(--font-cond);
-  font-size: 0.75rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-
-.quote-widget__btn {
-  font-family: var(--font-cond);
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  padding: 0.5rem 1.25rem;
-  border: 1px solid var(--border-hard);
-  background: transparent;
-  color: var(--text-muted);
-  cursor: pointer;
-  transition:
-    color 0.2s,
-    background-color 0.2s,
-    border-color 0.35s ease;
-}
-
-.quote-widget__btn:hover {
-  color: var(--text);
-  background-color: var(--bg-alt);
-}
-
 /* ─── Quote / Weather section ────────────────────────────── */
 .quote-section {
   background-color: var(--bg);
@@ -1356,10 +1171,6 @@ body {
   }
 
   .photo-subject__frame {
-    aspect-ratio: 16/9;
-  }
-
-  .showreel__player {
     aspect-ratio: 16/9;
   }
 

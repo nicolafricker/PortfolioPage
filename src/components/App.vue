@@ -397,13 +397,24 @@
       <div class="media-gallery">
         <figure
           v-for="photo in mediaPhotos"
-          :key="photo.src"
+          :key="photo.jpg"
           class="media-gallery__item"
         >
-          <img :src="photo.src" :alt="photo.alt" class="media-gallery__image" />
+          <picture>
+            <source :srcset="photo.webp" type="image/webp" />
+            <img
+              :src="photo.jpg"
+              :alt="photo.alt"
+              class="media-gallery__image"
+              :style="
+                photo.objectPosition
+                  ? { objectPosition: photo.objectPosition }
+                  : {}
+              "
+            />
+          </picture>
         </figure>
       </div>
-
     </section>
 
     <!-- ─── Easter Egg / Weather ───────────────────────────── -->
@@ -455,18 +466,68 @@ export default {
       isDark: false,
       heroVideoLoaded: false,
       mediaPhotos: [
-        { src: "/img/Work/nature-01.jpg", alt: "Nature photo 1" },
-        { src: "/img/Work/nature-02.jpg", alt: "Nature photo 2" },
-        { src: "/img/Work/nature-03.jpg", alt: "Nature photo 3" },
-        { src: "/img/Work/720-01.jpg", alt: "Work photo 1" },
-        { src: "/img/Work/nature-04.jpg", alt: "Nature photo 4" },
-        { src: "/img/Work/nature-05.jpg", alt: "Nature photo 5" },
-        { src: "/img/Work/720-02.jpg", alt: "Work photo 2" },
-        { src: "/img/Work/nature-06.jpg", alt: "Nature photo 6" },
-        { src: "/img/Work/nature-07.jpg", alt: "Nature photo 7" },
-        { src: "/img/Work/nature-08.jpg", alt: "Nature photo 8" },
-        { src: "/img/Work/tt-01.jpg", alt: "Work photo 3" },
-        { src: "/img/Work/nature-09.jpg", alt: "Nature photo 9" },
+        {
+          webp: "/img/Work/nature-01.webp",
+          jpg: "/img/Work/nature-01.jpg",
+          alt: "Nature photo 1",
+        },
+        {
+          webp: "/img/Work/nature-02.webp",
+          jpg: "/img/Work/nature-02.jpg",
+          alt: "Nature photo 2",
+        },
+        {
+          webp: "/img/Work/nature-03.webp",
+          jpg: "/img/Work/nature-03.jpg",
+          alt: "Nature photo 3",
+        },
+        {
+          webp: "/img/Work/720-01.webp",
+          jpg: "/img/Work/720-01.jpg",
+          alt: "Work photo 1",
+          objectPosition: "center 70%",
+        },
+        {
+          webp: "/img/Work/nature-04.webp",
+          jpg: "/img/Work/nature-04.jpg",
+          alt: "Nature photo 4",
+        },
+        {
+          webp: "/img/Work/nature-05.webp",
+          jpg: "/img/Work/nature-05.jpg",
+          alt: "Nature photo 5",
+        },
+        {
+          webp: "/img/Work/720-02.webp",
+          jpg: "/img/Work/720-02.jpg",
+          alt: "Work photo 2",
+          objectPosition: "center 40%",
+        },
+        {
+          webp: "/img/Work/nature-06.webp",
+          jpg: "/img/Work/nature-06.jpg",
+          alt: "Nature photo 6",
+        },
+        {
+          webp: "/img/Work/nature-07.webp",
+          jpg: "/img/Work/nature-07.jpg",
+          alt: "Nature photo 7",
+        },
+        {
+          webp: "/img/Work/nature-08.webp",
+          jpg: "/img/Work/nature-08.jpg",
+          alt: "Nature photo 8",
+        },
+        {
+          webp: "/img/Work/tt-01.webp",
+          jpg: "/img/Work/tt-01.jpg",
+          alt: "Work photo 3",
+        },
+        {
+          webp: "/img/Work/nature-09.webp",
+          jpg: "/img/Work/nature-09.jpg",
+          alt: "Nature photo 9",
+        },
       ],
       // Skills proficiency data for Chart.js radar
       skillsData: {

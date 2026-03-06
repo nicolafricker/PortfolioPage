@@ -985,83 +985,6 @@ body {
   display: block;
 }
 
-/* Shared placeholder styles */
-.video-placeholder,
-.photo-placeholder {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.7rem;
-  background-color: var(--bg-alt);
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.video-placeholder:hover,
-.photo-placeholder:hover {
-  background-color: var(--bg);
-}
-
-.video-placeholder__play {
-  font-size: 2.5rem;
-  color: var(--text);
-  opacity: 0.2;
-  line-height: 1;
-  transition:
-    opacity 0.2s,
-    color 0.2s;
-}
-
-.video-placeholder:hover .video-placeholder__play {
-  opacity: 0.7;
-  color: var(--accent);
-}
-
-.video-placeholder__label,
-.photo-placeholder__label {
-  font-family: var(--font-cond);
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  transition: color 0.35s ease;
-}
-
-/* Showreel — full-width video at end of media section */
-.showreel {
-  margin-top: 1px;
-  background-color: var(--border-hard);
-  transition: background-color 0.35s ease;
-}
-
-.showreel__header {
-  padding: 2.25rem 2rem 1.25rem;
-  max-width: 1100px;
-  margin: 0 auto;
-  background-color: var(--bg-alt);
-  transition: background-color 0.35s ease;
-}
-
-.showreel__label {
-  font-family: var(--font-cond);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-
-.showreel__player {
-  width: 100%;
-  aspect-ratio: 21/9;
-  background-color: var(--bg-alt);
-  transition: background-color 0.35s ease;
-}
-
 /* ─── Quote / Weather section ────────────────────────────── */
 .quote-section {
   background-color: var(--bg);
@@ -1287,10 +1210,6 @@ body {
   }
 
   .media-gallery__image {
-    aspect-ratio: 16/9;
-  }
-
-  .showreel__player {
     aspect-ratio: 16/9;
   }
 

@@ -1268,72 +1268,80 @@ label:focus-visible {
   outline-offset: 3px;
 }
 
-/* ─── About progressive disclosure ──────────────────────── */
-/* UI Update: extra paragraphs collapse on all screen sizes with read-more toggle */
-.about__extra {
-  display: block;
-  overflow: hidden;
-  max-height: 0;
-  transition: max-height 0.4s ease;
+/* ─── Project card flip interaction ─────────────────────── */
+/* UI Update: cards flip to reveal full text on click */
+.project-card {
+  cursor: pointer;
+  user-select: none;
 }
 
-.about__extra--open {
-  max-height: 800px;
+.project-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
 }
 
-.about__read-more {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
+.project-card__front,
+.project-card__back {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Back face hidden by default */
+.project-card__back {
+  display: none;
+}
+
+/* When flipped: swap faces with a subtle 3D-suggest animation */
+.project-card--flipped .project-card__front {
+  display: none;
+}
+
+.project-card--flipped .project-card__back {
+  display: flex;
+  animation: cardFlipIn 0.3s ease;
+}
+
+@keyframes cardFlipIn {
+  from {
+    opacity: 0;
+    transform: perspective(800px) rotateY(-10deg) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: perspective(800px) rotateY(0) scale(1);
+  }
+}
+
+/* Summary text on front face */
+.project-card__summary {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+  flex: 1;
+  transition: color 0.35s ease;
+}
+
+/* Click hint at bottom of each face */
+.project-card__flip-hint {
+  margin-top: auto;
+  padding-top: 1rem;
   font-family: var(--font-cond);
-  font-size: 0.7rem;
+  font-size: 0.6rem;
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--accent);
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0.75rem 0;
-  min-height: 44px;
-  margin-top: 0.25rem;
+  opacity: 0.5;
   transition: opacity 0.2s ease;
 }
 
-.about__read-more:hover {
-  opacity: 0.7;
+.project-card:hover .project-card__flip-hint {
+  opacity: 1;
 }
 
-/* ─── Project card expand/collapse (all screen sizes) ───────── */
-/* UI Update: clamp long descriptions by default, expand on demand */
-.project-card__desc--clamped {
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.project-card__expand-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  font-family: var(--font-cond);
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--accent);
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0.5rem 0;
-  min-height: 44px;
-  margin-top: -0.5rem;
-  transition: opacity 0.2s ease;
-}
-
-.project-card__expand-btn:hover {
-  opacity: 0.7;
+.project-card__flip-hint--back {
+  color: var(--text-muted);
 }
 
 /* ─── Mobile Bottom Navigation ───────────────────────────── */
@@ -1418,5 +1426,45 @@ label:focus-visible {
 
   .mobile-nav__label {
     line-height: 1;
+  }
+}
+
+/* ─── Desktop gutters ────────────────────────────────────── */
+/* UI Update: more horizontal breathing room at wider viewports */
+@media (min-width: 1100px) {
+  .work__header,
+  .skills__header,
+  .methods__header,
+  .media__header {
+    padding-inline: 5rem;
+  }
+
+  /* Constrain and centre the work grid so it doesn't bleed full-width */
+  .work__grid {
+    max-width: 1400px;
+    margin-inline: auto;
+  }
+
+  .skills__grid,
+  .skills__chart-wrap {
+    padding-inline: 4rem;
+  }
+
+  .methods__body {
+    padding-inline: 4rem;
+  }
+
+  .media-gallery {
+    padding-inline: 4rem;
+  }
+
+  .quote-section,
+  .footer {
+    padding-inline: 5rem;
+  }
+
+  /* About: push text column further from the left edge */
+  .about__content {
+    padding-left: 8rem;
   }
 }

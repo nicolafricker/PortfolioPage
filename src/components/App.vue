@@ -121,13 +121,12 @@
         <!-- Project 1 -->
         <article
           class="project-card reveal"
-          :class="{ 'project-card--flipped': expandedCards[0] }"
           @click="expandedCards[0] = !expandedCards[0]"
           @keyup.enter="expandedCards[0] = !expandedCards[0]"
           tabindex="0"
           :aria-label="expandedCards[0] ? 'Close project details' : 'Open project details'"
         >
-          <div class="project-card__front">
+          <div class="project-card__front" v-show="!expandedCards[0]">
             <div class="project-card__meta">
               <span class="project-card__number">01</span>
               <div class="project-card__tags">
@@ -148,7 +147,7 @@
             <span class="project-card__flip-hint" aria-hidden="true">Details ↗</span>
           </div>
 
-          <div class="project-card__back">
+          <div class="project-card__back" v-show="expandedCards[0]">
             <div class="project-card__meta">
               <span class="project-card__number">01</span>
               <div class="project-card__tags">
@@ -187,13 +186,12 @@
         <!-- Project 2 -->
         <article
           class="project-card reveal"
-          :class="{ 'project-card--flipped': expandedCards[1] }"
           @click="expandedCards[1] = !expandedCards[1]"
           @keyup.enter="expandedCards[1] = !expandedCards[1]"
           tabindex="0"
           :aria-label="expandedCards[1] ? 'Close project details' : 'Open project details'"
         >
-          <div class="project-card__front">
+          <div class="project-card__front" v-show="!expandedCards[1]">
             <div class="project-card__meta">
               <span class="project-card__number">02</span>
               <div class="project-card__tags">
@@ -213,7 +211,7 @@
             <span class="project-card__flip-hint" aria-hidden="true">Details ↗</span>
           </div>
 
-          <div class="project-card__back">
+          <div class="project-card__back" v-show="expandedCards[1]">
             <div class="project-card__meta">
               <span class="project-card__number">02</span>
               <div class="project-card__tags">
@@ -250,13 +248,12 @@
         <!-- Project 3 -->
         <article
           class="project-card reveal"
-          :class="{ 'project-card--flipped': expandedCards[2] }"
           @click="expandedCards[2] = !expandedCards[2]"
           @keyup.enter="expandedCards[2] = !expandedCards[2]"
           tabindex="0"
           :aria-label="expandedCards[2] ? 'Close project details' : 'Open project details'"
         >
-          <div class="project-card__front">
+          <div class="project-card__front" v-show="!expandedCards[2]">
             <div class="project-card__meta">
               <span class="project-card__number">03</span>
               <div class="project-card__tags">
@@ -275,7 +272,7 @@
             <span class="project-card__flip-hint" aria-hidden="true">Details ↗</span>
           </div>
 
-          <div class="project-card__back">
+          <div class="project-card__back" v-show="expandedCards[2]">
             <div class="project-card__meta">
               <span class="project-card__number">03</span>
               <div class="project-card__tags">

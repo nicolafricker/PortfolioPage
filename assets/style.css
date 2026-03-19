@@ -1293,18 +1293,8 @@ label:focus-visible {
   flex: 1;
 }
 
-/* Back face hidden by default */
+/* Back face: animate in when v-show makes it visible */
 .project-card__back {
-  display: none;
-}
-
-/* When flipped: swap faces with a subtle 3D-suggest animation */
-.project-card--flipped .project-card__front {
-  display: none;
-}
-
-.project-card--flipped .project-card__back {
-  display: flex;
   animation: cardFlipIn 0.3s ease;
 }
 

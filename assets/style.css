@@ -518,7 +518,8 @@ body {
   padding: 2.5rem;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  /* UI Update: reduced gap — cards felt dense with too little visual pause */
+  gap: 1rem;
   transition: background-color 0.35s ease;
 }
 
@@ -1268,89 +1269,71 @@ label:focus-visible {
 }
 
 /* ─── About progressive disclosure ──────────────────────── */
-/* UI Update: extra paragraphs collapse on mobile, always visible on desktop */
+/* UI Update: extra paragraphs collapse on all screen sizes with read-more toggle */
 .about__extra {
-  display: contents; /* transparent wrapper on desktop */
+  display: block;
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.4s ease;
+}
+
+.about__extra--open {
+  max-height: 800px;
 }
 
 .about__read-more {
-  display: none; /* hidden on desktop */
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-cond);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.75rem 0;
+  min-height: 44px;
+  margin-top: 0.25rem;
+  transition: opacity 0.2s ease;
 }
 
-@media (max-width: 900px) {
-  .about__extra {
-    display: block;
-    overflow: hidden;
-    max-height: 0;
-    transition: max-height 0.4s ease;
-  }
-
-  .about__extra--open {
-    max-height: 800px;
-  }
-
-  .about__read-more {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    font-family: var(--font-cond);
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--accent);
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0.75rem 0;
-    min-height: 44px;
-    margin-top: 0.25rem;
-    transition: opacity 0.2s ease;
-  }
-
-  .about__read-more:hover {
-    opacity: 0.7;
-  }
+.about__read-more:hover {
+  opacity: 0.7;
 }
 
-/* ─── Project card expand/collapse (mobile only) ─────────── */
-/* UI Update: clamp long descriptions on mobile with expand toggle */
-@media (max-width: 900px) {
-  .project-card__desc--clamped {
-    display: -webkit-box;
-    -webkit-line-clamp: 5;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .project-card__expand-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    font-family: var(--font-cond);
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--accent);
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0.5rem 0;
-    min-height: 44px;
-    margin-top: -0.5rem;
-    transition: opacity 0.2s ease;
-  }
-
-  .project-card__expand-btn:hover {
-    opacity: 0.7;
-  }
+/* ─── Project card expand/collapse (all screen sizes) ───────── */
+/* UI Update: clamp long descriptions by default, expand on demand */
+.project-card__desc--clamped {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-@media (min-width: 901px) {
-  .project-card__expand-btn {
-    display: none;
-  }
+.project-card__expand-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-cond);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem 0;
+  min-height: 44px;
+  margin-top: -0.5rem;
+  transition: opacity 0.2s ease;
+}
+
+.project-card__expand-btn:hover {
+  opacity: 0.7;
 }
 
 /* ─── Mobile Bottom Navigation ───────────────────────────── */

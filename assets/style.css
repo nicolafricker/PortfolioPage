@@ -1273,6 +1273,11 @@ label:focus-visible {
 .project-card {
   cursor: pointer;
   user-select: none;
+  /* Override the base :hover background — hover is signalled by the flip hint instead */
+}
+
+.project-card:hover {
+  background-color: var(--bg);
 }
 
 .project-card:focus-visible {
@@ -1285,6 +1290,7 @@ label:focus-visible {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  flex: 1;
 }
 
 /* Back face hidden by default */
@@ -1430,41 +1436,12 @@ label:focus-visible {
 }
 
 /* ─── Desktop gutters ────────────────────────────────────── */
-/* UI Update: more horizontal breathing room at wider viewports */
+/* UI Update: wider section headers on desktop */
 @media (min-width: 1100px) {
   .work__header,
   .skills__header,
   .methods__header,
   .media__header {
     padding-inline: 5rem;
-  }
-
-  /* Constrain and centre the work grid so it doesn't bleed full-width */
-  .work__grid {
-    max-width: 1400px;
-    margin-inline: auto;
-  }
-
-  .skills__grid,
-  .skills__chart-wrap {
-    padding-inline: 4rem;
-  }
-
-  .methods__body {
-    padding-inline: 4rem;
-  }
-
-  .media-gallery {
-    padding-inline: 4rem;
-  }
-
-  .quote-section,
-  .footer {
-    padding-inline: 5rem;
-  }
-
-  /* About: push text column further from the left edge */
-  .about__content {
-    padding-left: 8rem;
   }
 }

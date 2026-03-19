@@ -17,7 +17,6 @@
 
     <!-- ─── Hero ───────────────────────────────────────────── -->
     <section class="hero">
-      <!-- Background video (place your file at public/video/hero.mp4) -->
       <video
         class="hero__video"
         autoplay
@@ -29,17 +28,14 @@
         <source src="/video/GithubPortfolioPageHeroComp.mp4" type="video/mp4" />
       </video>
 
-      <!-- Dark overlay so text stays legible over any video -->
       <div class="hero__video-overlay"></div>
 
-      <!-- Shown only while no video file is present -->
       <div v-if="!heroVideoLoaded" class="hero__video-placeholder">
         <span class="hero__video-placeholder__icon">▶</span>
         <p class="hero__video-placeholder__label">Hero Video</p>
         <code class="hero__video-placeholder__path">public/video/hero.mp4</code>
       </div>
 
-      <!-- Foreground hero content -->
       <div class="hero__inner">
         <span class="hero__eyebrow">Portfolio</span>
         <h1 class="hero__name">Nicola<br />Fricker</h1>
@@ -89,14 +85,12 @@
 
     <!-- ─── About ──────────────────────────────────────────── -->
     <section id="about" class="about">
-      <!-- Portrait photo — fills the right portion of the section -->
       <div class="about__photo-wrap">
         <img src="/img/Me.JPEG" class="about__photo" alt="Nicola Fricker" />
       </div>
 
-      <!-- Text with semi-transparent glass box overlapping the photo -->
       <div class="about__content">
-        <div class="about__glass">
+        <div class="about__glass reveal">
           <span class="about__label">About Me</span>
           <div class="about__body">
             <p class="about__text">
@@ -112,17 +106,33 @@
               how much impact well-placed software decisions can have on an
               organization. That shift in perspective is what drives me today.
             </p>
-            <p class="about__text">
-              To deepen that understanding, I am currently studying Digital
-              Business and AI at the Bern University of Applied Sciences,
-              building on my technical foundation with business knowledge and
-              exploring the practical applications of AI in modern enterprises.
-            </p>
-            <p class="about__text">
-              Outside of work and studies, I stay active at the gym, boxing, and
-              jogging. Photography and videography give me a creative outlet and
-              a sharp eye for detail and visual storytelling.
-            </p>
+
+            <!-- UI Update: progressive disclosure — paras 3+4 collapsed on mobile -->
+            <div
+              class="about__extra"
+              :class="{ 'about__extra--open': showFullAbout }"
+            >
+              <p class="about__text">
+                To deepen that understanding, I am currently studying Digital
+                Business and AI at the Bern University of Applied Sciences,
+                building on my technical foundation with business knowledge and
+                exploring the practical applications of AI in modern enterprises.
+              </p>
+              <p class="about__text">
+                Outside of work and studies, I stay active at the gym, boxing, and
+                jogging. Photography and videography give me a creative outlet and
+                a sharp eye for detail and visual storytelling.
+              </p>
+            </div>
+
+            <!-- UI Update: read-more toggle, hidden on desktop via CSS -->
+            <button
+              class="about__read-more"
+              @click="showFullAbout = !showFullAbout"
+              :aria-expanded="showFullAbout.toString()"
+            >
+              {{ showFullAbout ? '↑ Less' : '↓ Read more' }}
+            </button>
           </div>
         </div>
       </div>
@@ -137,7 +147,7 @@
 
       <div class="work__grid">
         <!-- Project 1 -->
-        <article class="project-card">
+        <article class="project-card reveal">
           <div class="project-card__meta">
             <span class="project-card__number">01</span>
             <div class="project-card__tags">
@@ -150,7 +160,11 @@
           <h3 class="project-card__name">
             Device Management for a Provisioning System
           </h3>
-          <p class="project-card__desc">
+          <!-- UI Update: clamped to 5 lines on mobile, expanded via toggle -->
+          <p
+            class="project-card__desc"
+            :class="{ 'project-card__desc--clamped': !expandedCards[0] }"
+          >
             Pegasus is an enterprise provisioning system that replaced its
             predecessor AIS, automating the onboarding of users into office
             automation environments, including the creation of user accounts,
@@ -164,6 +178,11 @@
             platforms and environments, adding significant architectural
             complexity.
           </p>
+          <button
+            class="project-card__expand-btn"
+            @click="expandedCards[0] = !expandedCards[0]"
+            :aria-expanded="expandedCards[0].toString()"
+          >{{ expandedCards[0] ? '↑ Less' : '↓ Read more' }}</button>
           <div class="project-card__learnings">
             <span class="project-card__learnings-label">What I learned</span>
             <p class="project-card__learnings-text">
@@ -177,7 +196,7 @@
         </article>
 
         <!-- Project 2 -->
-        <article class="project-card">
+        <article class="project-card reveal">
           <div class="project-card__meta">
             <span class="project-card__number">02</span>
             <div class="project-card__tags">
@@ -188,7 +207,10 @@
             </div>
           </div>
           <h3 class="project-card__name">Document Management System</h3>
-          <p class="project-card__desc">
+          <p
+            class="project-card__desc"
+            :class="{ 'project-card__desc--clamped': !expandedCards[1] }"
+          >
             ALM is an internal document management system built to handle both
             physical and digital filing structures within the organization. It
             guides users through creating new documents with unambiguous
@@ -198,6 +220,11 @@
             the company, making document governance accessible to all employees
             regardless of their technical background.
           </p>
+          <button
+            class="project-card__expand-btn"
+            @click="expandedCards[1] = !expandedCards[1]"
+            :aria-expanded="expandedCards[1].toString()"
+          >{{ expandedCards[1] ? '↑ Less' : '↓ Read more' }}</button>
           <div class="project-card__learnings">
             <span class="project-card__learnings-label">What I learned</span>
             <p class="project-card__learnings-text">
@@ -211,7 +238,7 @@
         </article>
 
         <!-- Project 3 -->
-        <article class="project-card">
+        <article class="project-card reveal">
           <div class="project-card__meta">
             <span class="project-card__number">03</span>
             <div class="project-card__tags">
@@ -222,7 +249,10 @@
             </div>
           </div>
           <h3 class="project-card__name">LoRa IoT Demonstrator</h3>
-          <p class="project-card__desc">
+          <p
+            class="project-card__desc"
+            :class="{ 'project-card__desc--clamped': !expandedCards[2] }"
+          >
             Developed as a blueprint for future IoT solutions, this demonstrator
             covers the full data path from sensor hardware to visualization.
             Built in close collaboration with embedded hardware engineers who
@@ -232,6 +262,11 @@
             Communication runs bidirectionally, allowing the device to be
             configured remotely through the application.
           </p>
+          <button
+            class="project-card__expand-btn"
+            @click="expandedCards[2] = !expandedCards[2]"
+            :aria-expanded="expandedCards[2].toString()"
+          >{{ expandedCards[2] ? '↑ Less' : '↓ Read more' }}</button>
           <div class="project-card__learnings">
             <span class="project-card__learnings-label">What I learned</span>
             <p class="project-card__learnings-text">
@@ -253,8 +288,7 @@
         <p class="skills__sub">Tools &amp; Technologies I work with</p>
       </div>
 
-      <!-- Icon grid -->
-      <div class="skills__grid">
+      <div class="skills__grid reveal">
         <div class="skill-item">
           <i class="devicon-csharp-plain skill-item__icon"></i>
           <span class="skill-item__label">C#</span>
@@ -305,8 +339,7 @@
         </div>
       </div>
 
-      <!-- Chart.js radar chart: proficiency visualization (third-party library integration) -->
-      <div class="skills__chart-wrap">
+      <div class="skills__chart-wrap reveal">
         <span class="skills__chart-label">Proficiency Overview</span>
         <canvas id="skillsRadar" class="skills__radar"></canvas>
       </div>
@@ -315,11 +348,11 @@
     <!-- ─── Methods & Strengths ────────────────────────────── -->
     <section id="methods" class="methods">
       <div class="methods__header">
-        <h2 class="methods__title">Methods & Strengths</h2>
+        <h2 class="methods__title">Methods &amp; Strengths</h2>
         <p class="methods__sub">Bridging technology and business</p>
       </div>
 
-      <div class="methods__body">
+      <div class="methods__body reveal">
         <!-- Left column: Methods & Tools -->
         <div class="methods__col">
           <div class="methods__group">
@@ -394,7 +427,7 @@
         <p class="media__sub">Photography &amp; Video</p>
       </div>
 
-      <div class="media-gallery">
+      <div class="media-gallery reveal">
         <figure
           v-for="photo in mediaPhotos"
           :key="photo.jpg"
@@ -419,14 +452,14 @@
 
     <!-- ─── Easter Egg / Weather ───────────────────────────── -->
     <section class="quote-section">
-      <div class="quote-widget">
+      <div class="quote-widget reveal">
         <span class="quote-widget__label">You made it to the bottom</span>
         <p class="quote-widget__hint">
           Curious where I'm based? The weather below might give it away.
         </p>
       </div>
 
-      <div class="weather-widget">
+      <div class="weather-widget reveal">
         <!-- Weather data is cached in localStorage for 30 minutes -->
         <div v-if="weatherLoading" class="weather-widget__loading">
           Loading...
@@ -451,6 +484,23 @@
       <p class="footer__copy">&copy; 2026 Nicola Fricker</p>
       <p class="footer__location">Bern, Switzerland</p>
     </footer>
+
+    <!-- ─── Mobile Bottom Navigation ───────────────────────── -->
+    <!-- UI Update: sticky bottom nav for mobile — 5 visible section anchors (≤900px) -->
+    <nav class="mobile-nav" aria-label="Main navigation">
+      <a
+        v-for="item in mobileNavItems"
+        :key="item.id"
+        :href="'#' + item.id"
+        class="mobile-nav__item"
+        :class="{ 'mobile-nav__item--active': activeSection === item.id }"
+        :aria-label="'Go to ' + item.label + ' section'"
+        :aria-current="activeSection === item.id ? 'true' : undefined"
+      >
+        <span class="mobile-nav__dot" aria-hidden="true">◆</span>
+        <span class="mobile-nav__label">{{ item.label }}</span>
+      </a>
+    </nav>
   </div>
 </template>
 
@@ -465,6 +515,18 @@ export default {
     return {
       isDark: false,
       heroVideoLoaded: false,
+      // UI Update: mobile UX state
+      activeSection: "about",
+      showFullAbout: false,
+      expandedCards: { 0: false, 1: false, 2: false },
+      // Mobile nav items — matches section IDs
+      mobileNavItems: [
+        { id: "about", label: "About" },
+        { id: "work", label: "Work" },
+        { id: "skills", label: "Skills" },
+        { id: "methods", label: "Methods" },
+        { id: "media", label: "Media" },
+      ],
       mediaPhotos: [
         {
           webp: "/img/Work/nature-01.webp",
@@ -559,9 +621,13 @@ export default {
       prefersDark ? "dark" : "light",
     );
 
-    // Fetch weather (with localStorage cache) and render radar chart
+    // Fetch weather (with localStorage cache), render radar chart, set up observers
     this.fetchWeather();
-    this.$nextTick(() => this.renderRadarChart());
+    this.$nextTick(() => {
+      this.renderRadarChart();
+      // UI Update: scroll reveal + active section tracking
+      this.initObservers();
+    });
   },
 
   watch: {
@@ -580,6 +646,40 @@ export default {
   },
 
   methods: {
+    // ─── UI Update: scroll reveal + active nav section ─────────────
+    initObservers() {
+      // Fade-in elements as they enter the viewport (one-shot)
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("reveal--visible");
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.08 },
+      );
+      document
+        .querySelectorAll(".reveal")
+        .forEach((el) => revealObserver.observe(el));
+
+      // Track which section is centred in the viewport → update mobile nav
+      const navObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) this.activeSection = entry.target.id;
+          });
+        },
+        // Fires when section enters the middle band of the viewport
+        { rootMargin: "-20% 0px -55% 0px", threshold: 0 },
+      );
+      this.mobileNavItems.forEach(({ id }) => {
+        const el = document.getElementById(id);
+        if (el) navObserver.observe(el);
+      });
+    },
+
     // ─── Weather (Open-Meteo API + localStorage caching) ──────────
     fetchWeather() {
       this.weatherLoading = true;

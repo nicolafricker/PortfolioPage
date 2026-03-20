@@ -95,7 +95,7 @@
           <div class="about__body">
             <p class="about__text">
               I'm Nicola, 28. My path into IT began with a woodworking
-              apprenticeship — writing CNC programs in vocational school sparked
+              apprenticeship, writing CNC programs in vocational school sparked
               my interest in technology.
             </p>
             <p class="about__text">
@@ -116,7 +116,7 @@
         <p class="work__sub">IT Projects &amp; Development</p>
       </div>
 
-      <!-- UI Update: flip cards — front shows summary, click reveals full text on back -->
+      <!-- UI Update: flip cards, front shows summary, click reveals full text on back -->
       <div class="work__grid">
         <!-- Project 1 -->
         <article
@@ -141,7 +141,7 @@
             </h3>
             <p class="project-card__summary">
               Designed and implemented a device management module for Pegasus,
-              an enterprise provisioning system — enabling users to create,
+              an enterprise provisioning system, enabling users to create,
               configure, and remove device pools across multiple environments.
             </p>
             <span class="project-card__flip-hint" aria-hidden="true">Details ↗</span>
@@ -204,7 +204,7 @@
             <h3 class="project-card__name">Document Management System</h3>
             <p class="project-card__summary">
               Built ALM, an internal document management system that guides
-              users through the full document lifecycle — creation with unique
+              users through the full document lifecycle: creation with unique
               identifiers, versioning, and archiving across physical and digital
               structures.
             </p>
@@ -266,7 +266,7 @@
             <h3 class="project-card__name">LoRa IoT Demonstrator</h3>
             <p class="project-card__summary">
               Developed the application layer of a full-stack IoT demonstrator
-              — from LoRaWAN device connection to data visualization, with
+              from LoRaWAN device connection to data visualization, with
               bidirectional remote configuration over The Things Network.
             </p>
             <span class="project-card__flip-hint" aria-hidden="true">Details ↗</span>
@@ -513,7 +513,7 @@
     </footer>
 
     <!-- ─── Mobile Bottom Navigation ───────────────────────── -->
-    <!-- UI Update: sticky bottom nav for mobile — 5 visible section anchors (≤900px) -->
+    <!-- UI Update: sticky bottom nav for mobile, 5 visible section anchors (≤900px) -->
     <nav class="mobile-nav" aria-label="Main navigation">
       <a
         v-for="item in mobileNavItems"
@@ -545,7 +545,7 @@ export default {
       // UI Update: mobile UX state
       activeSection: "about",
       expandedCards: { 0: false, 1: false, 2: false },
-      // Mobile nav items — matches section IDs
+      // Mobile nav items, matches section IDs
       mobileNavItems: [
         { id: "about", label: "About" },
         { id: "work", label: "Work" },
@@ -711,7 +711,7 @@ export default {
       this.weatherLoading = true;
       this.weatherError = false;
 
-      // Check cache first — skip network request if data is still fresh
+      // Check cache first, skip network request if data is still fresh
       try {
         const cached = localStorage.getItem(WEATHER_CACHE_KEY);
         if (cached) {
@@ -787,7 +787,7 @@ export default {
     },
 
     // ─── Chart.js radar chart for skills proficiency ──────────────
-    // Loaded dynamically — run "npm install chart.js" first.
+    // Loaded dynamically, run "npm install chart.js" first.
     // If not installed, the radar chart is simply skipped; nothing else breaks.
     renderRadarChart() {
       const canvas = document.getElementById("skillsRadar");
@@ -873,7 +873,7 @@ export default {
           },
         )
         .catch(() => {
-          // chart.js not installed — radar chart is silently skipped
+          // chart.js not installed, radar chart is silently skipped
         });
     },
   },

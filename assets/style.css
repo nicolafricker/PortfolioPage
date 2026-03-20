@@ -4,7 +4,7 @@
    --bg-alt:      #EBEAE6   slightly darker for sections
    --text:        #0A0A0A   near black
    --text-muted:  #5C5C5C
-   --accent:      #C8291E   industrial red — used sparingly
+   --accent:      #C8291E   industrial red, used sparingly
    --border:      rgba(10,10,10,0.10)
    --border-hard: rgba(10,10,10,0.60)
    --marquee:     #E3E1DC   barely-visible hero marquee
@@ -170,7 +170,7 @@ body {
   animation-duration: 14s;
 }
 
-/* Small — used in ticker */
+/* Small, used in ticker */
 .marquee-row__inner--sm {
   font-family: var(--font-cond);
   font-size: clamp(0.65rem, 1.2vw, 0.8rem);
@@ -182,7 +182,7 @@ body {
   animation-duration: 65s;
 }
 
-/* Large — used in media section header */
+/* Large, used in media section header */
 .marquee-row__inner--lg {
   font-family: var(--font-cond);
   font-size: clamp(5rem, 14vw, 11rem);
@@ -391,7 +391,7 @@ body {
     border-color 0.35s ease;
 }
 
-/* Portrait — anchored to the right, full section height */
+/* Portrait, anchored to the right, full section height */
 .about__photo-wrap {
   position: absolute;
   right: 0;
@@ -417,7 +417,7 @@ body {
   pointer-events: none;
 }
 
-/* Text column — sits in front of the gradient fade */
+/* Text column, sits in front of the gradient fade */
 .about__content {
   position: relative;
   z-index: 2;
@@ -518,7 +518,7 @@ body {
   padding: 2.5rem;
   display: flex;
   flex-direction: column;
-  /* UI Update: reduced gap — cards felt dense with too little visual pause */
+  /* UI Update: reduced gap, cards felt dense with too little visual pause */
   gap: 1rem;
   transition: background-color 0.35s ease;
 }
@@ -669,7 +669,7 @@ body {
 /* ─── Skills section ─────────────────────────────────────── */
 .skills {
   position: relative;
-  /* UI Update: removed double top padding — .skills__header already provides 3.5rem top spacing */
+  /* UI Update: removed double top padding, .skills__header already provides 3.5rem top spacing */
   padding: 0 0 4rem;
   background-color: var(--bg);
   border-top: 1px solid var(--border);
@@ -759,7 +759,7 @@ body {
   transition: color 0.35s ease;
 }
 
-/* Chart.js radar chart — proficiency visualization */
+/* Chart.js radar chart, proficiency visualization */
 .skills__chart-wrap {
   max-width: 480px;
   margin: 3rem auto 0;
@@ -1211,7 +1211,7 @@ body {
     gap: 0.5rem;
   }
 
-  /* UI Update: 2-column grid on mobile — far less scrolling than single column */
+  /* UI Update: 2-column grid on mobile, far less scrolling than single column */
   .media-gallery {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -1273,7 +1273,7 @@ label:focus-visible {
 .project-card {
   cursor: pointer;
   user-select: none;
-  /* Override the base :hover background — hover is signalled by the flip hint instead */
+  /* Override the base :hover background, hover is signalled by the flip hint instead */
 }
 
 .project-card:hover {
@@ -1341,7 +1341,7 @@ label:focus-visible {
 }
 
 /* ─── Mobile Bottom Navigation ───────────────────────────── */
-/* UI Update: sticky 5-item bottom nav for mobile — visible section anchors */
+/* UI Update: sticky 5-item bottom nav for mobile, visible section anchors */
 .mobile-nav {
   display: none;
 }

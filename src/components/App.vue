@@ -99,10 +99,10 @@
               my interest in technology.
             </p>
             <p class="about__text">
-              After training as an Application Developer and graduating from
-              HF Technik Mittelland, I moved into a Business IT Analyst role.
-              I now study Digital Business &amp; AI at BFH, and outside of work
-              I stay active through boxing, jogging, and photography.
+              After training as an Application Developer and graduating from HF
+              Technik Mittelland, I moved into a Business IT Analyst role. I now
+              study Digital Business &amp; AI at BFH, and outside of work I stay
+              active through boxing, jogging, and photography.
             </p>
           </div>
         </div>
@@ -124,7 +124,9 @@
           @click="expandedCards[0] = !expandedCards[0]"
           @keyup.enter="expandedCards[0] = !expandedCards[0]"
           tabindex="0"
-          :aria-label="expandedCards[0] ? 'Close project details' : 'Open project details'"
+          :aria-label="
+            expandedCards[0] ? 'Close project details' : 'Open project details'
+          "
         >
           <div class="project-card__front" v-show="!expandedCards[0]">
             <div class="project-card__meta">
@@ -144,7 +146,9 @@
               an enterprise provisioning system, enabling users to create,
               configure, and remove device pools across multiple environments.
             </p>
-            <span class="project-card__flip-hint" aria-hidden="true">Details ↗</span>
+            <span class="project-card__flip-hint" aria-hidden="true"
+              >Details ↗</span
+            >
           </div>
 
           <div class="project-card__back" v-show="expandedCards[0]">
@@ -165,9 +169,9 @@
               was device management. I designed and implemented an interactive
               workflow that allows end users to create and manage device pools,
               modify their configuration, and remove devices as needed.
-              Requirements were gathered directly with stakeholders, design drafts
-              were reviewed iteratively, and the implementation was coordinated
-              across multiple teams.
+              Requirements were gathered directly with stakeholders, design
+              drafts were reviewed iteratively, and the implementation was
+              coordinated across multiple teams.
             </p>
             <div class="project-card__learnings">
               <span class="project-card__learnings-label">What I learned</span>
@@ -179,7 +183,11 @@
                 solution that met both technical and user expectations.
               </p>
             </div>
-            <span class="project-card__flip-hint project-card__flip-hint--back" aria-hidden="true">← Back</span>
+            <span
+              class="project-card__flip-hint project-card__flip-hint--back"
+              aria-hidden="true"
+              >← Back</span
+            >
           </div>
         </article>
 
@@ -189,7 +197,9 @@
           @click="expandedCards[1] = !expandedCards[1]"
           @keyup.enter="expandedCards[1] = !expandedCards[1]"
           tabindex="0"
-          :aria-label="expandedCards[1] ? 'Close project details' : 'Open project details'"
+          :aria-label="
+            expandedCards[1] ? 'Close project details' : 'Open project details'
+          "
         >
           <div class="project-card__front" v-show="!expandedCards[1]">
             <div class="project-card__meta">
@@ -208,7 +218,9 @@
               identifiers, versioning, and archiving across physical and digital
               structures.
             </p>
-            <span class="project-card__flip-hint" aria-hidden="true">Details ↗</span>
+            <span class="project-card__flip-hint" aria-hidden="true"
+              >Details ↗</span
+            >
           </div>
 
           <div class="project-card__back" v-show="expandedCards[1]">
@@ -235,13 +247,17 @@
               <span class="project-card__learnings-label">What I learned</span>
               <p class="project-card__learnings-text">
                 Designing for a broad, non-technical user base demands a strong
-                focus on usability and intuitive workflows. This project deepened
-                my experience with containerized deployments using Docker and
-                Kubernetes, and reinforced the value of Entity Framework for
-                maintainable data access layers.
+                focus on usability and intuitive workflows. This project
+                deepened my experience with containerized deployments using
+                Docker and Kubernetes, and reinforced the value of Entity
+                Framework for maintainable data access layers.
               </p>
             </div>
-            <span class="project-card__flip-hint project-card__flip-hint--back" aria-hidden="true">← Back</span>
+            <span
+              class="project-card__flip-hint project-card__flip-hint--back"
+              aria-hidden="true"
+              >← Back</span
+            >
           </div>
         </article>
 
@@ -251,7 +267,9 @@
           @click="expandedCards[2] = !expandedCards[2]"
           @keyup.enter="expandedCards[2] = !expandedCards[2]"
           tabindex="0"
-          :aria-label="expandedCards[2] ? 'Close project details' : 'Open project details'"
+          :aria-label="
+            expandedCards[2] ? 'Close project details' : 'Open project details'
+          "
         >
           <div class="project-card__front" v-show="!expandedCards[2]">
             <div class="project-card__meta">
@@ -269,7 +287,9 @@
               from LoRaWAN device connection to data visualization, with
               bidirectional remote configuration over The Things Network.
             </p>
-            <span class="project-card__flip-hint" aria-hidden="true">Details ↗</span>
+            <span class="project-card__flip-hint" aria-hidden="true"
+              >Details ↗</span
+            >
           </div>
 
           <div class="project-card__back" v-show="expandedCards[2]">
@@ -302,7 +322,11 @@
                 communication protocols with web-based application development.
               </p>
             </div>
-            <span class="project-card__flip-hint project-card__flip-hint--back" aria-hidden="true">← Back</span>
+            <span
+              class="project-card__flip-hint project-card__flip-hint--back"
+              aria-hidden="true"
+              >← Back</span
+            >
           </div>
         </article>
       </div>
@@ -337,10 +361,6 @@
           <span class="skill-item__label">Kubernetes</span>
         </div>
         <div class="skill-item">
-          <i class="devicon-azure-plain skill-item__icon"></i>
-          <span class="skill-item__label">Azure DevOps</span>
-        </div>
-        <div class="skill-item">
           <i class="devicon-html5-plain skill-item__icon"></i>
           <span class="skill-item__label">HTML</span>
         </div>
@@ -355,10 +375,6 @@
         <div class="skill-item">
           <i class="devicon-git-plain skill-item__icon"></i>
           <span class="skill-item__label">Git</span>
-        </div>
-        <div class="skill-item">
-          <i class="devicon-visualstudio-plain skill-item__icon"></i>
-          <span class="skill-item__label">Visual Studio</span>
         </div>
         <div class="skill-item">
           <i class="devicon-nodejs-plain skill-item__icon"></i>
@@ -388,8 +404,6 @@
             >
             <div class="methods__tags">
               <span class="method-tag">REST</span>
-              <span class="method-tag">Docker</span>
-              <span class="method-tag">Kubernetes</span>
               <span class="method-tag">Helm</span>
             </div>
           </div>
@@ -413,7 +427,11 @@
               <span class="method-tag">SSMS</span>
               <span class="method-tag">PowerBI</span>
               <span class="method-tag">GitHub</span>
-              <span class="method-tag">SharePoint</span>
+              <span class="method-tag">Visual Studio</span>
+              <span class="method-tag">Visual Studio Code</span>
+              <span class="method-tag">Jira</span>
+              <span class="method-tag">Confluence</span>
+              <span class="method-tag">Figma</span>
             </div>
           </div>
         </div>

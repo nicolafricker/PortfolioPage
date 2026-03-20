@@ -17,7 +17,6 @@
 
     <!-- ─── Hero ───────────────────────────────────────────── -->
     <section class="hero">
-      <!-- Background video (place your file at public/video/hero.mp4) -->
       <video
         class="hero__video"
         autoplay
@@ -29,17 +28,14 @@
         <source src="/video/GithubPortfolioPageHeroComp.mp4" type="video/mp4" />
       </video>
 
-      <!-- Dark overlay so text stays legible over any video -->
       <div class="hero__video-overlay"></div>
 
-      <!-- Shown only while no video file is present -->
       <div v-if="!heroVideoLoaded" class="hero__video-placeholder">
         <span class="hero__video-placeholder__icon">▶</span>
         <p class="hero__video-placeholder__label">Hero Video</p>
         <code class="hero__video-placeholder__path">public/video/hero.mp4</code>
       </div>
 
-      <!-- Foreground hero content -->
       <div class="hero__inner">
         <span class="hero__eyebrow">Portfolio</span>
         <h1 class="hero__name">Nicola<br />Fricker</h1>
@@ -89,39 +85,24 @@
 
     <!-- ─── About ──────────────────────────────────────────── -->
     <section id="about" class="about">
-      <!-- Portrait photo — fills the right portion of the section -->
       <div class="about__photo-wrap">
         <img src="/img/Me.JPEG" class="about__photo" alt="Nicola Fricker" />
       </div>
 
-      <!-- Text with semi-transparent glass box overlapping the photo -->
       <div class="about__content">
-        <div class="about__glass">
+        <div class="about__glass reveal">
           <span class="about__label">About Me</span>
           <div class="about__body">
             <p class="about__text">
-              I'm Nicola, 28 years old. My path into IT started with a
-              woodworking apprenticeship, where I first discovered my passion
-              for technology through writing CNC programs in vocational school.
+              I'm Nicola, 28. My path into IT began with a woodworking
+              apprenticeship, writing CNC programs in vocational school sparked
+              my interest in technology.
             </p>
             <p class="about__text">
-              After completing my apprenticeship as an Application Developer and
-              a degree at the Höhere Fachschule für Technik Mittelland in Biel,
-              I moved into a role as a Business IT Analyst. Working at the
-              interface between technical and business requirements showed me
-              how much impact well-placed software decisions can have on an
-              organization. That shift in perspective is what drives me today.
-            </p>
-            <p class="about__text">
-              To deepen that understanding, I am currently studying Digital
-              Business and AI at the Bern University of Applied Sciences,
-              building on my technical foundation with business knowledge and
-              exploring the practical applications of AI in modern enterprises.
-            </p>
-            <p class="about__text">
-              Outside of work and studies, I stay active at the gym, boxing, and
-              jogging. Photography and videography give me a creative outlet and
-              a sharp eye for detail and visual storytelling.
+              After training as an Application Developer and graduating from
+              HF Technik Mittelland, I moved into a Business IT Analyst role.
+              I now study Digital Business &amp; AI at BFH, and outside of work
+              I stay active through boxing, jogging, and photography.
             </p>
           </div>
         </div>
@@ -135,112 +116,193 @@
         <p class="work__sub">IT Projects &amp; Development</p>
       </div>
 
+      <!-- UI Update: flip cards, front shows summary, click reveals full text on back -->
       <div class="work__grid">
         <!-- Project 1 -->
-        <article class="project-card">
-          <div class="project-card__meta">
-            <span class="project-card__number">01</span>
-            <div class="project-card__tags">
-              <span class="tech-tag tech-tag--csharp">C#</span>
-              <span class="tech-tag tech-tag--sql">SQL</span>
-              <span class="tech-tag tech-tag--azure">Azure DevOps</span>
-              <span class="tech-tag tech-tag--scrum">Scrum</span>
+        <article
+          class="project-card reveal"
+          @click="expandedCards[0] = !expandedCards[0]"
+          @keyup.enter="expandedCards[0] = !expandedCards[0]"
+          tabindex="0"
+          :aria-label="expandedCards[0] ? 'Close project details' : 'Open project details'"
+        >
+          <div class="project-card__front" v-show="!expandedCards[0]">
+            <div class="project-card__meta">
+              <span class="project-card__number">01</span>
+              <div class="project-card__tags">
+                <span class="tech-tag tech-tag--csharp">C#</span>
+                <span class="tech-tag tech-tag--sql">SQL</span>
+                <span class="tech-tag tech-tag--azure">Azure DevOps</span>
+                <span class="tech-tag tech-tag--scrum">Scrum</span>
+              </div>
             </div>
-          </div>
-          <h3 class="project-card__name">
-            Device Management for a Provisioning System
-          </h3>
-          <p class="project-card__desc">
-            Pegasus is an enterprise provisioning system that replaced its
-            predecessor AIS, automating the onboarding of users into office
-            automation environments, including the creation of user accounts,
-            profiles, mailboxes, and network shares. A key missing capability
-            was device management. I designed and implemented an interactive
-            workflow that allows end users to create and manage device pools,
-            modify their configuration, and remove devices as needed.
-            Requirements were gathered directly with stakeholders, design drafts
-            were reviewed iteratively, and the implementation was coordinated
-            across multiple teams. The feature was delivered across several
-            platforms and environments, adding significant architectural
-            complexity.
-          </p>
-          <div class="project-card__learnings">
-            <span class="project-card__learnings-label">What I learned</span>
-            <p class="project-card__learnings-text">
-              Working within a large, established system requires careful
-              attention to backward compatibility and process integrity. Close
-              collaboration with stakeholders and fellow developers, combined
-              with structured agile practices, was essential to delivering a
-              solution that met both technical and user expectations.
+            <h3 class="project-card__name">
+              Device Management for a Provisioning System
+            </h3>
+            <p class="project-card__summary">
+              Designed and implemented a device management module for Pegasus,
+              an enterprise provisioning system, enabling users to create,
+              configure, and remove device pools across multiple environments.
             </p>
+            <span class="project-card__flip-hint" aria-hidden="true">Details ↗</span>
+          </div>
+
+          <div class="project-card__back" v-show="expandedCards[0]">
+            <div class="project-card__meta">
+              <span class="project-card__number">01</span>
+              <div class="project-card__tags">
+                <span class="tech-tag tech-tag--csharp">C#</span>
+                <span class="tech-tag tech-tag--sql">SQL</span>
+                <span class="tech-tag tech-tag--azure">Azure DevOps</span>
+                <span class="tech-tag tech-tag--scrum">Scrum</span>
+              </div>
+            </div>
+            <p class="project-card__desc">
+              Pegasus is an enterprise provisioning system that replaced its
+              predecessor AIS, automating the onboarding of users into office
+              automation environments, including the creation of user accounts,
+              profiles, mailboxes, and network shares. A key missing capability
+              was device management. I designed and implemented an interactive
+              workflow that allows end users to create and manage device pools,
+              modify their configuration, and remove devices as needed.
+              Requirements were gathered directly with stakeholders, design drafts
+              were reviewed iteratively, and the implementation was coordinated
+              across multiple teams.
+            </p>
+            <div class="project-card__learnings">
+              <span class="project-card__learnings-label">What I learned</span>
+              <p class="project-card__learnings-text">
+                Working within a large, established system requires careful
+                attention to backward compatibility and process integrity. Close
+                collaboration with stakeholders and fellow developers, combined
+                with structured agile practices, was essential to delivering a
+                solution that met both technical and user expectations.
+              </p>
+            </div>
+            <span class="project-card__flip-hint project-card__flip-hint--back" aria-hidden="true">← Back</span>
           </div>
         </article>
 
         <!-- Project 2 -->
-        <article class="project-card">
-          <div class="project-card__meta">
-            <span class="project-card__number">02</span>
-            <div class="project-card__tags">
-              <span class="tech-tag tech-tag--razor">Razor Pages</span>
-              <span class="tech-tag tech-tag--docker">Docker</span>
-              <span class="tech-tag tech-tag--kubernetes">Kubernetes</span>
-              <span class="tech-tag tech-tag--ef">Entity Framework</span>
+        <article
+          class="project-card reveal"
+          @click="expandedCards[1] = !expandedCards[1]"
+          @keyup.enter="expandedCards[1] = !expandedCards[1]"
+          tabindex="0"
+          :aria-label="expandedCards[1] ? 'Close project details' : 'Open project details'"
+        >
+          <div class="project-card__front" v-show="!expandedCards[1]">
+            <div class="project-card__meta">
+              <span class="project-card__number">02</span>
+              <div class="project-card__tags">
+                <span class="tech-tag tech-tag--razor">Razor Pages</span>
+                <span class="tech-tag tech-tag--docker">Docker</span>
+                <span class="tech-tag tech-tag--kubernetes">Kubernetes</span>
+                <span class="tech-tag tech-tag--ef">Entity Framework</span>
+              </div>
             </div>
-          </div>
-          <h3 class="project-card__name">Document Management System</h3>
-          <p class="project-card__desc">
-            ALM is an internal document management system built to handle both
-            physical and digital filing structures within the organization. It
-            guides users through creating new documents with unambiguous
-            identifiers, locating existing ones, creating new versions, and
-            archiving documents that have reached the end of their lifecycle.
-            The system reflects the real-world folder and project hierarchies of
-            the company, making document governance accessible to all employees
-            regardless of their technical background.
-          </p>
-          <div class="project-card__learnings">
-            <span class="project-card__learnings-label">What I learned</span>
-            <p class="project-card__learnings-text">
-              Designing for a broad, non-technical user base demands a strong
-              focus on usability and intuitive workflows. This project deepened
-              my experience with containerized deployments using Docker and
-              Kubernetes, and reinforced the value of Entity Framework for
-              maintainable data access layers.
+            <h3 class="project-card__name">Document Management System</h3>
+            <p class="project-card__summary">
+              Built ALM, an internal document management system that guides
+              users through the full document lifecycle: creation with unique
+              identifiers, versioning, and archiving across physical and digital
+              structures.
             </p>
+            <span class="project-card__flip-hint" aria-hidden="true">Details ↗</span>
+          </div>
+
+          <div class="project-card__back" v-show="expandedCards[1]">
+            <div class="project-card__meta">
+              <span class="project-card__number">02</span>
+              <div class="project-card__tags">
+                <span class="tech-tag tech-tag--razor">Razor Pages</span>
+                <span class="tech-tag tech-tag--docker">Docker</span>
+                <span class="tech-tag tech-tag--kubernetes">Kubernetes</span>
+                <span class="tech-tag tech-tag--ef">Entity Framework</span>
+              </div>
+            </div>
+            <p class="project-card__desc">
+              ALM is an internal document management system built to handle both
+              physical and digital filing structures within the organization. It
+              guides users through creating new documents with unambiguous
+              identifiers, locating existing ones, creating new versions, and
+              archiving documents that have reached the end of their lifecycle.
+              The system reflects the real-world folder and project hierarchies
+              of the company, making document governance accessible to all
+              employees regardless of their technical background.
+            </p>
+            <div class="project-card__learnings">
+              <span class="project-card__learnings-label">What I learned</span>
+              <p class="project-card__learnings-text">
+                Designing for a broad, non-technical user base demands a strong
+                focus on usability and intuitive workflows. This project deepened
+                my experience with containerized deployments using Docker and
+                Kubernetes, and reinforced the value of Entity Framework for
+                maintainable data access layers.
+              </p>
+            </div>
+            <span class="project-card__flip-hint project-card__flip-hint--back" aria-hidden="true">← Back</span>
           </div>
         </article>
 
         <!-- Project 3 -->
-        <article class="project-card">
-          <div class="project-card__meta">
-            <span class="project-card__number">03</span>
-            <div class="project-card__tags">
-              <span class="tech-tag tech-tag--lora">LoRaWAN</span>
-              <span class="tech-tag tech-tag--nodered">Node-RED</span>
-              <span class="tech-tag tech-tag--docker">Docker</span>
-              <span class="tech-tag tech-tag--razor">Razor Pages</span>
+        <article
+          class="project-card reveal"
+          @click="expandedCards[2] = !expandedCards[2]"
+          @keyup.enter="expandedCards[2] = !expandedCards[2]"
+          tabindex="0"
+          :aria-label="expandedCards[2] ? 'Close project details' : 'Open project details'"
+        >
+          <div class="project-card__front" v-show="!expandedCards[2]">
+            <div class="project-card__meta">
+              <span class="project-card__number">03</span>
+              <div class="project-card__tags">
+                <span class="tech-tag tech-tag--lora">LoRaWAN</span>
+                <span class="tech-tag tech-tag--nodered">Node-RED</span>
+                <span class="tech-tag tech-tag--docker">Docker</span>
+                <span class="tech-tag tech-tag--razor">Razor Pages</span>
+              </div>
             </div>
-          </div>
-          <h3 class="project-card__name">LoRa IoT Demonstrator</h3>
-          <p class="project-card__desc">
-            Developed as a blueprint for future IoT solutions, this demonstrator
-            covers the full data path from sensor hardware to visualization.
-            Built in close collaboration with embedded hardware engineers who
-            designed the physical device, my responsibility covered the
-            application layer: establishing the device connection, receiving and
-            processing incoming data, and presenting it in a clear interface.
-            Communication runs bidirectionally, allowing the device to be
-            configured remotely through the application.
-          </p>
-          <div class="project-card__learnings">
-            <span class="project-card__learnings-label">What I learned</span>
-            <p class="project-card__learnings-text">
-              Integrating hardware and software across a multi-component IoT
-              stack requires precise coordination and thorough error handling at
-              every layer. Working with LoRaWAN, The Things Network, and
-              Node-RED gave me hands-on experience bridging low-level
-              communication protocols with web-based application development.
+            <h3 class="project-card__name">LoRa IoT Demonstrator</h3>
+            <p class="project-card__summary">
+              Developed the application layer of a full-stack IoT demonstrator
+              from LoRaWAN device connection to data visualization, with
+              bidirectional remote configuration over The Things Network.
             </p>
+            <span class="project-card__flip-hint" aria-hidden="true">Details ↗</span>
+          </div>
+
+          <div class="project-card__back" v-show="expandedCards[2]">
+            <div class="project-card__meta">
+              <span class="project-card__number">03</span>
+              <div class="project-card__tags">
+                <span class="tech-tag tech-tag--lora">LoRaWAN</span>
+                <span class="tech-tag tech-tag--nodered">Node-RED</span>
+                <span class="tech-tag tech-tag--docker">Docker</span>
+                <span class="tech-tag tech-tag--razor">Razor Pages</span>
+              </div>
+            </div>
+            <p class="project-card__desc">
+              Developed as a blueprint for future IoT solutions, this
+              demonstrator covers the full data path from sensor hardware to
+              visualization. Built in close collaboration with embedded hardware
+              engineers who designed the physical device, my responsibility
+              covered the application layer: establishing the device connection,
+              receiving and processing incoming data, and presenting it in a
+              clear interface. Communication runs bidirectionally, allowing the
+              device to be configured remotely through the application.
+            </p>
+            <div class="project-card__learnings">
+              <span class="project-card__learnings-label">What I learned</span>
+              <p class="project-card__learnings-text">
+                Integrating hardware and software across a multi-component IoT
+                stack requires precise coordination and thorough error handling
+                at every layer. Working with LoRaWAN, The Things Network, and
+                Node-RED gave me hands-on experience bridging low-level
+                communication protocols with web-based application development.
+              </p>
+            </div>
+            <span class="project-card__flip-hint project-card__flip-hint--back" aria-hidden="true">← Back</span>
           </div>
         </article>
       </div>
@@ -253,8 +315,7 @@
         <p class="skills__sub">Tools &amp; Technologies I work with</p>
       </div>
 
-      <!-- Icon grid -->
-      <div class="skills__grid">
+      <div class="skills__grid reveal">
         <div class="skill-item">
           <i class="devicon-csharp-plain skill-item__icon"></i>
           <span class="skill-item__label">C#</span>
@@ -305,8 +366,7 @@
         </div>
       </div>
 
-      <!-- Chart.js radar chart: proficiency visualization (third-party library integration) -->
-      <div class="skills__chart-wrap">
+      <div class="skills__chart-wrap reveal">
         <span class="skills__chart-label">Proficiency Overview</span>
         <canvas id="skillsRadar" class="skills__radar"></canvas>
       </div>
@@ -315,11 +375,11 @@
     <!-- ─── Methods & Strengths ────────────────────────────── -->
     <section id="methods" class="methods">
       <div class="methods__header">
-        <h2 class="methods__title">Methods & Strengths</h2>
+        <h2 class="methods__title">Methods &amp; Strengths</h2>
         <p class="methods__sub">Bridging technology and business</p>
       </div>
 
-      <div class="methods__body">
+      <div class="methods__body reveal">
         <!-- Left column: Methods & Tools -->
         <div class="methods__col">
           <div class="methods__group">
@@ -394,7 +454,7 @@
         <p class="media__sub">Photography &amp; Video</p>
       </div>
 
-      <div class="media-gallery">
+      <div class="media-gallery reveal">
         <figure
           v-for="photo in mediaPhotos"
           :key="photo.jpg"
@@ -419,14 +479,14 @@
 
     <!-- ─── Easter Egg / Weather ───────────────────────────── -->
     <section class="quote-section">
-      <div class="quote-widget">
+      <div class="quote-widget reveal">
         <span class="quote-widget__label">You made it to the bottom</span>
         <p class="quote-widget__hint">
           Curious where I'm based? The weather below might give it away.
         </p>
       </div>
 
-      <div class="weather-widget">
+      <div class="weather-widget reveal">
         <!-- Weather data is cached in localStorage for 30 minutes -->
         <div v-if="weatherLoading" class="weather-widget__loading">
           Loading...
@@ -451,6 +511,23 @@
       <p class="footer__copy">&copy; 2026 Nicola Fricker</p>
       <p class="footer__location">Bern, Switzerland</p>
     </footer>
+
+    <!-- ─── Mobile Bottom Navigation ───────────────────────── -->
+    <!-- UI Update: sticky bottom nav for mobile, 5 visible section anchors (≤900px) -->
+    <nav class="mobile-nav" aria-label="Main navigation">
+      <a
+        v-for="item in mobileNavItems"
+        :key="item.id"
+        :href="'#' + item.id"
+        class="mobile-nav__item"
+        :class="{ 'mobile-nav__item--active': activeSection === item.id }"
+        :aria-label="'Go to ' + item.label + ' section'"
+        :aria-current="activeSection === item.id ? 'true' : undefined"
+      >
+        <span class="mobile-nav__dot" aria-hidden="true">◆</span>
+        <span class="mobile-nav__label">{{ item.label }}</span>
+      </a>
+    </nav>
   </div>
 </template>
 
@@ -465,6 +542,17 @@ export default {
     return {
       isDark: false,
       heroVideoLoaded: false,
+      // UI Update: mobile UX state
+      activeSection: "about",
+      expandedCards: { 0: false, 1: false, 2: false },
+      // Mobile nav items, matches section IDs
+      mobileNavItems: [
+        { id: "about", label: "About" },
+        { id: "work", label: "Work" },
+        { id: "skills", label: "Skills" },
+        { id: "methods", label: "Methods" },
+        { id: "media", label: "Media" },
+      ],
       mediaPhotos: [
         {
           webp: "/img/Work/nature-01.webp",
@@ -559,9 +647,13 @@ export default {
       prefersDark ? "dark" : "light",
     );
 
-    // Fetch weather (with localStorage cache) and render radar chart
+    // Fetch weather (with localStorage cache), render radar chart, set up observers
     this.fetchWeather();
-    this.$nextTick(() => this.renderRadarChart());
+    this.$nextTick(() => {
+      this.renderRadarChart();
+      // UI Update: scroll reveal + active section tracking
+      this.initObservers();
+    });
   },
 
   watch: {
@@ -580,12 +672,46 @@ export default {
   },
 
   methods: {
+    // ─── UI Update: scroll reveal + active nav section ─────────────
+    initObservers() {
+      // Fade-in elements as they enter the viewport (one-shot)
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("reveal--visible");
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.08 },
+      );
+      document
+        .querySelectorAll(".reveal")
+        .forEach((el) => revealObserver.observe(el));
+
+      // Track which section is centred in the viewport → update mobile nav
+      const navObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) this.activeSection = entry.target.id;
+          });
+        },
+        // Fires when section enters the middle band of the viewport
+        { rootMargin: "-20% 0px -55% 0px", threshold: 0 },
+      );
+      this.mobileNavItems.forEach(({ id }) => {
+        const el = document.getElementById(id);
+        if (el) navObserver.observe(el);
+      });
+    },
+
     // ─── Weather (Open-Meteo API + localStorage caching) ──────────
     fetchWeather() {
       this.weatherLoading = true;
       this.weatherError = false;
 
-      // Check cache first — skip network request if data is still fresh
+      // Check cache first, skip network request if data is still fresh
       try {
         const cached = localStorage.getItem(WEATHER_CACHE_KEY);
         if (cached) {
@@ -661,7 +787,7 @@ export default {
     },
 
     // ─── Chart.js radar chart for skills proficiency ──────────────
-    // Loaded dynamically — run "npm install chart.js" first.
+    // Loaded dynamically, run "npm install chart.js" first.
     // If not installed, the radar chart is simply skipped; nothing else breaks.
     renderRadarChart() {
       const canvas = document.getElementById("skillsRadar");
@@ -747,7 +873,7 @@ export default {
           },
         )
         .catch(() => {
-          // chart.js not installed — radar chart is silently skipped
+          // chart.js not installed, radar chart is silently skipped
         });
     },
   },

@@ -4,7 +4,7 @@
    --bg-alt:      #EBEAE6   slightly darker for sections
    --text:        #0A0A0A   near black
    --text-muted:  #5C5C5C
-   --accent:      #C8291E   industrial red — used sparingly
+   --accent:      #C8291E   industrial red, used sparingly
    --border:      rgba(10,10,10,0.10)
    --border-hard: rgba(10,10,10,0.60)
    --marquee:     #E3E1DC   barely-visible hero marquee
@@ -94,6 +94,9 @@ body {
   gap: 0.55rem;
   cursor: pointer;
   user-select: none;
+  /* UI Update: WCAG 2.5.5 minimum touch target */
+  min-height: 44px;
+  padding: 0.25rem 0;
 }
 
 .toggle__input {
@@ -167,7 +170,7 @@ body {
   animation-duration: 14s;
 }
 
-/* Small — used in ticker */
+/* Small, used in ticker */
 .marquee-row__inner--sm {
   font-family: var(--font-cond);
   font-size: clamp(0.65rem, 1.2vw, 0.8rem);
@@ -179,7 +182,7 @@ body {
   animation-duration: 65s;
 }
 
-/* Large — used in media section header */
+/* Large, used in media section header */
 .marquee-row__inner--lg {
   font-family: var(--font-cond);
   font-size: clamp(5rem, 14vw, 11rem);
@@ -329,8 +332,9 @@ body {
   bottom: 2rem;
   left: 50%;
   transform: translateX(-50%);
-  width: 36px;
-  height: 36px;
+  /* UI Update: bumped to 44px for WCAG touch target compliance */
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -387,7 +391,7 @@ body {
     border-color 0.35s ease;
 }
 
-/* Portrait — anchored to the right, full section height */
+/* Portrait, anchored to the right, full section height */
 .about__photo-wrap {
   position: absolute;
   right: 0;
@@ -413,7 +417,7 @@ body {
   pointer-events: none;
 }
 
-/* Text column — sits in front of the gradient fade */
+/* Text column, sits in front of the gradient fade */
 .about__content {
   position: relative;
   z-index: 2;
@@ -514,7 +518,8 @@ body {
   padding: 2.5rem;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  /* UI Update: reduced gap, cards felt dense with too little visual pause */
+  gap: 1rem;
   transition: background-color 0.35s ease;
 }
 
@@ -664,7 +669,8 @@ body {
 /* ─── Skills section ─────────────────────────────────────── */
 .skills {
   position: relative;
-  padding: 6rem 2rem;
+  /* UI Update: removed double top padding, .skills__header already provides 3.5rem top spacing */
+  padding: 0 0 4rem;
   background-color: var(--bg);
   border-top: 1px solid var(--border);
   overflow: hidden;
@@ -753,7 +759,7 @@ body {
   transition: color 0.35s ease;
 }
 
-/* Chart.js radar chart — proficiency visualization */
+/* Chart.js radar chart, proficiency visualization */
 .skills__chart-wrap {
   max-width: 480px;
   margin: 3rem auto 0;
@@ -1205,12 +1211,13 @@ body {
     gap: 0.5rem;
   }
 
+  /* UI Update: 2-column grid on mobile, far less scrolling than single column */
   .media-gallery {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .media-gallery__image {
-    aspect-ratio: 16/9;
+    aspect-ratio: 4/5;
   }
 
   .footer {
@@ -1228,5 +1235,203 @@ body {
   .weather-day {
     flex: 1 1 calc(33.333% - 1px);
     border-bottom: 1px solid var(--border-hard);
+  }
+}
+
+/* ─── Scroll reveal animation ────────────────────────────── */
+/* UI Update: fade-in + slide-up when elements enter viewport (IntersectionObserver) */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.55s ease,
+    transform 0.55s ease;
+}
+
+.reveal--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── Keyboard focus indicators ─────────────────────────── */
+/* UI Update: visible focus ring for keyboard navigation (WCAG 2.4.7) */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+label:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* ─── Project card flip interaction ─────────────────────── */
+/* UI Update: cards flip to reveal full text on click */
+.project-card {
+  cursor: pointer;
+  user-select: none;
+  /* Override the base :hover background, hover is signalled by the flip hint instead */
+}
+
+.project-card:hover {
+  background-color: var(--bg);
+}
+
+.project-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.project-card__front,
+.project-card__back {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex: 1;
+}
+
+/* Back face: animate in when v-show makes it visible */
+.project-card__back {
+  animation: cardFlipIn 0.3s ease;
+}
+
+@keyframes cardFlipIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97) translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Summary text on front face */
+.project-card__summary {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+  flex: 1;
+  transition: color 0.35s ease;
+}
+
+/* Click hint at bottom of each face */
+.project-card__flip-hint {
+  margin-top: auto;
+  padding-top: 1rem;
+  font-family: var(--font-cond);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+}
+
+.project-card:hover .project-card__flip-hint {
+  opacity: 1;
+}
+
+.project-card__flip-hint--back {
+  color: var(--text-muted);
+}
+
+/* ─── Mobile Bottom Navigation ───────────────────────────── */
+/* UI Update: sticky 5-item bottom nav for mobile, visible section anchors */
+.mobile-nav {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  /* Offset page bottom so last section isn't hidden behind the nav */
+  .app {
+    padding-bottom: 56px;
+  }
+
+  .mobile-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    z-index: 999;
+    background-color: var(--bg);
+    border-top: 1px solid var(--border-hard);
+    transition:
+      background-color 0.35s ease,
+      border-color 0.35s ease;
+  }
+
+  .mobile-nav__item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.15rem;
+    text-decoration: none;
+    color: var(--text-muted);
+    font-family: var(--font-cond);
+    font-size: 0.5rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    min-height: 44px;
+    padding: 0.25rem 0.1rem;
+    transition: color 0.2s ease;
+    position: relative;
+  }
+
+  /* Accent line at top of active item */
+  .mobile-nav__item::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 20%;
+    right: 20%;
+    height: 2px;
+    background-color: var(--accent);
+    transform: scaleX(0);
+    transition: transform 0.2s ease;
+  }
+
+  .mobile-nav__item--active {
+    color: var(--accent);
+  }
+
+  .mobile-nav__item--active::before {
+    transform: scaleX(1);
+  }
+
+  .mobile-nav__dot {
+    font-size: 0.5rem;
+    opacity: 0;
+    color: var(--accent);
+    line-height: 1;
+    transition: opacity 0.2s ease;
+  }
+
+  .mobile-nav__item--active .mobile-nav__dot {
+    opacity: 1;
+  }
+
+  .mobile-nav__label {
+    line-height: 1;
+  }
+}
+
+/* ─── Desktop gutters ────────────────────────────────────── */
+/* UI Update: wider section headers on desktop */
+@media (min-width: 1100px) {
+  .work__header,
+  .skills__header,
+  .methods__header,
+  .media__header {
+    padding-inline: 5rem;
   }
 }

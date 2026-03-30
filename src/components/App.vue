@@ -99,10 +99,13 @@
               my interest in technology.
             </p>
             <p class="about__text">
-              After training as an Application Developer and graduating from HF
-              Technik Mittelland, I moved into a Business IT Analyst role. I now
-              study Digital Business &amp; AI at BFH, and outside of work I stay
-              active through boxing, jogging, and photography.
+              After working as an Application Developer and graduating from HF
+              Technik Mittelland, I found myself drawn increasingly to the
+              bigger picture — the processes, the stakeholders, and the space
+              between technical implementation and business needs. That pull led
+              me toward a Business IT Analyst role, where I now work as the link
+              between domain experts and development teams. I currently study
+              Digital Business &amp; AI at BFH to deepen that direction further.
             </p>
           </div>
         </div>

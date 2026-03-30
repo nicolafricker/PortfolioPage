@@ -1,16 +1,5 @@
 <template>
   <div class="app">
-    <!-- ─── Decorative grid canvas ─────────────────────────── -->
-    <div class="grid-canvas" aria-hidden="true">
-      <div class="grid-canvas__cell grid-canvas__cell--a"></div>
-      <div class="grid-canvas__cell grid-canvas__cell--b"></div>
-      <div class="grid-canvas__cell grid-canvas__cell--c"></div>
-      <div class="grid-canvas__cell grid-canvas__cell--d"></div>
-      <div class="grid-canvas__cell grid-canvas__cell--e"></div>
-      <div class="grid-canvas__cell grid-canvas__cell--f"></div>
-      <div class="grid-canvas__cell grid-canvas__cell--g"></div>
-    </div>
-
     <!-- ─── Fixed theme toggle ─────────────────────────────── -->
     <div class="theme-bar">
       <label

@@ -1,5 +1,16 @@
 <template>
   <div class="app">
+    <!-- ─── Decorative grid canvas ─────────────────────────── -->
+    <div class="grid-canvas" aria-hidden="true">
+      <div class="grid-canvas__cell grid-canvas__cell--a"></div>
+      <div class="grid-canvas__cell grid-canvas__cell--b"></div>
+      <div class="grid-canvas__cell grid-canvas__cell--c"></div>
+      <div class="grid-canvas__cell grid-canvas__cell--d"></div>
+      <div class="grid-canvas__cell grid-canvas__cell--e"></div>
+      <div class="grid-canvas__cell grid-canvas__cell--f"></div>
+      <div class="grid-canvas__cell grid-canvas__cell--g"></div>
+    </div>
+
     <!-- ─── Fixed theme toggle ─────────────────────────────── -->
     <div class="theme-bar">
       <label
@@ -57,28 +68,22 @@
     <div class="ticker" aria-hidden="true">
       <div class="marquee-row marquee-row--fwd">
         <div class="marquee-row__inner marquee-row__inner--sm">
-          <span>PROJECTS</span><span class="ticker__dot">◆</span>
-          <span>PHOTOGRAPHY</span><span class="ticker__dot">◆</span>
-          <span>VIDEO</span><span class="ticker__dot">◆</span>
-          <span>DEVELOPMENT</span><span class="ticker__dot">◆</span>
-          <span>DESIGN</span><span class="ticker__dot">◆</span>
-          <span>PROJECTS</span><span class="ticker__dot">◆</span>
-          <span>PHOTOGRAPHY</span><span class="ticker__dot">◆</span>
-          <span>VIDEO</span><span class="ticker__dot">◆</span>
-          <span>DEVELOPMENT</span><span class="ticker__dot">◆</span>
-          <span>DESIGN</span><span class="ticker__dot">◆</span>
+          <span>IT ANALYST</span><span class="ticker__sep">◆</span>
+          <span>DEVELOPER</span><span class="ticker__sep">◆</span>
+          <span>PHOTO</span><span class="ticker__sep">◆</span> <span>VIDEO</span
+          ><span class="ticker__sep">◆</span> <span>SPORT</span
+          ><span class="ticker__sep">◆</span> <span>DIGITAL BUSINESS</span
+          ><span class="ticker__sep">◆</span> <span>STUDENT</span
+          ><span class="ticker__sep">◆</span>
         </div>
         <div class="marquee-row__inner marquee-row__inner--sm">
-          <span>PROJECTS</span><span class="ticker__dot">◆</span>
-          <span>PHOTOGRAPHY</span><span class="ticker__dot">◆</span>
-          <span>VIDEO</span><span class="ticker__dot">◆</span>
-          <span>DEVELOPMENT</span><span class="ticker__dot">◆</span>
-          <span>DESIGN</span><span class="ticker__dot">◆</span>
-          <span>PROJECTS</span><span class="ticker__dot">◆</span>
-          <span>PHOTOGRAPHY</span><span class="ticker__dot">◆</span>
-          <span>VIDEO</span><span class="ticker__dot">◆</span>
-          <span>DEVELOPMENT</span><span class="ticker__dot">◆</span>
-          <span>DESIGN</span><span class="ticker__dot">◆</span>
+          <span>IT ANALYST</span><span class="ticker__sep">◆</span>
+          <span>DEVELOPER</span><span class="ticker__sep">◆</span>
+          <span>PHOTO</span><span class="ticker__sep">◆</span> <span>VIDEO</span
+          ><span class="ticker__sep">◆</span> <span>SPORT</span
+          ><span class="ticker__sep">◆</span> <span>DIGITAL BUSINESS</span
+          ><span class="ticker__sep">◆</span> <span>STUDENT</span
+          ><span class="ticker__sep">◆</span>
         </div>
       </div>
     </div>
@@ -528,9 +533,100 @@
     </section>
 
     <!-- ─── Footer ─────────────────────────────────────────── -->
+    <!-- ─── Footer ─────────────────────────────────────────── -->
     <footer class="footer">
-      <p class="footer__copy">&copy; 2026 Nicola Fricker</p>
-      <p class="footer__location">Bern, Switzerland</p>
+      <div class="footer__inner">
+        <!-- Left: Identity -->
+        <div class="footer__col footer__col--identity">
+          <span class="footer__name">Nicola Fricker</span>
+          <p class="footer__bio">
+            IT Business Analyst &amp; Developer.<br />
+            Currently studying Digital Business &amp; AI at BFH.
+          </p>
+          <div class="footer__links">
+            <a
+              href="https://github.com/"
+              target="_blank"
+              rel="noopener"
+              class="footer__link"
+              aria-label="GitHub"
+              >GitHub</a
+            >
+            <span class="footer__link-sep">◆</span>
+            <a
+              href="https://linkedin.com/"
+              target="_blank"
+              rel="noopener"
+              class="footer__link"
+              aria-label="LinkedIn"
+              >LinkedIn</a
+            >
+          </div>
+          <div class="footer__meta">
+            <span>📍 Bern, Switzerland</span>
+            <span>✉ nicola.fricker@example.com</span>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="footer__divider" aria-hidden="true"></div>
+
+        <!-- Right: Contact form -->
+        <div class="footer__col footer__col--contact">
+          <span class="footer__section-label">Get in Touch</span>
+
+          <div class="footer__form">
+            <div class="footer__form-row">
+              <div class="footer__field">
+                <label class="footer__label" for="footer-name">Name</label>
+                <input
+                  id="footer-name"
+                  class="footer__input"
+                  type="text"
+                  placeholder="Your name"
+                  v-model="contactForm.name"
+                />
+              </div>
+              <div class="footer__field">
+                <label class="footer__label" for="footer-email">Email</label>
+                <input
+                  id="footer-email"
+                  class="footer__input"
+                  type="email"
+                  placeholder="your@email.com"
+                  v-model="contactForm.email"
+                />
+              </div>
+            </div>
+            <div class="footer__field">
+              <label class="footer__label" for="footer-message">Message</label>
+              <textarea
+                id="footer-message"
+                class="footer__textarea"
+                rows="4"
+                placeholder="What's on your mind?"
+                v-model="contactForm.message"
+              ></textarea>
+            </div>
+            <div class="footer__form-actions">
+              <button
+                class="footer__submit"
+                @click="submitContact"
+                :disabled="contactSent"
+              >
+                <span v-if="!contactSent">Send Message</span>
+                <span v-else>Message Sent ✓</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer__bar">
+        <p class="footer__copy">
+          &copy; 2026 Nicola Fricker. All rights reserved.
+        </p>
+      </div>
     </footer>
 
     <!-- ─── Mobile Bottom Navigation ───────────────────────── -->
@@ -563,10 +659,14 @@ export default {
     return {
       isDark: false,
       heroVideoLoaded: false,
-      // UI Update: mobile UX state
       activeSection: "about",
       expandedCards: { 0: false, 1: false, 2: false },
-      // Mobile nav items, matches section IDs
+      contactForm: {
+        name: "",
+        email: "",
+        message: "",
+      },
+      contactSent: false,
       mobileNavItems: [
         { id: "about", label: "About" },
         { id: "work", label: "Work" },
@@ -638,7 +738,6 @@ export default {
           alt: "Nature photo 9",
         },
       ],
-      // Skills proficiency data for Chart.js radar
       skillsData: {
         labels: [
           "C# / .NET",
@@ -693,9 +792,7 @@ export default {
   },
 
   methods: {
-    // ─── UI Update: scroll reveal + active nav section ─────────────
     initObservers() {
-      // Fade-in elements as they enter the viewport (one-shot)
       const revealObserver = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
@@ -711,14 +808,12 @@ export default {
         .querySelectorAll(".reveal")
         .forEach((el) => revealObserver.observe(el));
 
-      // Track which section is centred in the viewport → update mobile nav
       const navObserver = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
             if (entry.isIntersecting) this.activeSection = entry.target.id;
           });
         },
-        // Fires when section enters the middle band of the viewport
         { rootMargin: "-20% 0px -55% 0px", threshold: 0 },
       );
       this.mobileNavItems.forEach(({ id }) => {
@@ -727,12 +822,10 @@ export default {
       });
     },
 
-    // ─── Weather (Open-Meteo API + localStorage caching) ──────────
     fetchWeather() {
       this.weatherLoading = true;
       this.weatherError = false;
 
-      // Check cache first, skip network request if data is still fresh
       try {
         const cached = localStorage.getItem(WEATHER_CACHE_KEY);
         if (cached) {
@@ -743,9 +836,7 @@ export default {
             return;
           }
         }
-      } catch (_) {
-        // Ignore cache read errors; fall through to network request
-      }
+      } catch (_) {}
 
       fetch(
         "https://api.open-meteo.com/v1/forecast?latitude=46.9480&longitude=7.4474" +
@@ -776,7 +867,6 @@ export default {
             82: "⛈",
             95: "⛈",
           };
-
           const parsed = data.daily.time.map((dateStr, i) => {
             const date = new Date(dateStr);
             return {
@@ -787,17 +877,12 @@ export default {
               tempMin: Math.round(data.daily.temperature_2m_min[i]),
             };
           });
-
-          // Persist to localStorage with timestamp
           try {
             localStorage.setItem(
               WEATHER_CACHE_KEY,
               JSON.stringify({ timestamp: Date.now(), data: parsed }),
             );
-          } catch (_) {
-            // Ignore storage write errors (e.g. private browsing quota)
-          }
-
+          } catch (_) {}
           this.weatherDays = parsed;
           this.weatherLoading = false;
         })
@@ -807,15 +892,12 @@ export default {
         });
     },
 
-    // ─── Chart.js radar chart for skills proficiency ──────────────
-    // Loaded dynamically, run "npm install chart.js" first.
-    // If not installed, the radar chart is simply skipped; nothing else breaks.
     renderRadarChart() {
       const canvas = document.getElementById("skillsRadar");
       if (!canvas) return;
 
-      const accent = this.isDark ? "#e86a4a" : "#e54030";
-      const textColor = this.isDark ? "#b0b0b0" : "#757575";
+      const accent = this.isDark ? "#FF3019" : "#C8201A";
+      const textColor = this.isDark ? "#a0a0a0" : "#5a5a5a";
       const gridColor = this.isDark
         ? "rgba(244,243,239,0.12)"
         : "rgba(10,10,10,0.10)";
@@ -851,8 +933,8 @@ export default {
                     label: "Proficiency",
                     data: this.skillsData.values,
                     backgroundColor: this.isDark
-                      ? "rgba(232,106,74,0.15)"
-                      : "rgba(229,64,48,0.12)",
+                      ? "rgba(255,48,25,0.12)"
+                      : "rgba(200,32,26,0.10)",
                     borderColor: accent,
                     borderWidth: 1.5,
                     pointBackgroundColor: accent,
@@ -865,11 +947,7 @@ export default {
                 maintainAspectRatio: true,
                 plugins: {
                   legend: { display: false },
-                  tooltip: {
-                    callbacks: {
-                      label: (ctx) => ` ${ctx.raw}%`,
-                    },
-                  },
+                  tooltip: { callbacks: { label: (ctx) => ` ${ctx.raw}%` } },
                 },
                 scales: {
                   r: {
@@ -893,9 +971,21 @@ export default {
             });
           },
         )
-        .catch(() => {
-          // chart.js not installed, radar chart is silently skipped
-        });
+        .catch(() => {});
+    },
+
+    submitContact() {
+      if (
+        !this.contactForm.name ||
+        !this.contactForm.email ||
+        !this.contactForm.message
+      )
+        return;
+      this.contactSent = true;
+      setTimeout(() => {
+        this.contactSent = false;
+        this.contactForm = { name: "", email: "", message: "" };
+      }, 4000);
     },
   },
 };

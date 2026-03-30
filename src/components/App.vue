@@ -90,7 +90,7 @@
       </div>
 
       <div class="about__content">
-        <div class="about__glass reveal">
+        <div class="about__glass reveal reveal--d1">
           <span class="about__label">About Me</span>
           <div class="about__body">
             <p class="about__text">
@@ -99,10 +99,13 @@
               my interest in technology.
             </p>
             <p class="about__text">
-              After training as an Application Developer and graduating from HF
-              Technik Mittelland, I moved into a Business IT Analyst role. I now
-              study Digital Business &amp; AI at BFH, and outside of work I stay
-              active through boxing, jogging, and photography.
+              After working as an Application Developer and graduating from HF
+              Technik Mittelland, I found myself drawn increasingly to the
+              bigger picture — the processes, the stakeholders, and the space
+              between technical implementation and business needs. That pull led
+              me toward a Business IT Analyst role, where I now work as the link
+              between domain experts and development teams. I currently study
+              Digital Business &amp; AI at BFH to deepen that direction further.
             </p>
           </div>
         </div>
@@ -111,7 +114,7 @@
 
     <!-- ─── Work section ───────────────────────────────────── -->
     <section id="work" class="work">
-      <div class="work__header">
+      <div class="work__header reveal">
         <h2 class="work__title">Work</h2>
         <p class="work__sub">IT Projects &amp; Development</p>
       </div>
@@ -120,7 +123,7 @@
       <div class="work__grid">
         <!-- Project 1 -->
         <article
-          class="project-card reveal"
+          class="project-card reveal reveal--d1"
           @click="expandedCards[0] = !expandedCards[0]"
           @keyup.enter="expandedCards[0] = !expandedCards[0]"
           tabindex="0"
@@ -193,7 +196,7 @@
 
         <!-- Project 2 -->
         <article
-          class="project-card reveal"
+          class="project-card reveal reveal--d2"
           @click="expandedCards[1] = !expandedCards[1]"
           @keyup.enter="expandedCards[1] = !expandedCards[1]"
           tabindex="0"
@@ -263,7 +266,7 @@
 
         <!-- Project 3 -->
         <article
-          class="project-card reveal"
+          class="project-card reveal reveal--d3"
           @click="expandedCards[2] = !expandedCards[2]"
           @keyup.enter="expandedCards[2] = !expandedCards[2]"
           tabindex="0"
@@ -334,12 +337,12 @@
 
     <!-- ─── Skills section ─────────────────────────────────── -->
     <section id="skills" class="skills">
-      <div class="skills__header">
+      <div class="skills__header reveal">
         <h2 class="skills__title">Tech Stack</h2>
         <p class="skills__sub">Tools &amp; Technologies I work with</p>
       </div>
 
-      <div class="skills__grid reveal">
+      <div class="skills__grid reveal reveal--d1">
         <div class="skill-item">
           <i class="devicon-csharp-plain skill-item__icon"></i>
           <span class="skill-item__label">C#</span>
@@ -382,7 +385,7 @@
         </div>
       </div>
 
-      <div class="skills__chart-wrap reveal">
+      <div class="skills__chart-wrap reveal reveal--d2">
         <span class="skills__chart-label">Proficiency Overview</span>
         <canvas id="skillsRadar" class="skills__radar"></canvas>
       </div>
@@ -390,12 +393,12 @@
 
     <!-- ─── Methods & Strengths ────────────────────────────── -->
     <section id="methods" class="methods">
-      <div class="methods__header">
+      <div class="methods__header reveal">
         <h2 class="methods__title">Methods &amp; Strengths</h2>
         <p class="methods__sub">Bridging technology and business</p>
       </div>
 
-      <div class="methods__body reveal">
+      <div class="methods__body reveal reveal--d1">
         <!-- Left column: Methods & Tools -->
         <div class="methods__col">
           <div class="methods__group">
@@ -467,12 +470,12 @@
 
     <!-- ─── Media section ──────────────────────────────────── -->
     <section id="media" class="media">
-      <div class="media__header">
+      <div class="media__header reveal">
         <h2 class="media__title">Media</h2>
         <p class="media__sub">Photography &amp; Video</p>
       </div>
 
-      <div class="media-gallery reveal">
+      <div class="media-gallery reveal reveal--d1">
         <figure
           v-for="photo in mediaPhotos"
           :key="photo.jpg"
@@ -504,7 +507,7 @@
         </p>
       </div>
 
-      <div class="weather-widget reveal">
+      <div class="weather-widget reveal reveal--d1">
         <!-- Weather data is cached in localStorage for 30 minutes -->
         <div v-if="weatherLoading" class="weather-widget__loading">
           Loading...

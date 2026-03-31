@@ -348,6 +348,93 @@ body {
   transform: rotate(45deg) translateY(-3px);
 }
 
+/* ─── Hero name — zurück zur Originalform ── */
+/* (entferne die zwei hero__name Blöcke die du zuletzt hinzugefügt hast,
+   das original .hero__name weiter oben reicht) */
+
+/* ─── Hero corner keywords ─────────────────────────────── */
+.hero__corner {
+  position: absolute;
+  z-index: 3;
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 0; /* kein fixer Gap mehr */
+  pointer-events: none;
+}
+
+.hero__corner--tl {
+  top: 2.2rem;
+  left: 2.5rem;
+  width: 240px;
+}
+.hero__corner--tr {
+  top: 3.5rem;
+  right: 2.5rem;
+  width: 145px;
+  align-items: flex-end;
+}
+.hero__corner--bl {
+  bottom: 6rem;
+  left: 2.5rem;
+  width: 160px;
+}
+.hero__corner--br {
+  bottom: 4rem;
+  right: 2.5rem;
+  width: 210px;
+  align-items: flex-end;
+}
+
+/* erste Zeile hat mehr Luft nach unten als zweite */
+.hero__corner-line:first-child {
+  margin-bottom: 0.55rem;
+}
+.hero__corner-line:last-child {
+  margin-bottom: 0;
+}
+
+.hero__corner--tl .hero__corner-line {
+  font-size: clamp(0.8rem, 1.3vw, 1rem);
+}
+.hero__corner--tr .hero__corner-line {
+  font-size: clamp(0.65rem, 1vw, 0.78rem);
+}
+.hero__corner--bl .hero__corner-line {
+  font-size: clamp(0.7rem, 1.1vw, 0.85rem);
+}
+.hero__corner--br .hero__corner-line {
+  font-size: clamp(0.85rem, 1.4vw, 1.05rem);
+}
+
+.hero__corner-line {
+  display: block;
+  width: 100%;
+  text-align: justify;
+  text-align-last: justify;
+  font-family: var(--font-cond);
+  font-size: clamp(0.75rem, 1.2vw, 0.92rem); /* etwas grösser */
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45); /* etwas heller */
+  white-space: nowrap;
+  overflow: hidden;
+  line-height: 1.2;
+}
+
+.hero__corner-line strong {
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* auf Mobile ausblenden — zu wenig Platz */
+@media (max-width: 768px) {
+  .hero__corner {
+    display: none;
+  }
+}
+
 /* ─── Ticker divider ─────────────────────────────────────── */
 .ticker {
   background-color: #0a0a0a;
@@ -456,6 +543,15 @@ body {
   color: var(--text-muted);
   line-height: 1.78;
   transition: color 0.35s ease;
+}
+
+.spread-text {
+  text-align: justify;
+  text-align-last: justify;
+  word-spacing: 0.3em; /* oder mehr für extremeren Look */
+  letter-spacing: 0.05em;
+  font-size: clamp(1rem, 3vw, 2rem);
+  line-height: 1.8;
 }
 
 /* ─── Work section ───────────────────────────────────────── */
@@ -810,7 +906,7 @@ body {
 }
 
 .skills__chart-wrap {
-  max-width: 480px;
+  max-width: 560px; /* ← war 480px, rest bleibt gleich */
   margin: 3rem auto 0;
   display: flex;
   flex-direction: column;
@@ -831,7 +927,7 @@ body {
 
 .skills__radar {
   width: 100% !important;
-  max-width: 420px;
+  max-width: 500px; /* war 420px */
 }
 
 /* ─── Methods & Strengths ────────────────────────────────── */
@@ -1039,11 +1135,52 @@ body {
   display: block;
 }
 
-/* ─── Quote / Weather section ────────────────────────────── */
+/* ─── Spotify section ────────────────────────────────────── */
+.spotify-section {
+  background-color: var(--bg);
+  border-top: 1px solid var(--border);
+  padding: 5rem 2rem;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  transition: background-color 0.35s ease;
+}
+
+.spotify__label {
+  font-family: var(--font-cond);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.spotify__title {
+  font-family: var(--font-cond);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 0.9;
+  color: var(--text);
+  text-align: center;
+  transition: color 0.35s ease;
+}
+
+.spotify__embed {
+  width: 100%;
+  max-width: 700px;
+  height: 80px;
+  display: block;
+  margin: 0 auto;
+}
+/* ─── Quote section ──────────────────────────────────────── */
 .quote-section {
   background-color: var(--bg);
   border-top: 1px solid var(--border);
-  padding: 4rem 2rem;
+  padding: 5rem 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1606,4 +1743,3 @@ label:focus-visible {
     padding-inline: 5rem;
   }
 }
-

@@ -29,11 +29,36 @@
       </video>
 
       <div class="hero__video-overlay"></div>
+      <div v-if="!heroVideoLoaded" class="hero__video-placeholder">...</div>
 
-      <div v-if="!heroVideoLoaded" class="hero__video-placeholder">
-        <span class="hero__video-placeholder__icon">▶</span>
-        <p class="hero__video-placeholder__label">Hero Video</p>
-        <code class="hero__video-placeholder__path">public/video/hero.mp4</code>
+      <!-- Corners — ausserhalb von hero__inner, innerhalb von hero -->
+      <div class="hero__corner hero__corner--tl" aria-hidden="true">
+        <span class="hero__corner-line"
+          ><strong>Curious</strong> · Analytical</span
+        >
+        <span class="hero__corner-line"
+          ><strong>Forward&thinsp;Thinking</strong></span
+        >
+      </div>
+      <div class="hero__corner hero__corner--tr" aria-hidden="true">
+        <span class="hero__corner-line"
+          ><strong>Bern</strong> · Switzerland</span
+        >
+        <span class="hero__corner-line">28 · <strong>BFH</strong></span>
+      </div>
+      <div class="hero__corner hero__corner--bl" aria-hidden="true">
+        <span class="hero__corner-line"
+          ><strong>Solution&thinsp;Oriented</strong></span
+        >
+        <span class="hero__corner-line"
+          >Creative · <strong>Flexible</strong></span
+        >
+      </div>
+      <div class="hero__corner hero__corner--br" aria-hidden="true">
+        <span class="hero__corner-line"
+          ><strong>Team&thinsp;Player</strong></span
+        >
+        <span class="hero__corner-line">Precise · <strong>Driven</strong></span>
       </div>
 
       <div class="hero__inner">
@@ -465,8 +490,8 @@
     <!-- ─── Media section ──────────────────────────────────── -->
     <section id="media" class="media">
       <div class="media__header reveal">
-        <h2 class="media__title">Media</h2>
-        <p class="media__sub">Photography &amp; Video</p>
+        <h2 class="media__title">Photography</h2>
+        <p class="media__sub">Nature, Urband &amp; Cars</p>
       </div>
 
       <div class="media-gallery reveal reveal--d1">
@@ -492,49 +517,47 @@
       </div>
     </section>
 
-    <!-- ─── Easter Egg / Weather ───────────────────────────── -->
+    <!-- ─── Quote ──────────────────────────────────────────── -->
     <section class="quote-section">
       <div class="quote-widget reveal">
-        <span class="quote-widget__label">You made it to the bottom</span>
-        <p class="quote-widget__hint">
-          Curious where I'm based? The weather below might give it away.
-        </p>
-      </div>
-
-      <div class="weather-widget reveal reveal--d1">
-        <!-- Weather data is cached in localStorage for 30 minutes -->
-        <div v-if="weatherLoading" class="weather-widget__loading">
-          Loading...
-        </div>
-        <div v-else-if="weatherError" class="weather-widget__loading">
-          Could not load weather.
-        </div>
-        <div v-else class="weather-widget__grid">
-          <div v-for="day in weatherDays" :key="day.date" class="weather-day">
-            <span class="weather-day__name">{{ day.name }}</span>
-            <span class="weather-day__icon">{{ day.icon }}</span>
-            <span class="weather-day__temp-max">{{ day.tempMax }}°</span>
-            <span class="weather-day__temp-min">{{ day.tempMin }}°</span>
-          </div>
-        </div>
-        <span class="weather-widget__location">📍 46.9480° N, 7.4474° E</span>
+        <span class="quote-widget__label">Creativity</span>
+        <div v-if="quoteLoading" class="quote-widget__hint">Loading...</div>
+        <template v-else-if="quote">
+          <p class="quote-widget__text">"{{ quote.text }}"</p>
+          <span class="quote-widget__author">— {{ quote.author }}</span>
+        </template>
+        <button class="quote-widget__btn" @click="fetchQuote">New Quote</button>
       </div>
     </section>
 
-    <!-- ─── Footer ─────────────────────────────────────────── -->
+    <!-- ─── Spotify ─────────────────────────────────────────── -->
+    <section class="spotify-section">
+      <span class="spotify__label">Something Personal</span>
+      <h2 class="spotify__title">Currently on Repeat</h2>
+      <iframe
+        class="spotify__embed"
+        src="https://open.spotify.com/embed/track/1w5r3hEoLfLaltoXj1AwW4?utm_source=generator&theme=0"
+        frameborder="0"
+        allow="
+          autoplay;
+          clipboard-write;
+          encrypted-media;
+          fullscreen;
+          picture-in-picture;
+        "
+        loading="lazy"
+      />
+    </section>
+
     <!-- ─── Footer ─────────────────────────────────────────── -->
     <footer class="footer">
       <div class="footer__inner">
         <!-- Left: Identity -->
         <div class="footer__col footer__col--identity">
           <span class="footer__name">Nicola Fricker</span>
-          <p class="footer__bio">
-            IT Business Analyst &amp; Developer.<br />
-            Currently studying Digital Business &amp; AI at BFH.
-          </p>
           <div class="footer__links">
             <a
-              href="https://github.com/"
+              href="https://github.com/nicolafricker"
               target="_blank"
               rel="noopener"
               class="footer__link"
@@ -543,7 +566,7 @@
             >
             <span class="footer__link-sep">◆</span>
             <a
-              href="https://linkedin.com/"
+              href="https://www.linkedin.com/in/nicola-fricker-0674a5294/"
               target="_blank"
               rel="noopener"
               class="footer__link"
@@ -552,8 +575,8 @@
             >
           </div>
           <div class="footer__meta">
-            <span>📍 Bern, Switzerland</span>
-            <span>✉ nicola.fricker@example.com</span>
+            <span>Bern, Switzerland</span>
+            <span>✉ nicola.fricker@bfh.ch</span>
           </div>
         </div>
 
@@ -729,19 +752,21 @@ export default {
       ],
       skillsData: {
         labels: [
-          "C# / .NET",
-          "SQL Server",
-          "Docker / K8s",
-          "Vue.js / CSS",
-          "Azure DevOps",
-          "IoT / Node-RED",
+          "Creativity",
+          "Analytical\nThinking",
+          "Flexibility",
+          "Team\nOriented",
+          "Solution\nFocused",
+          "Forward\nThinking",
         ],
-        values: [90, 80, 70, 65, 75, 60],
+        values: [85, 90, 80, 88, 85, 82],
       },
       weatherDays: [],
       weatherLoading: true,
       weatherError: false,
       radarChart: null,
+      quote: null,
+      quoteLoading: true,
     };
   },
 
@@ -763,6 +788,8 @@ export default {
       // UI Update: scroll reveal + active section tracking
       this.initObservers();
     });
+
+    this.fetchQuote();
   },
 
   watch: {
@@ -809,6 +836,38 @@ export default {
         const el = document.getElementById(id);
         if (el) navObserver.observe(el);
       });
+    },
+
+    fetchQuote() {
+      this.quoteLoading = true;
+      const CACHE_KEY = "portfolio_quotes_v2"; // ← neuer Key, alter Cache wird ignoriert
+
+      try {
+        const cached = localStorage.getItem(CACHE_KEY);
+        if (cached) {
+          const quotes = JSON.parse(cached);
+          if (Array.isArray(quotes) && quotes.length && quotes[0].quote) {
+            const random = quotes[Math.floor(Math.random() * quotes.length)];
+            this.quote = { text: random.quote, author: random.author };
+            this.quoteLoading = false;
+            return;
+          }
+        }
+      } catch (_) {}
+      fetch(
+        "https://quoteslate.vercel.app/api/quotes/random?count=50&tags=creativity%7Cart%7Cimagination%7Cinspiration",
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          const quotes = Array.isArray(data) ? data : [data];
+          localStorage.setItem(CACHE_KEY, JSON.stringify(quotes));
+          const random = quotes[Math.floor(Math.random() * quotes.length)];
+          this.quote = { text: random.quote, author: random.author };
+          this.quoteLoading = false;
+        })
+        .catch(() => {
+          this.quoteLoading = false;
+        });
     },
 
     fetchWeather() {
@@ -947,11 +1006,31 @@ export default {
                     angleLines: { color: gridColor },
                     pointLabels: {
                       color: textColor,
-                      font: {
-                        family:
-                          "'Barlow Condensed', 'Arial Narrow', sans-serif",
-                        size: 11,
-                        weight: "700",
+                      font: (ctx) => {
+                        // Creativity und Analytical Thinking fett und grösser
+                        const bold = [
+                          "Creativity",
+                          "Analytical\nThinking",
+                          "Solution\nFocused",
+                        ];
+                        const isBold = bold.some((l) =>
+                          ctx.label.includes(l.split("\n")[0]),
+                        );
+                        return {
+                          family:
+                            "'Barlow Condensed', 'Arial Narrow', sans-serif",
+                          size: isBold ? 14 : 12,
+                          weight: isBold ? "900" : "600",
+                        };
+                      },
+                      padding: (ctx) => {
+                        // Mehr Abstand bei langen Labels oben/unten, weniger seitlich
+                        const topBottom = ["Creativity", "Forward\nThinking"];
+                        return topBottom.some((l) =>
+                          ctx.label.includes(l.split("\n")[0]),
+                        )
+                          ? 10
+                          : 4;
                       },
                     },
                   },

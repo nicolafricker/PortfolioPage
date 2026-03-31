@@ -348,10 +348,6 @@ body {
   transform: rotate(45deg) translateY(-3px);
 }
 
-/* ─── Hero name — zurück zur Originalform ── */
-/* (entferne die zwei hero__name Blöcke die du zuletzt hinzugefügt hast,
-   das original .hero__name weiter oben reicht) */
-
 /* ─── Hero corner keywords ─────────────────────────────── */
 .hero__corner {
   position: absolute;
@@ -413,11 +409,11 @@ body {
   text-align: justify;
   text-align-last: justify;
   font-family: var(--font-cond);
-  font-size: clamp(0.75rem, 1.2vw, 0.92rem); /* etwas grösser */
+  font-size: clamp(0.75rem, 1.2vw, 0.92rem);
   font-weight: 400;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.45); /* etwas heller */
+  color: rgba(255, 255, 255, 0.45);
   white-space: nowrap;
   overflow: hidden;
   line-height: 1.2;
@@ -543,15 +539,6 @@ body {
   color: var(--text-muted);
   line-height: 1.78;
   transition: color 0.35s ease;
-}
-
-.spread-text {
-  text-align: justify;
-  text-align-last: justify;
-  word-spacing: 0.3em; /* oder mehr für extremeren Look */
-  letter-spacing: 0.05em;
-  font-size: clamp(1rem, 3vw, 2rem);
-  line-height: 1.8;
 }
 
 /* ─── Work section ───────────────────────────────────────── */

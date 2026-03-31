@@ -25,7 +25,7 @@
         playsinline
         @canplay="heroVideoLoaded = true"
       >
-        <source src="/video/GithubPortfolioPageHeroComp.mp4" type="video/mp4" />
+        <source :src="baseUrl + '/video/GithubPortfolioPageHeroComp.mp4'" type="video/mp4" />
       </video>
 
       <div class="hero__video-overlay"></div>
@@ -104,7 +104,7 @@
     <!-- ─── About ──────────────────────────────────────────── -->
     <section id="about" class="about">
       <div class="about__photo-wrap">
-        <img src="/img/Me.JPEG" class="about__photo" alt="Nicola Fricker" />
+        <img :src="baseUrl + '/img/Me.JPEG'" class="about__photo" alt="Nicola Fricker" />
       </div>
 
       <div class="about__content">
@@ -490,7 +490,7 @@
     <section id="media" class="media">
       <div class="media__header reveal">
         <h2 class="media__title">Photography</h2>
-        <p class="media__sub">Nature, Urband &amp; Cars</p>
+        <p class="media__sub">Nature, Urban &amp; Cars</p>
       </div>
 
       <div class="media-gallery reveal reveal--d1">
@@ -500,9 +500,9 @@
           class="media-gallery__item"
         >
           <picture>
-            <source :srcset="photo.webp" type="image/webp" />
+            <source :srcset="baseUrl + photo.webp" type="image/webp" />
             <img
-              :src="photo.jpg"
+              :src="baseUrl + photo.jpg"
               :alt="photo.alt"
               class="media-gallery__image"
               :style="
@@ -593,20 +593,24 @@
                 <input
                   id="footer-name"
                   class="footer__input"
+                  :class="{ 'footer__input--error': contactErrors.name }"
                   type="text"
                   placeholder="Your name"
                   v-model="contactForm.name"
                 />
+                <span v-if="contactErrors.name" class="footer__error">{{ contactErrors.name }}</span>
               </div>
               <div class="footer__field">
                 <label class="footer__label" for="footer-email">Email</label>
                 <input
                   id="footer-email"
                   class="footer__input"
+                  :class="{ 'footer__input--error': contactErrors.email }"
                   type="email"
                   placeholder="your@email.com"
                   v-model="contactForm.email"
                 />
+                <span v-if="contactErrors.email" class="footer__error">{{ contactErrors.email }}</span>
               </div>
             </div>
             <div class="footer__field">
@@ -614,10 +618,12 @@
               <textarea
                 id="footer-message"
                 class="footer__textarea"
+                :class="{ 'footer__textarea--error': contactErrors.message }"
                 rows="4"
                 placeholder="What's on your mind?"
                 v-model="contactForm.message"
               ></textarea>
+              <span v-if="contactErrors.message" class="footer__error">{{ contactErrors.message }}</span>
             </div>
             <div class="footer__form-actions">
               <button
@@ -664,6 +670,7 @@ export default {
   name: "App",
   data() {
     return {
+      baseUrl: import.meta.env.BASE_URL.replace(/\/$/, ''),
       isDark: false,
       heroVideoLoaded: false,
       activeSection: "about",
@@ -674,6 +681,7 @@ export default {
         message: "",
       },
       contactSent: false,
+      contactErrors: { name: "", email: "", message: "" },
       mobileNavItems: [
         { id: "about", label: "About" },
         { id: "work", label: "Work" },
@@ -962,16 +970,33 @@ export default {
     },
 
     submitContact() {
-      if (
-        !this.contactForm.name ||
-        !this.contactForm.email ||
-        !this.contactForm.message
-      )
-        return;
+      const errors = { name: "", email: "", message: "" };
+      let valid = true;
+
+      if (!this.contactForm.name.trim()) {
+        errors.name = "Name is required";
+        valid = false;
+      }
+      if (!this.contactForm.email.trim()) {
+        errors.email = "Email is required";
+        valid = false;
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.contactForm.email)) {
+        errors.email = "Please enter a valid email";
+        valid = false;
+      }
+      if (!this.contactForm.message.trim()) {
+        errors.message = "Message is required";
+        valid = false;
+      }
+
+      this.contactErrors = errors;
+      if (!valid) return;
+
       this.contactSent = true;
       setTimeout(() => {
         this.contactSent = false;
         this.contactForm = { name: "", email: "", message: "" };
+        this.contactErrors = { name: "", email: "", message: "" };
       }, 4000);
     },
   },

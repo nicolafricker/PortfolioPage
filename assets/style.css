@@ -1203,92 +1203,6 @@ body {
   opacity: 0.6;
 }
 
-.weather-widget {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-  width: 100%;
-  max-width: 700px;
-}
-
-.weather-widget__loading {
-  font-family: var(--font-cond);
-  font-size: 0.75rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-
-.weather-widget__grid {
-  display: flex;
-  width: 100%;
-  gap: 0;
-  border: 1px solid var(--border-hard);
-  transition: border-color 0.35s ease;
-}
-
-.weather-day {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 1.75rem 1rem;
-  border-right: 1px solid var(--border-hard);
-  background-color: var(--bg);
-  transition:
-    background-color 0.2s ease,
-    border-color 0.35s ease;
-}
-
-.weather-day:last-child {
-  border-right: none;
-}
-
-.weather-day:hover {
-  background-color: var(--bg-alt);
-}
-
-.weather-day__name {
-  font-family: var(--font-cond);
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-
-.weather-day__icon {
-  font-size: 1.75rem;
-  line-height: 1;
-}
-
-.weather-day__temp-max {
-  font-family: var(--font-cond);
-  font-size: 1.3rem;
-  font-weight: 800;
-  color: var(--text);
-  transition: color 0.35s ease;
-}
-
-.weather-day__temp-min {
-  font-family: var(--font-cond);
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: var(--text-muted);
-  transition: color 0.35s ease;
-}
-
-.weather-widget__location {
-  font-family: var(--font-cond);
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  opacity: 0.5;
-}
 
 /* ─── Footer ─────────────────────────────────────────────── */
 .footer {
@@ -1477,6 +1391,20 @@ body {
   cursor: default;
 }
 
+.footer__input--error,
+.footer__textarea--error {
+  border-color: var(--accent);
+}
+
+.footer__error {
+  font-family: var(--font-cond);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
 .footer__bar {
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   padding: 1.25rem 2rem;
@@ -1586,16 +1514,6 @@ body {
   }
 }
 
-@media (max-width: 600px) {
-  .weather-widget__grid {
-    flex-wrap: wrap;
-  }
-
-  .weather-day {
-    flex: 1 1 calc(33.333% - 1px);
-    border-bottom: 1px solid var(--border-hard);
-  }
-}
 
 /* ─── Scroll reveal animation ────────────────────────────── */
 .reveal {

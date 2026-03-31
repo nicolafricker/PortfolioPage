@@ -846,7 +846,7 @@ export default {
         }
       } catch (_) {}
       fetch(
-        "https://quoteslate.vercel.app/api/quotes/random?count=50&tags=creativity%7Cart%7Cimagination%7Cinspiration",
+        "https://quoteslate.vercel.app/api/quotes/random?count=50&tags=creativity,art,imagination,inspiration",
       )
         .then((res) => res.json())
         .then((data) => {

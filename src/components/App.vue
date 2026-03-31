@@ -408,13 +408,33 @@
         <canvas id="skillsRadar" class="skills__radar"></canvas>
       </div>
 
-      <div v-if="ghLanguages" class="skills__chart-wrap reveal reveal--d2">
+      <div v-if="ghLanguages" class="treemap-wrap reveal reveal--d3">
         <span class="skills__chart-label">GitHub Languages</span>
-        <canvas id="ghLangChart" class="skills__doughnut"></canvas>
+        <div class="treemap">
+          <div
+            v-for="row in treemapRows"
+            :key="row.map(r => r.lang).join()"
+            class="treemap__row"
+            :style="{ flex: row.reduce((a, b) => a + b.pct, 0) + '' }"
+          >
+            <div
+              v-for="item in row"
+              :key="item.lang"
+              class="treemap__cell"
+              :class="{ 'treemap__cell--accent': item.isAccent }"
+              :style="{ flex: item.pct + '', backgroundColor: item.color }"
+            >
+              <span class="treemap__lang">{{ item.lang }}</span>
+              <span class="treemap__pct">{{ item.pctLabel }}%</span>
+            </div>
+          </div>
+        </div>
       </div>
-      <div v-else-if="ghLangLoading" class="skills__chart-wrap reveal reveal--d2">
+      <div v-else-if="ghLangLoading" class="treemap-wrap reveal reveal--d3">
         <span class="skills__chart-label">GitHub Languages</span>
-        <div class="skills__loading">Loading...</div>
+        <div class="treemap treemap--loading">
+          <div class="skills__loading">Loading...</div>
+        </div>
       </div>
     </section>
 
@@ -763,8 +783,54 @@ export default {
       radarChart: null,
       ghLanguages: null,
       ghLangLoading: true,
-      ghLangChart: null,
     };
+  },
+
+  computed: {
+    treemapRows() {
+      if (!this.ghLanguages) return [];
+
+      const lightPalette = [
+        "#C8201A", "#c5c0b8", "#b8c2c8", "#c4b8c4", "#bcc0a8",
+        "#c8c4b4", "#b0b8b0", "#c0b4a8", "#a8b4c0", "#bab0b0",
+      ];
+      const darkPalette = [
+        "#FF3019", "#2e2e2e", "#262e34", "#302a30", "#2a2c26",
+        "#2e2c28", "#242a24", "#2c2824", "#242830", "#2a2626",
+      ];
+      const palette = this.isDark ? darkPalette : lightPalette;
+
+      const items = this.ghLanguages.map((l, i) => ({
+        lang: l.lang,
+        pct: l.pct,
+        pctLabel: Math.round(l.pct * 10) / 10,
+        color: palette[i] || palette[palette.length - 1],
+        isAccent: i === 0,
+      }));
+
+      const rows = [];
+      let i = 0;
+      const len = items.length;
+      // Row 1: top 2-3 large items, Row 2+: remaining items
+      if (len <= 3) {
+        rows.push(items);
+      } else {
+        // First row: items until cumulative >= 55% or 3 items
+        let cumulative = 0;
+        let firstRowEnd = 0;
+        while (firstRowEnd < len && firstRowEnd < 3) {
+          cumulative += items[firstRowEnd].pct;
+          firstRowEnd++;
+          if (cumulative >= 55) break;
+        }
+        rows.push(items.slice(0, firstRowEnd));
+        // Remaining items in second row
+        if (firstRowEnd < len) {
+          rows.push(items.slice(firstRowEnd));
+        }
+      }
+      return rows;
+    },
   },
 
   mounted() {
@@ -796,11 +862,6 @@ export default {
         this.radarChart.destroy();
         this.radarChart = null;
         this.$nextTick(() => this.renderRadarChart());
-      }
-      if (this.ghLangChart) {
-        this.ghLangChart.destroy();
-        this.ghLangChart = null;
-        this.$nextTick(() => this.renderGhLangChart());
       }
     },
   },
@@ -846,7 +907,6 @@ export default {
         if (cached && Date.now() - cached.ts < CACHE_TTL) {
           this.ghLanguages = cached.data;
           this.ghLangLoading = false;
-          this.$nextTick(() => this.renderGhLangChart());
           return;
         }
       } catch (_) {}
@@ -891,83 +951,10 @@ export default {
           this.ghLanguages = main;
           localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data: main }));
           this.ghLangLoading = false;
-          this.$nextTick(() => this.renderGhLangChart());
         })
         .catch(() => {
           this.ghLangLoading = false;
         });
-    },
-
-    renderGhLangChart() {
-      const canvas = document.getElementById("ghLangChart");
-      if (!canvas || !this.ghLanguages) return;
-
-      const langColors = {
-        "C#": "#9b4f96",
-        JavaScript: "#f7df1e",
-        TypeScript: "#3178c6",
-        HTML: "#e34c26",
-        CSS: "#563d7c",
-        Vue: "#42b883",
-        Python: "#3572A5",
-        Java: "#b07219",
-        Shell: "#89e051",
-        Go: "#00ADD8",
-        Ruby: "#701516",
-        PHP: "#4F5D95",
-        Dart: "#00B4AB",
-        Swift: "#F05138",
-        Kotlin: "#A97BFF",
-        Rust: "#dea584",
-        SCSS: "#c6538c",
-        Dockerfile: "#384d54",
-      };
-      const mutedColor = this.isDark ? "#666" : "#999";
-      const textColor = this.isDark ? "#a0a0a0" : "#5a5a5a";
-
-      const labels = this.ghLanguages.map((l) => l.lang);
-      const data = this.ghLanguages.map((l) => Math.round(l.pct * 10) / 10);
-      const colors = this.ghLanguages.map((l) => langColors[l.lang] || mutedColor);
-
-      import("chart.js")
-        .then(({ Chart, DoughnutController, ArcElement, Tooltip, Legend }) => {
-          Chart.register(DoughnutController, ArcElement, Tooltip, Legend);
-          if (this.ghLangChart) this.ghLangChart.destroy();
-          this.ghLangChart = new Chart(canvas, {
-            type: "doughnut",
-            data: {
-              labels,
-              datasets: [{ data, backgroundColor: colors, borderWidth: 0 }],
-            },
-            options: {
-              responsive: true,
-              maintainAspectRatio: true,
-              cutout: "55%",
-              plugins: {
-                legend: {
-                  position: "bottom",
-                  labels: {
-                    color: textColor,
-                    font: {
-                      family: "'Barlow Condensed', 'Arial Narrow', sans-serif",
-                      size: 12,
-                      weight: "700",
-                    },
-                    padding: 14,
-                    usePointStyle: true,
-                    pointStyleWidth: 10,
-                  },
-                },
-                tooltip: {
-                  callbacks: {
-                    label: (ctx) => ` ${ctx.label}: ${ctx.raw}%`,
-                  },
-                },
-              },
-            },
-          });
-        })
-        .catch(() => {});
     },
 
     renderRadarChart() {

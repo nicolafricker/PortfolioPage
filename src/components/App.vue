@@ -31,7 +31,6 @@
       <div class="hero__video-overlay"></div>
       <div v-if="!heroVideoLoaded" class="hero__video-placeholder">...</div>
 
-      <!-- Corners — ausserhalb von hero__inner, innerhalb von hero -->
       <div class="hero__corner hero__corner--tl" aria-hidden="true">
         <span class="hero__corner-line"
           ><strong>Curious</strong> · Analytical</span
@@ -661,10 +660,6 @@
 </template>
 
 <script>
-// Cache key and TTL (30 minutes) for localStorage weather caching
-const WEATHER_CACHE_KEY = "portfolio_weather_cache";
-const WEATHER_CACHE_TTL = 30 * 60 * 1000;
-
 export default {
   name: "App",
   data() {
@@ -761,9 +756,6 @@ export default {
         ],
         values: [85, 90, 80, 88, 85, 82],
       },
-      weatherDays: [],
-      weatherLoading: true,
-      weatherError: false,
       radarChart: null,
       quote: null,
       quoteLoading: true,
@@ -781,8 +773,7 @@ export default {
       prefersDark ? "dark" : "light",
     );
 
-    // Fetch weather (with localStorage cache), render radar chart, set up observers
-    this.fetchWeather();
+    // Fetch quote, render radar chart, set up observers
     this.$nextTick(() => {
       this.renderRadarChart();
       // UI Update: scroll reveal + active section tracking
@@ -840,7 +831,7 @@ export default {
 
     fetchQuote() {
       this.quoteLoading = true;
-      const CACHE_KEY = "portfolio_quotes_v2"; // ← neuer Key, alter Cache wird ignoriert
+      const CACHE_KEY = "portfolio_quotes_v2";
 
       try {
         const cached = localStorage.getItem(CACHE_KEY);
@@ -867,76 +858,6 @@ export default {
         })
         .catch(() => {
           this.quoteLoading = false;
-        });
-    },
-
-    fetchWeather() {
-      this.weatherLoading = true;
-      this.weatherError = false;
-
-      try {
-        const cached = localStorage.getItem(WEATHER_CACHE_KEY);
-        if (cached) {
-          const { timestamp, data } = JSON.parse(cached);
-          if (Date.now() - timestamp < WEATHER_CACHE_TTL) {
-            this.weatherDays = data;
-            this.weatherLoading = false;
-            return;
-          }
-        }
-      } catch (_) {}
-
-      fetch(
-        "https://api.open-meteo.com/v1/forecast?latitude=46.9480&longitude=7.4474" +
-          "&daily=temperature_2m_max,temperature_2m_min,weathercode" +
-          "&timezone=Europe/Zurich&forecast_days=5",
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-          const icons = {
-            0: "☀️",
-            1: "🌤",
-            2: "⛅",
-            3: "☁️",
-            45: "🌫",
-            48: "🌫",
-            51: "🌦",
-            53: "🌦",
-            55: "🌧",
-            61: "🌧",
-            63: "🌧",
-            65: "🌧",
-            71: "🌨",
-            73: "🌨",
-            75: "❄️",
-            80: "🌦",
-            81: "🌧",
-            82: "⛈",
-            95: "⛈",
-          };
-          const parsed = data.daily.time.map((dateStr, i) => {
-            const date = new Date(dateStr);
-            return {
-              date: dateStr,
-              name: i === 0 ? "Today" : days[date.getDay()],
-              icon: icons[data.daily.weathercode[i]] || "🌡",
-              tempMax: Math.round(data.daily.temperature_2m_max[i]),
-              tempMin: Math.round(data.daily.temperature_2m_min[i]),
-            };
-          });
-          try {
-            localStorage.setItem(
-              WEATHER_CACHE_KEY,
-              JSON.stringify({ timestamp: Date.now(), data: parsed }),
-            );
-          } catch (_) {}
-          this.weatherDays = parsed;
-          this.weatherLoading = false;
-        })
-        .catch(() => {
-          this.weatherError = true;
-          this.weatherLoading = false;
         });
     },
 
@@ -1007,7 +928,6 @@ export default {
                     pointLabels: {
                       color: textColor,
                       font: (ctx) => {
-                        // Creativity und Analytical Thinking fett und grösser
                         const bold = [
                           "Creativity",
                           "Analytical\nThinking",
@@ -1024,7 +944,6 @@ export default {
                         };
                       },
                       padding: (ctx) => {
-                        // Mehr Abstand bei langen Labels oben/unten, weniger seitlich
                         const topBottom = ["Creativity", "Forward\nThinking"];
                         return topBottom.some((l) =>
                           ctx.label.includes(l.split("\n")[0]),

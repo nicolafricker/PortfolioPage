@@ -914,7 +914,21 @@ body {
 
 .skills__radar {
   width: 100% !important;
-  max-width: 500px; /* war 420px */
+  max-width: 500px;
+}
+
+.skills__doughnut {
+  width: 100% !important;
+  max-width: 500px;
+}
+
+.skills__loading {
+  font-family: var(--font-cond);
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  opacity: 0.6;
 }
 
 /* ─── Methods & Strengths ────────────────────────────────── */
@@ -1163,47 +1177,6 @@ body {
   display: block;
   margin: 0 auto;
 }
-/* ─── Quote section ──────────────────────────────────────── */
-.quote-section {
-  background-color: var(--bg);
-  border-top: 1px solid var(--border);
-  padding: 5rem 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3rem;
-  transition:
-    background-color 0.35s ease,
-    border-color 0.35s ease;
-}
-
-.quote-widget {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
-  text-align: center;
-}
-
-.quote-widget__label {
-  font-family: var(--font-cond);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-
-.quote-widget__hint {
-  font-family: var(--font-cond);
-  font-size: 0.82rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  opacity: 0.6;
-}
-
-
 /* ─── Footer ─────────────────────────────────────────────── */
 .footer {
   background-color: #0a0a0a;

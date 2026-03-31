@@ -407,6 +407,15 @@
         <span class="skills__chart-label">Proficiency Overview</span>
         <canvas id="skillsRadar" class="skills__radar"></canvas>
       </div>
+
+      <div v-if="ghLanguages" class="skills__chart-wrap reveal reveal--d2">
+        <span class="skills__chart-label">GitHub Languages</span>
+        <canvas id="ghLangChart" class="skills__doughnut"></canvas>
+      </div>
+      <div v-else-if="ghLangLoading" class="skills__chart-wrap reveal reveal--d2">
+        <span class="skills__chart-label">GitHub Languages</span>
+        <div class="skills__loading">Loading...</div>
+      </div>
     </section>
 
     <!-- ─── Methods & Strengths ────────────────────────────── -->
@@ -513,19 +522,6 @@
             />
           </picture>
         </figure>
-      </div>
-    </section>
-
-    <!-- ─── Quote ──────────────────────────────────────────── -->
-    <section class="quote-section">
-      <div class="quote-widget reveal">
-        <span class="quote-widget__label">Creativity</span>
-        <div v-if="quoteLoading" class="quote-widget__hint">Loading...</div>
-        <template v-else-if="quote">
-          <p class="quote-widget__text">"{{ quote.text }}"</p>
-          <span class="quote-widget__author">— {{ quote.author }}</span>
-        </template>
-        <button class="quote-widget__btn" @click="fetchQuote">New Quote</button>
       </div>
     </section>
 
@@ -765,8 +761,9 @@ export default {
         values: [85, 90, 80, 88, 85, 82],
       },
       radarChart: null,
-      quote: null,
-      quoteLoading: true,
+      ghLanguages: null,
+      ghLangLoading: true,
+      ghLangChart: null,
     };
   },
 
@@ -781,14 +778,12 @@ export default {
       prefersDark ? "dark" : "light",
     );
 
-    // Fetch quote, render radar chart, set up observers
     this.$nextTick(() => {
       this.renderRadarChart();
-      // UI Update: scroll reveal + active section tracking
       this.initObservers();
     });
 
-    this.fetchQuote();
+    this.fetchGhLanguages();
   },
 
   watch: {
@@ -797,11 +792,15 @@ export default {
         "data-theme",
         val ? "dark" : "light",
       );
-      // Re-render chart so colours match the new theme
       if (this.radarChart) {
         this.radarChart.destroy();
         this.radarChart = null;
         this.$nextTick(() => this.renderRadarChart());
+      }
+      if (this.ghLangChart) {
+        this.ghLangChart.destroy();
+        this.ghLangChart = null;
+        this.$nextTick(() => this.renderGhLangChart());
       }
     },
   },
@@ -837,36 +836,138 @@ export default {
       });
     },
 
-    fetchQuote() {
-      this.quoteLoading = true;
-      const CACHE_KEY = "portfolio_quotes_v2";
+    fetchGhLanguages() {
+      this.ghLangLoading = true;
+      const CACHE_KEY = "portfolio_gh_langs";
+      const CACHE_TTL = 60 * 60 * 1000;
 
       try {
-        const cached = localStorage.getItem(CACHE_KEY);
-        if (cached) {
-          const quotes = JSON.parse(cached);
-          if (Array.isArray(quotes) && quotes.length && quotes[0].quote) {
-            const random = quotes[Math.floor(Math.random() * quotes.length)];
-            this.quote = { text: random.quote, author: random.author };
-            this.quoteLoading = false;
-            return;
-          }
+        const cached = JSON.parse(localStorage.getItem(CACHE_KEY));
+        if (cached && Date.now() - cached.ts < CACHE_TTL) {
+          this.ghLanguages = cached.data;
+          this.ghLangLoading = false;
+          this.$nextTick(() => this.renderGhLangChart());
+          return;
         }
       } catch (_) {}
-      fetch(
-        "https://quoteslate.vercel.app/api/quotes/random?count=50&tags=creativity,art,imagination,inspiration",
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          const quotes = Array.isArray(data) ? data : [data];
-          localStorage.setItem(CACHE_KEY, JSON.stringify(quotes));
-          const random = quotes[Math.floor(Math.random() * quotes.length)];
-          this.quote = { text: random.quote, author: random.author };
-          this.quoteLoading = false;
+
+      fetch("https://api.github.com/users/nicolafricker/repos?per_page=100&sort=updated")
+        .then((res) => {
+          if (!res.ok) throw new Error(res.status);
+          return res.json();
+        })
+        .then((repos) => {
+          const langRequests = repos.map((repo) =>
+            fetch(`https://api.github.com/repos/nicolafricker/${repo.name}/languages`)
+              .then((r) => (r.ok ? r.json() : {}))
+              .catch(() => ({}))
+          );
+          return Promise.allSettled(langRequests);
+        })
+        .then((results) => {
+          const totals = {};
+          results.forEach((r) => {
+            if (r.status !== "fulfilled") return;
+            Object.entries(r.value).forEach(([lang, bytes]) => {
+              totals[lang] = (totals[lang] || 0) + bytes;
+            });
+          });
+
+          const grandTotal = Object.values(totals).reduce((a, b) => a + b, 0);
+          if (!grandTotal) throw new Error("no data");
+
+          const sorted = Object.entries(totals)
+            .map(([lang, bytes]) => ({ lang, pct: (bytes / grandTotal) * 100 }))
+            .sort((a, b) => b.pct - a.pct);
+
+          const main = [];
+          let otherPct = 0;
+          sorted.forEach((item) => {
+            if (item.pct >= 2) main.push(item);
+            else otherPct += item.pct;
+          });
+          if (otherPct > 0) main.push({ lang: "Other", pct: otherPct });
+
+          this.ghLanguages = main;
+          localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data: main }));
+          this.ghLangLoading = false;
+          this.$nextTick(() => this.renderGhLangChart());
         })
         .catch(() => {
-          this.quoteLoading = false;
+          this.ghLangLoading = false;
         });
+    },
+
+    renderGhLangChart() {
+      const canvas = document.getElementById("ghLangChart");
+      if (!canvas || !this.ghLanguages) return;
+
+      const langColors = {
+        "C#": "#9b4f96",
+        JavaScript: "#f7df1e",
+        TypeScript: "#3178c6",
+        HTML: "#e34c26",
+        CSS: "#563d7c",
+        Vue: "#42b883",
+        Python: "#3572A5",
+        Java: "#b07219",
+        Shell: "#89e051",
+        Go: "#00ADD8",
+        Ruby: "#701516",
+        PHP: "#4F5D95",
+        Dart: "#00B4AB",
+        Swift: "#F05138",
+        Kotlin: "#A97BFF",
+        Rust: "#dea584",
+        SCSS: "#c6538c",
+        Dockerfile: "#384d54",
+      };
+      const mutedColor = this.isDark ? "#666" : "#999";
+      const textColor = this.isDark ? "#a0a0a0" : "#5a5a5a";
+
+      const labels = this.ghLanguages.map((l) => l.lang);
+      const data = this.ghLanguages.map((l) => Math.round(l.pct * 10) / 10);
+      const colors = this.ghLanguages.map((l) => langColors[l.lang] || mutedColor);
+
+      import("chart.js")
+        .then(({ Chart, DoughnutController, ArcElement, Tooltip, Legend }) => {
+          Chart.register(DoughnutController, ArcElement, Tooltip, Legend);
+          if (this.ghLangChart) this.ghLangChart.destroy();
+          this.ghLangChart = new Chart(canvas, {
+            type: "doughnut",
+            data: {
+              labels,
+              datasets: [{ data, backgroundColor: colors, borderWidth: 0 }],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: true,
+              cutout: "55%",
+              plugins: {
+                legend: {
+                  position: "bottom",
+                  labels: {
+                    color: textColor,
+                    font: {
+                      family: "'Barlow Condensed', 'Arial Narrow', sans-serif",
+                      size: 12,
+                      weight: "700",
+                    },
+                    padding: 14,
+                    usePointStyle: true,
+                    pointStyleWidth: 10,
+                  },
+                },
+                tooltip: {
+                  callbacks: {
+                    label: (ctx) => ` ${ctx.label}: ${ctx.raw}%`,
+                  },
+                },
+              },
+            },
+          });
+        })
+        .catch(() => {});
     },
 
     renderRadarChart() {

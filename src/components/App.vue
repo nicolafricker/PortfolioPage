@@ -25,7 +25,10 @@
         playsinline
         @canplay="heroVideoLoaded = true"
       >
-        <source :src="baseUrl + '/video/GithubPortfolioPageHeroComp.mp4'" type="video/mp4" />
+        <source
+          :src="baseUrl + '/video/GithubPortfolioPageHeroComp.mp4'"
+          type="video/mp4"
+        />
       </video>
 
       <div class="hero__video-overlay"></div>
@@ -50,14 +53,16 @@
           ><strong>Solution&thinsp;Oriented</strong></span
         >
         <span class="hero__corner-line"
-          >Creative · <strong>Flexible</strong></span
+          >Calm · <strong>Mindful living</strong></span
         >
       </div>
       <div class="hero__corner hero__corner--br" aria-hidden="true">
         <span class="hero__corner-line"
-          ><strong>Team&thinsp;Player</strong></span
+          ><strong>Creative&thinsp;Mind</strong></span
         >
-        <span class="hero__corner-line">Precise · <strong>Driven</strong></span>
+        <span class="hero__corner-line"
+          >Technology · <strong>Driven</strong></span
+        >
       </div>
 
       <div class="hero__inner">
@@ -104,7 +109,11 @@
     <!-- ─── About ──────────────────────────────────────────── -->
     <section id="about" class="about">
       <div class="about__photo-wrap">
-        <img :src="baseUrl + '/img/Me.JPEG'" class="about__photo" alt="Nicola Fricker" />
+        <img
+          :src="baseUrl + '/img/Me.JPEG'"
+          class="about__photo"
+          alt="Nicola Fricker"
+        />
       </div>
 
       <div class="about__content">
@@ -413,7 +422,7 @@
         <div class="treemap">
           <div
             v-for="row in treemapRows"
-            :key="row.map(r => r.lang).join()"
+            :key="row.map((r) => r.lang).join()"
             class="treemap__row"
             :style="{ flex: row.reduce((a, b) => a + b.pct, 0) + '' }"
           >
@@ -614,7 +623,9 @@
                   placeholder="Your name"
                   v-model="contactForm.name"
                 />
-                <span v-if="contactErrors.name" class="footer__error">{{ contactErrors.name }}</span>
+                <span v-if="contactErrors.name" class="footer__error">{{
+                  contactErrors.name
+                }}</span>
               </div>
               <div class="footer__field">
                 <label class="footer__label" for="footer-email">Email</label>
@@ -626,7 +637,9 @@
                   placeholder="your@email.com"
                   v-model="contactForm.email"
                 />
-                <span v-if="contactErrors.email" class="footer__error">{{ contactErrors.email }}</span>
+                <span v-if="contactErrors.email" class="footer__error">{{
+                  contactErrors.email
+                }}</span>
               </div>
             </div>
             <div class="footer__field">
@@ -639,7 +652,9 @@
                 placeholder="What's on your mind?"
                 v-model="contactForm.message"
               ></textarea>
-              <span v-if="contactErrors.message" class="footer__error">{{ contactErrors.message }}</span>
+              <span v-if="contactErrors.message" class="footer__error">{{
+                contactErrors.message
+              }}</span>
             </div>
             <div class="footer__form-actions">
               <button
@@ -686,7 +701,7 @@ export default {
   name: "App",
   data() {
     return {
-      baseUrl: import.meta.env.BASE_URL.replace(/\/$/, ''),
+      baseUrl: import.meta.env.BASE_URL.replace(/\/$/, ""),
       isDark: false,
       heroVideoLoaded: false,
       activeSection: "about",
@@ -791,12 +806,28 @@ export default {
       if (!this.ghLanguages) return [];
 
       const lightPalette = [
-        "#C8201A", "#c5c0b8", "#b8c2c8", "#c4b8c4", "#bcc0a8",
-        "#c8c4b4", "#b0b8b0", "#c0b4a8", "#a8b4c0", "#bab0b0",
+        "#C8201A",
+        "#c5c0b8",
+        "#b8c2c8",
+        "#c4b8c4",
+        "#bcc0a8",
+        "#c8c4b4",
+        "#b0b8b0",
+        "#c0b4a8",
+        "#a8b4c0",
+        "#bab0b0",
       ];
       const darkPalette = [
-        "#FF3019", "#2e2e2e", "#262e34", "#302a30", "#2a2c26",
-        "#2e2c28", "#242a24", "#2c2824", "#242830", "#2a2626",
+        "#FF3019",
+        "#2e2e2e",
+        "#262e34",
+        "#302a30",
+        "#2a2c26",
+        "#2e2c28",
+        "#242a24",
+        "#2c2824",
+        "#242830",
+        "#2a2626",
       ];
       const palette = this.isDark ? darkPalette : lightPalette;
 
@@ -911,16 +942,20 @@ export default {
         }
       } catch (_) {}
 
-      fetch("https://api.github.com/users/nicolafricker/repos?per_page=100&sort=updated")
+      fetch(
+        "https://api.github.com/users/nicolafricker/repos?per_page=100&sort=updated",
+      )
         .then((res) => {
           if (!res.ok) throw new Error(res.status);
           return res.json();
         })
         .then((repos) => {
           const langRequests = repos.map((repo) =>
-            fetch(`https://api.github.com/repos/nicolafricker/${repo.name}/languages`)
+            fetch(
+              `https://api.github.com/repos/nicolafricker/${repo.name}/languages`,
+            )
               .then((r) => (r.ok ? r.json() : {}))
-              .catch(() => ({}))
+              .catch(() => ({})),
           );
           return Promise.allSettled(langRequests);
         })
@@ -949,7 +984,10 @@ export default {
           if (otherPct > 0) main.push({ lang: "Other", pct: otherPct });
 
           this.ghLanguages = main;
-          localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data: main }));
+          localStorage.setItem(
+            CACHE_KEY,
+            JSON.stringify({ ts: Date.now(), data: main }),
+          );
           this.ghLangLoading = false;
         })
         .catch(() => {

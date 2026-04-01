@@ -893,7 +893,7 @@ body {
 }
 
 .skills__chart-wrap {
-  max-width: 560px; /* ← war 480px, rest bleibt gleich */
+  max-width: 480px;
   margin: 3rem auto 0;
   display: flex;
   flex-direction: column;
@@ -914,7 +914,7 @@ body {
 
 .skills__radar {
   width: 100% !important;
-  max-width: 500px;
+  max-width: 420px;
 }
 
 .skills__loading {

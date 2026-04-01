@@ -771,14 +771,14 @@ export default {
       ],
       skillsData: {
         labels: [
-          "Creativity",
-          "Analytical\nThinking",
-          "Flexibility",
-          "Team\nOriented",
-          "Solution\nFocused",
-          "Forward\nThinking",
+          "C# / .NET",
+          "SQL Server",
+          "Docker / K8s",
+          "Vue.js / CSS",
+          "Azure DevOps",
+          "IoT / Node-RED",
         ],
-        values: [85, 90, 80, 88, 85, 82],
+        values: [90, 80, 70, 65, 75, 60],
       },
       radarChart: null,
       ghLanguages: null,
@@ -1023,29 +1023,11 @@ export default {
                     angleLines: { color: gridColor },
                     pointLabels: {
                       color: textColor,
-                      font: (ctx) => {
-                        const bold = [
-                          "Creativity",
-                          "Analytical\nThinking",
-                          "Solution\nFocused",
-                        ];
-                        const isBold = bold.some((l) =>
-                          ctx.label.includes(l.split("\n")[0]),
-                        );
-                        return {
-                          family:
-                            "'Barlow Condensed', 'Arial Narrow', sans-serif",
-                          size: isBold ? 14 : 12,
-                          weight: isBold ? "900" : "600",
-                        };
-                      },
-                      padding: (ctx) => {
-                        const topBottom = ["Creativity", "Forward\nThinking"];
-                        return topBottom.some((l) =>
-                          ctx.label.includes(l.split("\n")[0]),
-                        )
-                          ? 10
-                          : 4;
+                      font: {
+                        family:
+                          "'Barlow Condensed', 'Arial Narrow', sans-serif",
+                        size: 11,
+                        weight: "700",
                       },
                     },
                   },

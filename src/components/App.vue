@@ -961,9 +961,11 @@ export default {
         })
         .then((results) => {
           const totals = {};
+          const exclude = ["Jupyter Notebook"];
           results.forEach((r) => {
             if (r.status !== "fulfilled") return;
             Object.entries(r.value).forEach(([lang, bytes]) => {
+              if (exclude.includes(lang)) return;
               totals[lang] = (totals[lang] || 0) + bytes;
             });
           });

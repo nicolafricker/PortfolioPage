@@ -799,7 +799,9 @@ export default {
     },
     ghLanguages() {
       this.$nextTick(() => {
-        const el = this.$el.querySelector(".treemap-wrap.reveal:not(.reveal--visible)");
+        const el = this.$el.querySelector(
+          ".treemap-wrap.reveal:not(.reveal--visible)",
+        );
         if (el) {
           const observer = new IntersectionObserver(
             (entries) => {
@@ -807,14 +809,18 @@ export default {
                 if (entry.isIntersecting) {
                   entry.target.classList.add("reveal--visible");
                   observer.unobserve(entry.target);
+                  // Render after the reveal transition finishes so canvas has dimensions
+                  setTimeout(() => this.renderTreemap(), 600);
                 }
               });
             },
             { threshold: 0.08 },
           );
           observer.observe(el);
+        } else {
+          // Already visible (e.g. theme re-render)
+          this.renderTreemap();
         }
-        this.renderTreemap();
       });
     },
   },
@@ -957,7 +963,9 @@ export default {
         .then(([chartjs, treemapPlugin]) => {
           const { Chart, Tooltip } = chartjs;
           const { TreemapController, TreemapElement } = treemapPlugin;
-          Chart.register(TreemapController, TreemapElement, Tooltip);
+          // Tooltip must be registered before treemap so the treemap positioner can attach
+          Chart.register(Tooltip);
+          Chart.register(TreemapController, TreemapElement);
 
           if (this.treemapChart) this.treemapChart.destroy();
 

@@ -895,6 +895,24 @@ export default {
         this.$nextTick(() => this.renderRadarChart());
       }
     },
+    ghLanguages() {
+      this.$nextTick(() => {
+        const el = this.$el.querySelector(".treemap-wrap.reveal:not(.reveal--visible)");
+        if (!el) return;
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("reveal--visible");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.08 },
+        );
+        observer.observe(el);
+      });
+    },
   },
 
   methods: {

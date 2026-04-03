@@ -857,7 +857,13 @@ export default {
 
       try {
         const cached = JSON.parse(localStorage.getItem(CACHE_KEY));
-        if (cached && Date.now() - cached.ts < CACHE_TTL) {
+        if (
+          cached &&
+          Date.now() - cached.ts < CACHE_TTL &&
+          Array.isArray(cached.data) &&
+          cached.data.length &&
+          cached.data[0].bytes != null
+        ) {
           this.ghLanguages = cached.data;
           this.ghLangLoading = false;
           return;

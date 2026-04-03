@@ -412,36 +412,13 @@
         </div>
       </div>
 
-      <div class="skills__chart-wrap reveal reveal--d2">
-        <span class="skills__chart-label">Proficiency Overview</span>
-        <canvas id="skillsRadar" class="skills__radar"></canvas>
-      </div>
-
       <div v-if="ghLanguages" class="treemap-wrap reveal reveal--d3">
         <span class="skills__chart-label">GitHub Languages</span>
-        <div class="treemap">
-          <div
-            v-for="row in treemapRows"
-            :key="row.map((r) => r.lang).join()"
-            class="treemap__row"
-            :style="{ flex: row.reduce((a, b) => a + b.pct, 0) + '' }"
-          >
-            <div
-              v-for="item in row"
-              :key="item.lang"
-              class="treemap__cell"
-              :class="{ 'treemap__cell--accent': item.isAccent }"
-              :style="{ flex: item.pct + '', backgroundColor: item.color }"
-            >
-              <span class="treemap__lang">{{ item.lang }}</span>
-              <span class="treemap__pct">{{ item.pctLabel }}%</span>
-            </div>
-          </div>
-        </div>
+        <canvas id="ghTreemap" class="treemap-canvas"></canvas>
       </div>
       <div v-else-if="ghLangLoading" class="treemap-wrap reveal reveal--d3">
         <span class="skills__chart-label">GitHub Languages</span>
-        <div class="treemap treemap--loading">
+        <div class="treemap-loading">
           <div class="skills__loading">Loading...</div>
         </div>
       </div>
@@ -784,84 +761,10 @@ export default {
           alt: "Nature photo 9",
         },
       ],
-      skillsData: {
-        labels: [
-          "C# / .NET",
-          "SQL Server",
-          "Docker / K8s",
-          "Vue.js / CSS",
-          "Azure DevOps",
-          "IoT / Node-RED",
-        ],
-        values: [90, 80, 70, 65, 75, 60],
-      },
-      radarChart: null,
       ghLanguages: null,
       ghLangLoading: true,
+      treemapChart: null,
     };
-  },
-
-  computed: {
-    treemapRows() {
-      if (!this.ghLanguages) return [];
-
-      const lightPalette = [
-        "#C8201A",
-        "#c5c0b8",
-        "#b8c2c8",
-        "#c4b8c4",
-        "#bcc0a8",
-        "#c8c4b4",
-        "#b0b8b0",
-        "#c0b4a8",
-        "#a8b4c0",
-        "#bab0b0",
-      ];
-      const darkPalette = [
-        "#FF3019",
-        "#2e2e2e",
-        "#262e34",
-        "#302a30",
-        "#2a2c26",
-        "#2e2c28",
-        "#242a24",
-        "#2c2824",
-        "#242830",
-        "#2a2626",
-      ];
-      const palette = this.isDark ? darkPalette : lightPalette;
-
-      const items = this.ghLanguages.map((l, i) => ({
-        lang: l.lang,
-        pct: l.pct,
-        pctLabel: Math.round(l.pct * 10) / 10,
-        color: palette[i] || palette[palette.length - 1],
-        isAccent: i === 0,
-      }));
-
-      const rows = [];
-      let i = 0;
-      const len = items.length;
-      // Row 1: top 2-3 large items, Row 2+: remaining items
-      if (len <= 3) {
-        rows.push(items);
-      } else {
-        // First row: items until cumulative >= 55% or 3 items
-        let cumulative = 0;
-        let firstRowEnd = 0;
-        while (firstRowEnd < len && firstRowEnd < 3) {
-          cumulative += items[firstRowEnd].pct;
-          firstRowEnd++;
-          if (cumulative >= 55) break;
-        }
-        rows.push(items.slice(0, firstRowEnd));
-        // Remaining items in second row
-        if (firstRowEnd < len) {
-          rows.push(items.slice(firstRowEnd));
-        }
-      }
-      return rows;
-    },
   },
 
   mounted() {
@@ -876,7 +779,6 @@ export default {
     );
 
     this.$nextTick(() => {
-      this.renderRadarChart();
       this.initObservers();
     });
 
@@ -889,28 +791,30 @@ export default {
         "data-theme",
         val ? "dark" : "light",
       );
-      if (this.radarChart) {
-        this.radarChart.destroy();
-        this.radarChart = null;
-        this.$nextTick(() => this.renderRadarChart());
+      if (this.treemapChart) {
+        this.treemapChart.destroy();
+        this.treemapChart = null;
+        this.$nextTick(() => this.renderTreemap());
       }
     },
     ghLanguages() {
       this.$nextTick(() => {
         const el = this.$el.querySelector(".treemap-wrap.reveal:not(.reveal--visible)");
-        if (!el) return;
-        const observer = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                entry.target.classList.add("reveal--visible");
-                observer.unobserve(entry.target);
-              }
-            });
-          },
-          { threshold: 0.08 },
-        );
-        observer.observe(el);
+        if (el) {
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add("reveal--visible");
+                  observer.unobserve(entry.target);
+                }
+              });
+            },
+            { threshold: 0.08 },
+          );
+          observer.observe(el);
+        }
+        this.renderTreemap();
       });
     },
   },
@@ -992,16 +896,25 @@ export default {
           if (!grandTotal) throw new Error("no data");
 
           const sorted = Object.entries(totals)
-            .map(([lang, bytes]) => ({ lang, pct: (bytes / grandTotal) * 100 }))
+            .map(([lang, bytes]) => ({
+              lang,
+              bytes,
+              pct: (bytes / grandTotal) * 100,
+            }))
             .sort((a, b) => b.pct - a.pct);
 
           const main = [];
           let otherPct = 0;
+          let otherBytes = 0;
           sorted.forEach((item) => {
             if (item.pct >= 2) main.push(item);
-            else otherPct += item.pct;
+            else {
+              otherPct += item.pct;
+              otherBytes += item.bytes;
+            }
           });
-          if (otherPct > 0) main.push({ lang: "Other", pct: otherPct });
+          if (otherPct > 0)
+            main.push({ lang: "Other", bytes: otherBytes, pct: otherPct });
 
           this.ghLanguages = main;
           localStorage.setItem(
@@ -1015,85 +928,93 @@ export default {
         });
     },
 
-    renderRadarChart() {
-      const canvas = document.getElementById("skillsRadar");
-      if (!canvas) return;
+    renderTreemap() {
+      const canvas = document.getElementById("ghTreemap");
+      if (!canvas || !this.ghLanguages) return;
 
-      const accent = this.isDark ? "#FF3019" : "#C8201A";
+      const lightPalette = [
+        "#C8201A", "#c5c0b8", "#b8c2c8", "#c4b8c4", "#bcc0a8",
+        "#c8c4b4", "#b0b8b0", "#c0b4a8", "#a8b4c0", "#bab0b0",
+      ];
+      const darkPalette = [
+        "#FF3019", "#2e2e2e", "#262e34", "#302a30", "#2a2c26",
+        "#2e2c28", "#242a24", "#2c2824", "#242830", "#2a2626",
+      ];
+      const palette = this.isDark ? darkPalette : lightPalette;
       const textColor = this.isDark ? "#a0a0a0" : "#5a5a5a";
-      const gridColor = this.isDark
-        ? "rgba(244,243,239,0.12)"
-        : "rgba(10,10,10,0.10)";
+      const data = this.ghLanguages;
 
-      import("chart.js")
-        .then(
-          ({
-            Chart,
-            RadarController,
-            RadialLinearScale,
-            PointElement,
-            LineElement,
-            Filler,
-            Tooltip,
-          }) => {
-            Chart.register(
-              RadarController,
-              RadialLinearScale,
-              PointElement,
-              LineElement,
-              Filler,
-              Tooltip,
-            );
-            if (this.radarChart) {
-              this.radarChart.destroy();
-            }
-            this.radarChart = new Chart(canvas, {
-              type: "radar",
-              data: {
-                labels: this.skillsData.labels,
-                datasets: [
-                  {
-                    label: "Proficiency",
-                    data: this.skillsData.values,
-                    backgroundColor: this.isDark
-                      ? "rgba(255,48,25,0.12)"
-                      : "rgba(200,32,26,0.10)",
-                    borderColor: accent,
-                    borderWidth: 1.5,
-                    pointBackgroundColor: accent,
-                    pointRadius: 3,
+      Promise.all([
+        import("chart.js"),
+        import("chartjs-chart-treemap"),
+      ])
+        .then(([chartjs, treemapPlugin]) => {
+          const { Chart, Tooltip } = chartjs;
+          const { TreemapController, TreemapElement } = treemapPlugin;
+          Chart.register(TreemapController, TreemapElement, Tooltip);
+
+          if (this.treemapChart) this.treemapChart.destroy();
+
+          this.treemapChart = new Chart(canvas, {
+            type: "treemap",
+            data: {
+              datasets: [
+                {
+                  tree: data,
+                  key: "bytes",
+                  labels: {
+                    display: true,
+                    formatter: (ctx) => {
+                      const item = ctx.raw._data;
+                      if (!item) return "";
+                      const pct = Math.round(item.pct * 10) / 10;
+                      return `${item.lang} — ${pct}%`;
+                    },
+                    font: {
+                      family: "'Barlow Condensed', 'Arial Narrow', sans-serif",
+                      weight: 700,
+                      size: 12,
+                    },
+                    color: (ctx) => {
+                      const idx = ctx.dataIndex;
+                      return idx === 0 ? "#fff" : textColor;
+                    },
                   },
-                ],
-              },
-              options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: {
-                  legend: { display: false },
-                  tooltip: { callbacks: { label: (ctx) => ` ${ctx.raw}%` } },
+                  spacing: 1,
+                  borderWidth: 0,
+                  backgroundColor: (ctx) => {
+                    const idx = ctx.dataIndex;
+                    return palette[idx] || palette[palette.length - 1];
+                  },
                 },
-                scales: {
-                  r: {
-                    min: 0,
-                    max: 100,
-                    ticks: { stepSize: 25, display: false },
-                    grid: { color: gridColor },
-                    angleLines: { color: gridColor },
-                    pointLabels: {
-                      color: textColor,
-                      font: {
-                        family:
-                          "'Barlow Condensed', 'Arial Narrow', sans-serif",
-                        size: 11,
-                        weight: "700",
-                      },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: { display: false },
+                tooltip: {
+                  titleFont: {
+                    family: "'Barlow Condensed', 'Arial Narrow', sans-serif",
+                  },
+                  bodyFont: {
+                    family: "'Barlow Condensed', 'Arial Narrow', sans-serif",
+                  },
+                  callbacks: {
+                    title: () => "",
+                    label: (ctx) => {
+                      const item = ctx.raw._data;
+                      if (!item) return "";
+                      const pct = Math.round(item.pct * 10) / 10;
+                      return ` ${item.lang}: ${pct}%`;
                     },
                   },
                 },
               },
-            });
-          },
-        )
+            },
+          });
+        })
         .catch(() => {});
     },
 

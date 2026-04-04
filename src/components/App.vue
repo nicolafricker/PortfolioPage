@@ -797,11 +797,13 @@ export default {
         this.$nextTick(() => this.renderTreemap());
       }
     },
-    ghLanguages() {
+    ghLanguages(val) {
+      console.log('[treemap] ghLanguages watcher fired, value:', val);
       this.$nextTick(() => {
         const el = this.$el.querySelector(
           ".treemap-wrap.reveal:not(.reveal--visible)",
         );
+        console.log('[treemap] $nextTick: reveal element found:', el);
         if (el) {
           const observer = new IntersectionObserver(
             (entries) => {
@@ -928,6 +930,7 @@ export default {
           if (otherPct > 0)
             main.push({ lang: "Other", bytes: otherBytes, pct: otherPct });
 
+          console.log('[treemap] Fetched languages:', JSON.stringify(main));
           this.ghLanguages = main;
           localStorage.setItem(
             CACHE_KEY,
@@ -942,6 +945,7 @@ export default {
 
     renderTreemap() {
       const canvas = document.getElementById("ghTreemap");
+      console.log('[treemap] renderTreemap called, canvas:', canvas, 'ghLanguages:', this.ghLanguages);
       if (!canvas || !this.ghLanguages) return;
 
       const lightPalette = [
@@ -963,12 +967,13 @@ export default {
         .then(([chartjs, treemapPlugin]) => {
           const { Chart, Tooltip } = chartjs;
           const { TreemapController, TreemapElement } = treemapPlugin;
-          // Tooltip must be registered before treemap so the treemap positioner can attach
           Chart.register(Tooltip);
           Chart.register(TreemapController, TreemapElement);
 
           if (this.treemapChart) this.treemapChart.destroy();
 
+          console.log('[treemap] Creating chart with data:', JSON.stringify(data));
+          console.log('[treemap] Canvas dimensions:', canvas.offsetWidth, 'x', canvas.offsetHeight);
           this.treemapChart = new Chart(canvas, {
             type: "treemap",
             data: {
@@ -1029,7 +1034,7 @@ export default {
             },
           });
         })
-        .catch(() => {});
+        .catch((err) => { console.error('Treemap render error:', err); });
     },
 
     submitContact() {

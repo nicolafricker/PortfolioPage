@@ -982,7 +982,7 @@ export default {
                       const item = ctx.raw._data;
                       if (!item) return "";
                       const pct = Math.round(item.pct * 10) / 10;
-                      return `${item.lang} — ${pct}%`;
+                      return [item.lang, `${pct}%`];
                     },
                     font: {
                       family: "'Barlow Condensed', 'Arial Narrow', sans-serif",

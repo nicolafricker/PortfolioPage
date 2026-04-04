@@ -977,6 +977,7 @@ export default {
                   key: "bytes",
                   labels: {
                     display: true,
+                    overflow: "fit",
                     formatter: (ctx) => {
                       const item = ctx.raw._data;
                       if (!item) return "";

@@ -312,7 +312,7 @@ body {
 
 .hero__tagline {
   font-family: var(--font-cond);
-  font-size: clamp(0.9rem, 2.2vw, 1.35rem);
+  font-size: clamp(0.75rem, 1.8vw, 1.1rem);
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -1498,7 +1498,6 @@ body {
     grid-template-columns: 1fr;
   }
 }
-
 
 /* ─── Scroll reveal animation ────────────────────────────── */
 .reveal {

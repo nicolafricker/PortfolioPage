@@ -68,9 +68,7 @@
       <div class="hero__inner">
         <span class="hero__eyebrow">Portfolio</span>
         <h1 class="hero__name">Nicola<br />Fricker</h1>
-        <p class="hero__tagline">
-          IT Business Analyst &amp; Digital Business Student
-        </p>
+        <p class="hero__tagline">Digital Business · Photo & Motion</p>
       </div>
 
       <a
@@ -945,21 +943,34 @@ export default {
       if (!canvas || !this.ghLanguages) return;
 
       const lightPalette = [
-        "#C8201A", "#c5c0b8", "#b8c2c8", "#c4b8c4", "#bcc0a8",
-        "#c8c4b4", "#b0b8b0", "#c0b4a8", "#a8b4c0", "#bab0b0",
+        "#C8201A",
+        "#c5c0b8",
+        "#b8c2c8",
+        "#c4b8c4",
+        "#bcc0a8",
+        "#c8c4b4",
+        "#b0b8b0",
+        "#c0b4a8",
+        "#a8b4c0",
+        "#bab0b0",
       ];
       const darkPalette = [
-        "#FF3019", "#2e2e2e", "#262e34", "#302a30", "#2a2c26",
-        "#2e2c28", "#242a24", "#2c2824", "#242830", "#2a2626",
+        "#FF3019",
+        "#2e2e2e",
+        "#262e34",
+        "#302a30",
+        "#2a2c26",
+        "#2e2c28",
+        "#242a24",
+        "#2c2824",
+        "#242830",
+        "#2a2626",
       ];
       const palette = this.isDark ? darkPalette : lightPalette;
       const textColor = this.isDark ? "#a0a0a0" : "#5a5a5a";
       const data = this.ghLanguages;
 
-      Promise.all([
-        import("chart.js"),
-        import("chartjs-chart-treemap"),
-      ])
+      Promise.all([import("chart.js"), import("chartjs-chart-treemap")])
         .then(([chartjs, treemapPlugin]) => {
           const { Chart, Tooltip, LinearScale } = chartjs;
           const { TreemapController, TreemapElement } = treemapPlugin;

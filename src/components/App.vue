@@ -1,5 +1,32 @@
 <template>
   <div class="app">
+    <!-- ─── Desktop Hamburger Menu ──────────────────────────── -->
+    <button
+      class="hamburger"
+      :class="{ 'hamburger--open': menuOpen }"
+      @click="toggleMenu"
+      :aria-label="menuOpen ? 'Close menu' : 'Open menu'"
+      aria-controls="desktop-menu-overlay"
+    >
+      <span class="hamburger__line"></span>
+      <span class="hamburger__line"></span>
+      <span class="hamburger__line"></span>
+    </button>
+
+    <div
+      id="desktop-menu-overlay"
+      class="menu-overlay"
+      :class="{ 'menu-overlay--open': menuOpen }"
+    >
+      <a
+        v-for="item in mobileNavItems"
+        :key="'menu-' + item.id"
+        :href="'#' + item.id"
+        class="menu-overlay__link"
+        @click="menuOpen = false"
+      >{{ item.label }}</a>
+    </div>
+
     <!-- ─── Fixed theme toggle ─────────────────────────────── -->
     <div class="theme-bar">
       <label
@@ -10,8 +37,8 @@
         <span class="toggle__track">
           <span class="toggle__thumb"></span>
         </span>
-        <span class="toggle__icon toggle__icon--light">☀</span>
-        <span class="toggle__icon toggle__icon--dark">☾</span>
+        <span class="toggle__icon toggle__icon--light"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span>
+        <span class="toggle__icon toggle__icon--dark"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
       </label>
     </div>
 
@@ -575,7 +602,7 @@
           </div>
           <div class="footer__meta">
             <span>Bern, Switzerland</span>
-            <span>✉ nicola.fricker@bfh.ch</span>
+            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 4px;"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,4 12,13 2,4"/></svg>nicola.fricker@bfh.ch</span>
           </div>
         </div>
 
@@ -678,6 +705,7 @@ export default {
     return {
       baseUrl: import.meta.env.BASE_URL.replace(/\/$/, ""),
       isDark: false,
+      menuOpen: false,
       heroVideoLoaded: false,
       activeSection: "about",
       expandedCards: { 0: false, 1: false, 2: false },
@@ -784,6 +812,9 @@ export default {
   },
 
   watch: {
+    menuOpen(val) {
+      document.body.style.overflow = val ? 'hidden' : '';
+    },
     isDark(val) {
       document.documentElement.setAttribute(
         "data-theme",
@@ -824,6 +855,10 @@ export default {
   },
 
   methods: {
+    toggleMenu() {
+      this.menuOpen = !this.menuOpen;
+      document.body.style.overflow = this.menuOpen ? 'hidden' : '';
+    },
     initObservers() {
       const revealObserver = new IntersectionObserver(
         (entries) => {

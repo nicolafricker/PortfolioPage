@@ -136,6 +136,99 @@ body {
   font-size: 0.8rem;
   color: var(--text-muted);
   line-height: 1;
+  display: flex;
+  align-items: center;
+}
+
+/* ─── Desktop Hamburger Menu ─────────────────────────────── */
+.hamburger {
+  position: fixed;
+  top: 1.25rem;
+  left: 1.5rem;
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.hamburger__line {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background-color: currentColor;
+  color: var(--text);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.hamburger--open .hamburger__line:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.hamburger--open .hamburger__line:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger--open .hamburger__line:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Hide hamburger on mobile — bottom nav is used instead */
+@media (max-width: 900px) {
+  .hamburger {
+    display: none;
+  }
+}
+
+/* ─── Desktop Menu Overlay ──────────────────────────────── */
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: var(--bg);
+  opacity: 0;
+  visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.menu-overlay--open {
+  opacity: 0.97;
+  visibility: visible;
+  backdrop-filter: blur(8px);
+}
+
+.menu-overlay__link {
+  font-family: var(--font-cond);
+  font-size: 2.5rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.menu-overlay__link:hover {
+  color: var(--accent);
+}
+
+/* Hide overlay on mobile */
+@media (max-width: 900px) {
+  .menu-overlay {
+    display: none;
+  }
 }
 
 /* ─── Marquee base ───────────────────────────────────────── */
@@ -348,6 +441,16 @@ body {
   transform: rotate(45deg) translateY(-3px);
 }
 
+/* Hero height adjustment for mobile bottom nav */
+@media (max-width: 900px) {
+  .hero {
+    min-height: calc(100vh - 56px);
+  }
+  .hero__scroll {
+    bottom: 3rem;
+  }
+}
+
 /* ─── Hero corner keywords ─────────────────────────────── */
 .hero__corner {
   position: absolute;
@@ -424,10 +527,36 @@ body {
   color: rgba(255, 255, 255, 0.85);
 }
 
-/* auf Mobile ausblenden — zu wenig Platz */
+/* Hero corners on mobile — smaller & closer to edges */
 @media (max-width: 768px) {
   .hero__corner {
-    display: none;
+    width: 130px;
+  }
+  .hero__corner--tl {
+    top: 1rem;
+    left: 1rem;
+    width: 130px;
+  }
+  .hero__corner--tr {
+    top: 1rem;
+    right: 1rem;
+    width: 120px;
+  }
+  .hero__corner--bl {
+    bottom: 6rem;
+    left: 1rem;
+    width: 130px;
+  }
+  .hero__corner--br {
+    bottom: 4rem;
+    right: 1rem;
+    width: 140px;
+  }
+  .hero__corner-line {
+    font-size: 0.55rem;
+  }
+  .hero__corner-line:first-child {
+    margin-bottom: 0.3rem;
   }
 }
 

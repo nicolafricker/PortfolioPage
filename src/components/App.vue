@@ -204,7 +204,6 @@
         <p class="work__sub">IT Projects &amp; Development</p>
       </div>
 
-      <!-- UI Update: flip cards, front shows summary, click reveals full text on back -->
       <div class="work__grid">
         <!-- Project 1 -->
         <article
@@ -729,7 +728,6 @@
     </footer>
 
     <!-- ─── Mobile Bottom Navigation ───────────────────────── -->
-    <!-- UI Update: sticky bottom nav for mobile, 5 visible section anchors (≤900px) -->
     <nav class="mobile-nav" aria-label="Main navigation">
       <a
         v-for="item in mobileNavItems"
@@ -906,7 +904,6 @@ export default {
   methods: {
     toggleMenu() {
       this.menuOpen = !this.menuOpen;
-      document.body.style.overflow = this.menuOpen ? "hidden" : "";
     },
     initObservers() {
       const revealObserver = new IntersectionObserver(

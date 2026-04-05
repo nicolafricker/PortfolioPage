@@ -1,16 +1,5 @@
 <template>
   <div class="app">
-    <!-- ─── Decorative grid canvas ─────────────────────────── -->
-    <div class="grid-canvas" aria-hidden="true">
-      <div class="grid-canvas__cell grid-canvas__cell--a"></div>
-      <div class="grid-canvas__cell grid-canvas__cell--b"></div>
-      <div class="grid-canvas__cell grid-canvas__cell--c"></div>
-      <div class="grid-canvas__cell grid-canvas__cell--d"></div>
-      <div class="grid-canvas__cell grid-canvas__cell--e"></div>
-      <div class="grid-canvas__cell grid-canvas__cell--f"></div>
-      <div class="grid-canvas__cell grid-canvas__cell--g"></div>
-    </div>
-
     <!-- ─── Fixed theme toggle ─────────────────────────────── -->
     <div class="theme-bar">
       <label
@@ -36,23 +25,50 @@
         playsinline
         @canplay="heroVideoLoaded = true"
       >
-        <source src="/video/GithubPortfolioPageHeroComp.mp4" type="video/mp4" />
+        <source
+          :src="baseUrl + '/video/GithubPortfolioPageHeroComp.mp4'"
+          type="video/mp4"
+        />
       </video>
 
       <div class="hero__video-overlay"></div>
+      <div v-if="!heroVideoLoaded" class="hero__video-placeholder">...</div>
 
-      <div v-if="!heroVideoLoaded" class="hero__video-placeholder">
-        <span class="hero__video-placeholder__icon">▶</span>
-        <p class="hero__video-placeholder__label">Hero Video</p>
-        <code class="hero__video-placeholder__path">public/video/hero.mp4</code>
+      <div class="hero__corner hero__corner--tl" aria-hidden="true">
+        <span class="hero__corner-line"
+          ><strong>Curious</strong> · Analytical</span
+        >
+        <span class="hero__corner-line"
+          ><strong>Forward&thinsp;Thinking</strong></span
+        >
+      </div>
+      <div class="hero__corner hero__corner--tr" aria-hidden="true">
+        <span class="hero__corner-line"
+          ><strong>Bern</strong> · Switzerland</span
+        >
+        <span class="hero__corner-line">28 · <strong>BFH</strong></span>
+      </div>
+      <div class="hero__corner hero__corner--bl" aria-hidden="true">
+        <span class="hero__corner-line"
+          ><strong>Solution&thinsp;Oriented</strong></span
+        >
+        <span class="hero__corner-line"
+          >Calm · <strong>Mindful living</strong></span
+        >
+      </div>
+      <div class="hero__corner hero__corner--br" aria-hidden="true">
+        <span class="hero__corner-line"
+          ><strong>Creative&thinsp;Mind</strong></span
+        >
+        <span class="hero__corner-line"
+          >Technology · <strong>Driven</strong></span
+        >
       </div>
 
       <div class="hero__inner">
         <span class="hero__eyebrow">Portfolio</span>
         <h1 class="hero__name">Nicola<br />Fricker</h1>
-        <p class="hero__tagline">
-          IT Business Analyst &amp; Digital Business Student
-        </p>
+        <p class="hero__tagline">Digital Business · Photo & Motion</p>
       </div>
 
       <a
@@ -91,7 +107,11 @@
     <!-- ─── About ──────────────────────────────────────────── -->
     <section id="about" class="about">
       <div class="about__photo-wrap">
-        <img src="/img/Me.JPEG" class="about__photo" alt="Nicola Fricker" />
+        <img
+          :src="baseUrl + '/img/Me.JPEG'"
+          class="about__photo"
+          alt="Nicola Fricker"
+        />
       </div>
 
       <div class="about__content">
@@ -390,9 +410,15 @@
         </div>
       </div>
 
-      <div class="skills__chart-wrap reveal reveal--d2">
-        <span class="skills__chart-label">Proficiency Overview</span>
-        <canvas id="skillsRadar" class="skills__radar"></canvas>
+      <div v-if="ghLanguages" class="treemap-wrap reveal reveal--d3">
+        <span class="skills__chart-label">GitHub Languages</span>
+        <canvas id="ghTreemap" class="treemap-canvas"></canvas>
+      </div>
+      <div v-else-if="ghLangLoading" class="treemap-wrap reveal reveal--d3">
+        <span class="skills__chart-label">GitHub Languages</span>
+        <div class="treemap-loading">
+          <div class="skills__loading">Loading...</div>
+        </div>
       </div>
     </section>
 
@@ -476,8 +502,8 @@
     <!-- ─── Media section ──────────────────────────────────── -->
     <section id="media" class="media">
       <div class="media__header reveal">
-        <h2 class="media__title">Media</h2>
-        <p class="media__sub">Photography &amp; Video</p>
+        <h2 class="media__title">Photography</h2>
+        <p class="media__sub">Nature, Urban &amp; Cars</p>
       </div>
 
       <div class="media-gallery reveal reveal--d1">
@@ -487,9 +513,9 @@
           class="media-gallery__item"
         >
           <picture>
-            <source :srcset="photo.webp" type="image/webp" />
+            <source :srcset="baseUrl + photo.webp" type="image/webp" />
             <img
-              :src="photo.jpg"
+              :src="baseUrl + photo.jpg"
               :alt="photo.alt"
               class="media-gallery__image"
               :style="
@@ -503,49 +529,34 @@
       </div>
     </section>
 
-    <!-- ─── Easter Egg / Weather ───────────────────────────── -->
-    <section class="quote-section">
-      <div class="quote-widget reveal">
-        <span class="quote-widget__label">You made it to the bottom</span>
-        <p class="quote-widget__hint">
-          Curious where I'm based? The weather below might give it away.
-        </p>
-      </div>
-
-      <div class="weather-widget reveal reveal--d1">
-        <!-- Weather data is cached in localStorage for 30 minutes -->
-        <div v-if="weatherLoading" class="weather-widget__loading">
-          Loading...
-        </div>
-        <div v-else-if="weatherError" class="weather-widget__loading">
-          Could not load weather.
-        </div>
-        <div v-else class="weather-widget__grid">
-          <div v-for="day in weatherDays" :key="day.date" class="weather-day">
-            <span class="weather-day__name">{{ day.name }}</span>
-            <span class="weather-day__icon">{{ day.icon }}</span>
-            <span class="weather-day__temp-max">{{ day.tempMax }}°</span>
-            <span class="weather-day__temp-min">{{ day.tempMin }}°</span>
-          </div>
-        </div>
-        <span class="weather-widget__location">📍 46.9480° N, 7.4474° E</span>
-      </div>
+    <!-- ─── Spotify ─────────────────────────────────────────── -->
+    <section class="spotify-section">
+      <span class="spotify__label">Something Personal</span>
+      <h2 class="spotify__title">Currently on Repeat</h2>
+      <iframe
+        class="spotify__embed"
+        src="https://open.spotify.com/embed/track/1w5r3hEoLfLaltoXj1AwW4?utm_source=generator&theme=0"
+        frameborder="0"
+        allow="
+          autoplay;
+          clipboard-write;
+          encrypted-media;
+          fullscreen;
+          picture-in-picture;
+        "
+        loading="lazy"
+      />
     </section>
 
-    <!-- ─── Footer ─────────────────────────────────────────── -->
     <!-- ─── Footer ─────────────────────────────────────────── -->
     <footer class="footer">
       <div class="footer__inner">
         <!-- Left: Identity -->
         <div class="footer__col footer__col--identity">
           <span class="footer__name">Nicola Fricker</span>
-          <p class="footer__bio">
-            IT Business Analyst &amp; Developer.<br />
-            Currently studying Digital Business &amp; AI at BFH.
-          </p>
           <div class="footer__links">
             <a
-              href="https://github.com/"
+              href="https://github.com/nicolafricker"
               target="_blank"
               rel="noopener"
               class="footer__link"
@@ -554,7 +565,7 @@
             >
             <span class="footer__link-sep">◆</span>
             <a
-              href="https://linkedin.com/"
+              href="https://www.linkedin.com/in/nicola-fricker-0674a5294/"
               target="_blank"
               rel="noopener"
               class="footer__link"
@@ -563,8 +574,8 @@
             >
           </div>
           <div class="footer__meta">
-            <span>📍 Bern, Switzerland</span>
-            <span>✉ nicola.fricker@example.com</span>
+            <span>Bern, Switzerland</span>
+            <span>✉ nicola.fricker@bfh.ch</span>
           </div>
         </div>
 
@@ -582,20 +593,28 @@
                 <input
                   id="footer-name"
                   class="footer__input"
+                  :class="{ 'footer__input--error': contactErrors.name }"
                   type="text"
                   placeholder="Your name"
                   v-model="contactForm.name"
                 />
+                <span v-if="contactErrors.name" class="footer__error">{{
+                  contactErrors.name
+                }}</span>
               </div>
               <div class="footer__field">
                 <label class="footer__label" for="footer-email">Email</label>
                 <input
                   id="footer-email"
                   class="footer__input"
+                  :class="{ 'footer__input--error': contactErrors.email }"
                   type="email"
                   placeholder="your@email.com"
                   v-model="contactForm.email"
                 />
+                <span v-if="contactErrors.email" class="footer__error">{{
+                  contactErrors.email
+                }}</span>
               </div>
             </div>
             <div class="footer__field">
@@ -603,10 +622,14 @@
               <textarea
                 id="footer-message"
                 class="footer__textarea"
+                :class="{ 'footer__textarea--error': contactErrors.message }"
                 rows="4"
                 placeholder="What's on your mind?"
                 v-model="contactForm.message"
               ></textarea>
+              <span v-if="contactErrors.message" class="footer__error">{{
+                contactErrors.message
+              }}</span>
             </div>
             <div class="footer__form-actions">
               <button
@@ -649,14 +672,11 @@
 </template>
 
 <script>
-// Cache key and TTL (30 minutes) for localStorage weather caching
-const WEATHER_CACHE_KEY = "portfolio_weather_cache";
-const WEATHER_CACHE_TTL = 30 * 60 * 1000;
-
 export default {
   name: "App",
   data() {
     return {
+      baseUrl: import.meta.env.BASE_URL.replace(/\/$/, ""),
       isDark: false,
       heroVideoLoaded: false,
       activeSection: "about",
@@ -667,6 +687,7 @@ export default {
         message: "",
       },
       contactSent: false,
+      contactErrors: { name: "", email: "", message: "" },
       mobileNavItems: [
         { id: "about", label: "About" },
         { id: "work", label: "Work" },
@@ -738,21 +759,9 @@ export default {
           alt: "Nature photo 9",
         },
       ],
-      skillsData: {
-        labels: [
-          "C# / .NET",
-          "SQL Server",
-          "Docker / K8s",
-          "Vue.js / CSS",
-          "Azure DevOps",
-          "IoT / Node-RED",
-        ],
-        values: [90, 80, 70, 65, 75, 60],
-      },
-      weatherDays: [],
-      weatherLoading: true,
-      weatherError: false,
-      radarChart: null,
+      ghLanguages: null,
+      ghLangLoading: true,
+      treemapChart: null,
     };
   },
 
@@ -767,13 +776,11 @@ export default {
       prefersDark ? "dark" : "light",
     );
 
-    // Fetch weather (with localStorage cache), render radar chart, set up observers
-    this.fetchWeather();
     this.$nextTick(() => {
-      this.renderRadarChart();
-      // UI Update: scroll reveal + active section tracking
       this.initObservers();
     });
+
+    this.fetchGhLanguages();
   },
 
   watch: {
@@ -782,12 +789,37 @@ export default {
         "data-theme",
         val ? "dark" : "light",
       );
-      // Re-render chart so colours match the new theme
-      if (this.radarChart) {
-        this.radarChart.destroy();
-        this.radarChart = null;
-        this.$nextTick(() => this.renderRadarChart());
+      if (this.treemapChart) {
+        this.treemapChart.destroy();
+        this.treemapChart = null;
+        this.$nextTick(() => this.renderTreemap());
       }
+    },
+    ghLanguages() {
+      this.$nextTick(() => {
+        const el = this.$el.querySelector(
+          ".treemap-wrap.reveal:not(.reveal--visible)",
+        );
+        if (el) {
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add("reveal--visible");
+                  observer.unobserve(entry.target);
+                  // Render after the reveal transition finishes so canvas has dimensions
+                  setTimeout(() => this.renderTreemap(), 600);
+                }
+              });
+            },
+            { threshold: 0.08 },
+          );
+          observer.observe(el);
+        } else {
+          // Already visible (e.g. theme re-render)
+          this.renderTreemap();
+        }
+      });
     },
   },
 
@@ -822,169 +854,223 @@ export default {
       });
     },
 
-    fetchWeather() {
-      this.weatherLoading = true;
-      this.weatherError = false;
+    fetchGhLanguages() {
+      this.ghLangLoading = true;
+      const CACHE_KEY = "portfolio_gh_langs";
+      const CACHE_TTL = 60 * 60 * 1000;
 
       try {
-        const cached = localStorage.getItem(WEATHER_CACHE_KEY);
-        if (cached) {
-          const { timestamp, data } = JSON.parse(cached);
-          if (Date.now() - timestamp < WEATHER_CACHE_TTL) {
-            this.weatherDays = data;
-            this.weatherLoading = false;
-            return;
-          }
+        const cached = JSON.parse(localStorage.getItem(CACHE_KEY));
+        if (
+          cached &&
+          Date.now() - cached.ts < CACHE_TTL &&
+          Array.isArray(cached.data) &&
+          cached.data.length &&
+          cached.data[0].bytes != null
+        ) {
+          this.ghLanguages = cached.data;
+          this.ghLangLoading = false;
+          return;
         }
       } catch (_) {}
 
       fetch(
-        "https://api.open-meteo.com/v1/forecast?latitude=46.9480&longitude=7.4474" +
-          "&daily=temperature_2m_max,temperature_2m_min,weathercode" +
-          "&timezone=Europe/Zurich&forecast_days=5",
+        "https://api.github.com/users/nicolafricker/repos?per_page=100&sort=updated",
       )
-        .then((res) => res.json())
-        .then((data) => {
-          const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-          const icons = {
-            0: "☀️",
-            1: "🌤",
-            2: "⛅",
-            3: "☁️",
-            45: "🌫",
-            48: "🌫",
-            51: "🌦",
-            53: "🌦",
-            55: "🌧",
-            61: "🌧",
-            63: "🌧",
-            65: "🌧",
-            71: "🌨",
-            73: "🌨",
-            75: "❄️",
-            80: "🌦",
-            81: "🌧",
-            82: "⛈",
-            95: "⛈",
-          };
-          const parsed = data.daily.time.map((dateStr, i) => {
-            const date = new Date(dateStr);
-            return {
-              date: dateStr,
-              name: i === 0 ? "Today" : days[date.getDay()],
-              icon: icons[data.daily.weathercode[i]] || "🌡",
-              tempMax: Math.round(data.daily.temperature_2m_max[i]),
-              tempMin: Math.round(data.daily.temperature_2m_min[i]),
-            };
+        .then((res) => {
+          if (!res.ok) throw new Error(res.status);
+          return res.json();
+        })
+        .then((repos) => {
+          const langRequests = repos.map((repo) =>
+            fetch(
+              `https://api.github.com/repos/nicolafricker/${repo.name}/languages`,
+            )
+              .then((r) => (r.ok ? r.json() : {}))
+              .catch(() => ({})),
+          );
+          return Promise.allSettled(langRequests);
+        })
+        .then((results) => {
+          const totals = {};
+          const exclude = ["Jupyter Notebook"];
+          results.forEach((r) => {
+            if (r.status !== "fulfilled") return;
+            Object.entries(r.value).forEach(([lang, bytes]) => {
+              if (exclude.includes(lang)) return;
+              totals[lang] = (totals[lang] || 0) + bytes;
+            });
           });
-          try {
-            localStorage.setItem(
-              WEATHER_CACHE_KEY,
-              JSON.stringify({ timestamp: Date.now(), data: parsed }),
-            );
-          } catch (_) {}
-          this.weatherDays = parsed;
-          this.weatherLoading = false;
+
+          const grandTotal = Object.values(totals).reduce((a, b) => a + b, 0);
+          if (!grandTotal) throw new Error("no data");
+
+          const sorted = Object.entries(totals)
+            .map(([lang, bytes]) => ({
+              lang,
+              bytes,
+              pct: (bytes / grandTotal) * 100,
+            }))
+            .sort((a, b) => b.pct - a.pct);
+
+          const main = [];
+          let otherPct = 0;
+          let otherBytes = 0;
+          sorted.forEach((item) => {
+            if (item.pct >= 2) main.push(item);
+            else {
+              otherPct += item.pct;
+              otherBytes += item.bytes;
+            }
+          });
+          if (otherPct > 0)
+            main.push({ lang: "Other", bytes: otherBytes, pct: otherPct });
+
+          this.ghLanguages = main;
+          localStorage.setItem(
+            CACHE_KEY,
+            JSON.stringify({ ts: Date.now(), data: main }),
+          );
+          this.ghLangLoading = false;
         })
         .catch(() => {
-          this.weatherError = true;
-          this.weatherLoading = false;
+          this.ghLangLoading = false;
         });
     },
 
-    renderRadarChart() {
-      const canvas = document.getElementById("skillsRadar");
-      if (!canvas) return;
+    renderTreemap() {
+      const canvas = document.getElementById("ghTreemap");
+      if (!canvas || !this.ghLanguages) return;
 
-      const accent = this.isDark ? "#FF3019" : "#C8201A";
+      const lightPalette = [
+        "#C8201A",
+        "#c5c0b8",
+        "#b8c2c8",
+        "#c4b8c4",
+        "#bcc0a8",
+        "#c8c4b4",
+        "#b0b8b0",
+        "#c0b4a8",
+        "#a8b4c0",
+        "#bab0b0",
+      ];
+      const darkPalette = [
+        "#FF3019",
+        "#2e2e2e",
+        "#262e34",
+        "#302a30",
+        "#2a2c26",
+        "#2e2c28",
+        "#242a24",
+        "#2c2824",
+        "#242830",
+        "#2a2626",
+      ];
+      const palette = this.isDark ? darkPalette : lightPalette;
       const textColor = this.isDark ? "#a0a0a0" : "#5a5a5a";
-      const gridColor = this.isDark
-        ? "rgba(244,243,239,0.12)"
-        : "rgba(10,10,10,0.10)";
+      const data = this.ghLanguages;
 
-      import("chart.js")
-        .then(
-          ({
-            Chart,
-            RadarController,
-            RadialLinearScale,
-            PointElement,
-            LineElement,
-            Filler,
-            Tooltip,
-          }) => {
-            Chart.register(
-              RadarController,
-              RadialLinearScale,
-              PointElement,
-              LineElement,
-              Filler,
-              Tooltip,
-            );
-            if (this.radarChart) {
-              this.radarChart.destroy();
-            }
-            this.radarChart = new Chart(canvas, {
-              type: "radar",
-              data: {
-                labels: this.skillsData.labels,
-                datasets: [
-                  {
-                    label: "Proficiency",
-                    data: this.skillsData.values,
-                    backgroundColor: this.isDark
-                      ? "rgba(255,48,25,0.12)"
-                      : "rgba(200,32,26,0.10)",
-                    borderColor: accent,
-                    borderWidth: 1.5,
-                    pointBackgroundColor: accent,
-                    pointRadius: 3,
+      Promise.all([import("chart.js"), import("chartjs-chart-treemap")])
+        .then(([chartjs, treemapPlugin]) => {
+          const { Chart, Tooltip, LinearScale } = chartjs;
+          const { TreemapController, TreemapElement } = treemapPlugin;
+          Chart.register(Tooltip, LinearScale);
+          Chart.register(TreemapController, TreemapElement);
+
+          if (this.treemapChart) this.treemapChart.destroy();
+
+          this.treemapChart = new Chart(canvas, {
+            type: "treemap",
+            data: {
+              datasets: [
+                {
+                  tree: data,
+                  key: "bytes",
+                  labels: {
+                    display: true,
+                    overflow: "fit",
+                    formatter: (ctx) => {
+                      const item = ctx.raw._data;
+                      if (!item) return "";
+                      const pct = Math.round(item.pct * 10) / 10;
+                      return [item.lang, `${pct}%`];
+                    },
+                    font: {
+                      family: "'Barlow Condensed', 'Arial Narrow', sans-serif",
+                      weight: 700,
+                      size: 12,
+                    },
+                    color: (ctx) => {
+                      const idx = ctx.dataIndex;
+                      return idx === 0 ? "#fff" : textColor;
+                    },
                   },
-                ],
-              },
-              options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: {
-                  legend: { display: false },
-                  tooltip: { callbacks: { label: (ctx) => ` ${ctx.raw}%` } },
+                  spacing: 1,
+                  borderWidth: 0,
+                  backgroundColor: (ctx) => {
+                    const idx = ctx.dataIndex;
+                    return palette[idx] || palette[palette.length - 1];
+                  },
                 },
-                scales: {
-                  r: {
-                    min: 0,
-                    max: 100,
-                    ticks: { stepSize: 25, display: false },
-                    grid: { color: gridColor },
-                    angleLines: { color: gridColor },
-                    pointLabels: {
-                      color: textColor,
-                      font: {
-                        family:
-                          "'Barlow Condensed', 'Arial Narrow', sans-serif",
-                        size: 11,
-                        weight: "700",
-                      },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: { display: false },
+                tooltip: {
+                  titleFont: {
+                    family: "'Barlow Condensed', 'Arial Narrow', sans-serif",
+                  },
+                  bodyFont: {
+                    family: "'Barlow Condensed', 'Arial Narrow', sans-serif",
+                  },
+                  callbacks: {
+                    title: () => "",
+                    label: (ctx) => {
+                      const item = ctx.raw._data;
+                      if (!item) return "";
+                      const pct = Math.round(item.pct * 10) / 10;
+                      return ` ${item.lang}: ${pct}%`;
                     },
                   },
                 },
               },
-            });
-          },
-        )
+            },
+          });
+        })
         .catch(() => {});
     },
 
     submitContact() {
-      if (
-        !this.contactForm.name ||
-        !this.contactForm.email ||
-        !this.contactForm.message
-      )
-        return;
+      const errors = { name: "", email: "", message: "" };
+      let valid = true;
+
+      if (!this.contactForm.name.trim()) {
+        errors.name = "Name is required";
+        valid = false;
+      }
+      if (!this.contactForm.email.trim()) {
+        errors.email = "Email is required";
+        valid = false;
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.contactForm.email)) {
+        errors.email = "Please enter a valid email";
+        valid = false;
+      }
+      if (!this.contactForm.message.trim()) {
+        errors.message = "Message is required";
+        valid = false;
+      }
+
+      this.contactErrors = errors;
+      if (!valid) return;
+
       this.contactSent = true;
       setTimeout(() => {
         this.contactSent = false;
         this.contactForm = { name: "", email: "", message: "" };
+        this.contactErrors = { name: "", email: "", message: "" };
       }, 4000);
     },
   },

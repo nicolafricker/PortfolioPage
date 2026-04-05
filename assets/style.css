@@ -312,7 +312,7 @@ body {
 
 .hero__tagline {
   font-family: var(--font-cond);
-  font-size: clamp(0.9rem, 2.2vw, 1.35rem);
+  font-size: clamp(0.75rem, 1.8vw, 1.1rem);
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -346,6 +346,89 @@ body {
   border-right: 2px solid rgba(255, 255, 255, 0.8);
   border-bottom: 2px solid rgba(255, 255, 255, 0.8);
   transform: rotate(45deg) translateY(-3px);
+}
+
+/* ─── Hero corner keywords ─────────────────────────────── */
+.hero__corner {
+  position: absolute;
+  z-index: 3;
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 0; /* kein fixer Gap mehr */
+  pointer-events: none;
+}
+
+.hero__corner--tl {
+  top: 2.2rem;
+  left: 2.5rem;
+  width: 240px;
+}
+.hero__corner--tr {
+  top: 3.5rem;
+  right: 2.5rem;
+  width: 145px;
+  align-items: flex-end;
+}
+.hero__corner--bl {
+  bottom: 6rem;
+  left: 2.5rem;
+  width: 160px;
+}
+.hero__corner--br {
+  bottom: 4rem;
+  right: 2.5rem;
+  width: 210px;
+  align-items: flex-end;
+}
+
+/* erste Zeile hat mehr Luft nach unten als zweite */
+.hero__corner-line:first-child {
+  margin-bottom: 0.55rem;
+}
+.hero__corner-line:last-child {
+  margin-bottom: 0;
+}
+
+.hero__corner--tl .hero__corner-line {
+  font-size: clamp(0.8rem, 1.3vw, 1rem);
+}
+.hero__corner--tr .hero__corner-line {
+  font-size: clamp(0.65rem, 1vw, 0.78rem);
+}
+.hero__corner--bl .hero__corner-line {
+  font-size: clamp(0.7rem, 1.1vw, 0.85rem);
+}
+.hero__corner--br .hero__corner-line {
+  font-size: clamp(0.85rem, 1.4vw, 1.05rem);
+}
+
+.hero__corner-line {
+  display: block;
+  width: 100%;
+  text-align: justify;
+  text-align-last: justify;
+  font-family: var(--font-cond);
+  font-size: clamp(0.75rem, 1.2vw, 0.92rem);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  white-space: nowrap;
+  overflow: hidden;
+  line-height: 1.2;
+}
+
+.hero__corner-line strong {
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* auf Mobile ausblenden — zu wenig Platz */
+@media (max-width: 768px) {
+  .hero__corner {
+    display: none;
+  }
 }
 
 /* ─── Ticker divider ─────────────────────────────────────── */
@@ -809,17 +892,6 @@ body {
   transition: color 0.35s ease;
 }
 
-.skills__chart-wrap {
-  max-width: 480px;
-  margin: 3rem auto 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  background-color: var(--bg);
-  padding: 1.5rem;
-}
-
 .skills__chart-label {
   font-family: var(--font-cond);
   font-size: 0.72rem;
@@ -829,9 +901,38 @@ body {
   color: var(--accent);
 }
 
-.skills__radar {
+.skills__loading {
+  font-family: var(--font-cond);
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+/* ─── Treemap ───────────────────────────────────────────── */
+.treemap-wrap {
+  max-width: 700px;
+  margin: 3rem auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  background-color: var(--bg);
+  padding: 1.5rem;
+}
+
+.treemap-canvas {
   width: 100% !important;
-  max-width: 420px;
+  height: 320px !important;
+}
+
+.treemap-loading {
+  width: 100%;
+  height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* ─── Methods & Strengths ────────────────────────────────── */
@@ -1039,29 +1140,20 @@ body {
   display: block;
 }
 
-/* ─── Quote / Weather section ────────────────────────────── */
-.quote-section {
+/* ─── Spotify section ────────────────────────────────────── */
+.spotify-section {
   background-color: var(--bg);
   border-top: 1px solid var(--border);
-  padding: 4rem 2rem;
+  padding: 5rem 2rem;
+  margin: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3rem;
-  transition:
-    background-color 0.35s ease,
-    border-color 0.35s ease;
+  gap: 1.5rem;
+  transition: background-color 0.35s ease;
 }
 
-.quote-widget {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
-  text-align: center;
-}
-
-.quote-widget__label {
+.spotify__label {
   font-family: var(--font-cond);
   font-size: 0.72rem;
   font-weight: 700;
@@ -1070,102 +1162,25 @@ body {
   color: var(--accent);
 }
 
-.quote-widget__hint {
+.spotify__title {
   font-family: var(--font-cond);
-  font-size: 0.82rem;
-  letter-spacing: 0.14em;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 900;
   text-transform: uppercase;
-  color: var(--text-muted);
-  opacity: 0.6;
+  letter-spacing: -0.02em;
+  line-height: 0.9;
+  color: var(--text);
+  text-align: center;
+  transition: color 0.35s ease;
 }
 
-.weather-widget {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
+.spotify__embed {
   width: 100%;
   max-width: 700px;
+  height: 80px;
+  display: block;
+  margin: 0 auto;
 }
-
-.weather-widget__loading {
-  font-family: var(--font-cond);
-  font-size: 0.75rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-
-.weather-widget__grid {
-  display: flex;
-  width: 100%;
-  gap: 0;
-  border: 1px solid var(--border-hard);
-  transition: border-color 0.35s ease;
-}
-
-.weather-day {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 1.75rem 1rem;
-  border-right: 1px solid var(--border-hard);
-  background-color: var(--bg);
-  transition:
-    background-color 0.2s ease,
-    border-color 0.35s ease;
-}
-
-.weather-day:last-child {
-  border-right: none;
-}
-
-.weather-day:hover {
-  background-color: var(--bg-alt);
-}
-
-.weather-day__name {
-  font-family: var(--font-cond);
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-
-.weather-day__icon {
-  font-size: 1.75rem;
-  line-height: 1;
-}
-
-.weather-day__temp-max {
-  font-family: var(--font-cond);
-  font-size: 1.3rem;
-  font-weight: 800;
-  color: var(--text);
-  transition: color 0.35s ease;
-}
-
-.weather-day__temp-min {
-  font-family: var(--font-cond);
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: var(--text-muted);
-  transition: color 0.35s ease;
-}
-
-.weather-widget__location {
-  font-family: var(--font-cond);
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  opacity: 0.5;
-}
-
 /* ─── Footer ─────────────────────────────────────────────── */
 .footer {
   background-color: #0a0a0a;
@@ -1353,6 +1368,20 @@ body {
   cursor: default;
 }
 
+.footer__input--error,
+.footer__textarea--error {
+  border-color: var(--accent);
+}
+
+.footer__error {
+  font-family: var(--font-cond);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
 .footer__bar {
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   padding: 1.25rem 2rem;
@@ -1428,6 +1457,14 @@ body {
     grid-template-columns: 1fr;
   }
 
+  .treemap-canvas {
+    height: 240px !important;
+  }
+
+  .treemap-loading {
+    height: 240px;
+  }
+
   .media__header {
     flex-direction: column;
     align-items: flex-start;
@@ -1459,17 +1496,6 @@ body {
 
   .footer__form-row {
     grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 600px) {
-  .weather-widget__grid {
-    flex-wrap: wrap;
-  }
-
-  .weather-day {
-    flex: 1 1 calc(33.333% - 1px);
-    border-bottom: 1px solid var(--border-hard);
   }
 }
 
@@ -1605,111 +1631,4 @@ label:focus-visible {
   .footer__inner {
     padding-inline: 5rem;
   }
-}
-
-/* ─── Decorative grid patches ────────────────────────────── */
-
-.work {
-  position: relative;
-}
-.skills {
-  position: relative;
-}
-
-/* Kein Grid auf dem Hero — nur ab About abwärts */
-.about::before,
-.work::after,
-.skills::before,
-.methods::after,
-.media::before,
-.quote-section::after {
-  content: "";
-  position: absolute;
-  pointer-events: none;
-  z-index: 0;
-  background-image: url("/img/Grids/grid.svg");
-  background-repeat: repeat;
-  background-size: 80px 80px; /* grosse Zellen = wenig Masche */
-  opacity: 0.22;
-}
-
-.about::before {
-  width: 800px;
-  height: 800px;
-  top: 0;
-  left: 0;
-  transform: rotate(14deg);
-  transform-origin: top left;
-}
-
-.work::after {
-  width: 700px;
-  height: 700px;
-  bottom: 0;
-  right: 0;
-  transform: rotate(-22deg);
-  transform-origin: bottom right;
-}
-
-.skills::before {
-  width: 680px;
-  height: 680px;
-  top: 50px;
-  left: 0;
-  transform: rotate(8deg);
-  transform-origin: top left;
-}
-
-.methods::after {
-  width: 720px;
-  height: 720px;
-  top: 0;
-  right: 0;
-  transform: rotate(-15deg);
-  transform-origin: top right;
-}
-
-.media::before {
-  width: 700px;
-  height: 700px;
-  bottom: 0;
-  left: 0;
-  transform: rotate(20deg);
-  transform-origin: bottom left;
-}
-
-.quote-section::after {
-  width: 580px;
-  height: 580px;
-  top: 0;
-  right: 0;
-  transform: rotate(-10deg);
-  transform-origin: top right;
-}
-
-[data-theme="dark"] .about::before,
-[data-theme="dark"] .work::after,
-[data-theme="dark"] .skills::before,
-[data-theme="dark"] .methods::after,
-[data-theme="dark"] .media::before,
-[data-theme="dark"] .quote-section::after {
-  opacity: 0.3;
-  filter: invert(1);
-}
-
-.about__content,
-.about__photo-wrap,
-.work__header,
-.work__grid,
-.skills__header,
-.skills__grid,
-.skills__chart-wrap,
-.methods__header,
-.methods__body,
-.media__header,
-.media-gallery,
-.quote-widget,
-.weather-widget {
-  position: relative;
-  z-index: 1;
 }

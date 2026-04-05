@@ -704,7 +704,7 @@ export default {
   data() {
     return {
       baseUrl: import.meta.env.BASE_URL.replace(/\/$/, ""),
-      isDark: false,
+      isDark: true,
       menuOpen: false,
       heroVideoLoaded: false,
       activeSection: "about",

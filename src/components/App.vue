@@ -665,7 +665,7 @@
                 :disabled="contactSent"
               >
                 <span v-if="!contactSent">Send Message</span>
-                <span v-else>Message Sent ✓</span>
+                <span v-else>Opening Mail Client ✓</span>
               </button>
             </div>
           </div>
@@ -1100,6 +1100,10 @@ export default {
 
       this.contactErrors = errors;
       if (!valid) return;
+
+      const subject = encodeURIComponent('Portfolio Contact from ' + this.contactForm.name.trim());
+      const body = encodeURIComponent(this.contactForm.message.trim() + '\n\nFrom: ' + this.contactForm.name.trim() + ' (' + this.contactForm.email.trim() + ')');
+      window.location.href = 'mailto:nicola.fricker@bfh.ch?subject=' + subject + '&body=' + body;
 
       this.contactSent = true;
       setTimeout(() => {

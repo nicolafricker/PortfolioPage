@@ -463,23 +463,23 @@ body {
 }
 
 .hero__corner--tl {
-  top: 2.2rem;
+  top: 4.5rem;
   left: 2.5rem;
   width: 240px;
 }
 .hero__corner--tr {
-  top: 3.5rem;
+  top: 4.5rem;
   right: 2.5rem;
   width: 145px;
   align-items: flex-end;
 }
 .hero__corner--bl {
-  bottom: 6rem;
+  bottom: 4.5rem;
   left: 2.5rem;
   width: 160px;
 }
 .hero__corner--br {
-  bottom: 4rem;
+  bottom: 2.5rem;
   right: 2.5rem;
   width: 210px;
   align-items: flex-end;
@@ -533,12 +533,12 @@ body {
     width: 130px;
   }
   .hero__corner--tl {
-    top: 1rem;
+    top: 4rem;
     left: 1rem;
     width: 130px;
   }
   .hero__corner--tr {
-    top: 1rem;
+    top: 4rem;
     right: 1rem;
     width: 120px;
   }

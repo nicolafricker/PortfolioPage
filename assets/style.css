@@ -441,6 +441,16 @@ body {
   transform: rotate(45deg) translateY(-3px);
 }
 
+/* Hero height adjustment for mobile bottom nav */
+@media (max-width: 900px) {
+  .hero {
+    min-height: calc(100vh - 56px);
+  }
+  .hero__scroll {
+    bottom: 3rem;
+  }
+}
+
 /* ─── Hero corner keywords ─────────────────────────────── */
 .hero__corner {
   position: absolute;
@@ -533,12 +543,12 @@ body {
     width: 120px;
   }
   .hero__corner--bl {
-    bottom: 5rem;
+    bottom: 6rem;
     left: 1rem;
     width: 130px;
   }
   .hero__corner--br {
-    bottom: 3rem;
+    bottom: 4rem;
     right: 1rem;
     width: 140px;
   }

@@ -661,7 +661,78 @@
         <div class="footer__col footer__col--contact">
           <span class="footer__section-label">Get in Touch</span>
 
-          <div class="footer__form">
+          <!-- Auth Loading State -->
+          <div v-if="authLoading" class="auth-widget">
+            <div class="auth-widget__loading">
+              <span class="auth-widget__spinner"></span>
+              <span class="auth-widget__loading-text">Loading...</span>
+            </div>
+          </div>
+
+          <!-- Auth Widget — Not authenticated -->
+          <div v-else-if="!isAuthenticated" class="auth-widget">
+            <p class="auth-widget__info">
+              Please verify your email to send a message.
+            </p>
+
+            <div v-if="!linkSent" class="auth-widget__form">
+              <div class="footer__field">
+                <label class="footer__label" for="auth-email">Email</label>
+                <input
+                  id="auth-email"
+                  class="footer__input"
+                  :class="{ 'footer__input--error': authError }"
+                  type="email"
+                  placeholder="your@email.com"
+                  v-model="authEmail"
+                  @keyup.enter="handleSendMagicLink"
+                />
+                <span v-if="authError" class="footer__error">{{ authError }}</span>
+              </div>
+              <div class="footer__form-actions">
+                <button
+                  class="footer__submit"
+                  @click="handleSendMagicLink"
+                  :disabled="!authEmail.trim()"
+                >
+                  Verify Email
+                </button>
+              </div>
+            </div>
+
+            <div v-else class="auth-widget__sent">
+              <svg
+                class="auth-widget__icon"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="2" y="4" width="20" height="16" rx="2" />
+                <polyline points="22,4 12,13 2,4" />
+              </svg>
+              <p class="auth-widget__sent-text">
+                Check your inbox! Click the link to verify.
+              </p>
+              <button
+                class="auth-widget__resend"
+                @click="linkSent = false"
+              >
+                Send again
+              </button>
+            </div>
+          </div>
+
+          <!-- Contact Form — Authenticated -->
+          <div v-else class="footer__form">
+            <div class="auth-widget__verified">
+              <span>Verified as <strong>{{ user.email }}</strong></span>
+              <button class="auth-widget__logout" @click="logout">Logout</button>
+            </div>
             <div class="footer__form-row">
               <div class="footer__field">
                 <label class="footer__label" for="footer-name">Name</label>
@@ -746,8 +817,33 @@
 </template>
 
 <script>
+import { useAuth } from "../composables/useAuth.js";
+
 export default {
   name: "App",
+  setup() {
+    const {
+      user,
+      isAuthenticated,
+      authLoading,
+      authError,
+      linkSent,
+      sendMagicLink,
+      completeMagicLinkSignIn,
+      logout,
+    } = useAuth();
+
+    return {
+      user,
+      isAuthenticated,
+      authLoading,
+      authError,
+      linkSent,
+      sendMagicLink,
+      completeMagicLinkSignIn,
+      logout,
+    };
+  },
   data() {
     return {
       baseUrl: import.meta.env.BASE_URL.replace(/\/$/, ""),
@@ -756,6 +852,7 @@ export default {
       heroVideoLoaded: false,
       activeSection: "about",
       expandedCards: { 0: false, 1: false, 2: false },
+      authEmail: "",
       contactForm: {
         name: "",
         email: "",
@@ -851,6 +948,8 @@ export default {
       prefersDark ? "dark" : "light",
     );
 
+    this.completeMagicLinkSignIn();
+
     this.$nextTick(() => {
       this.initObservers();
     });
@@ -871,6 +970,11 @@ export default {
         this.treemapChart.destroy();
         this.treemapChart = null;
         this.$nextTick(() => this.renderTreemap());
+      }
+    },
+    user(newUser) {
+      if (newUser && newUser.email) {
+        this.contactForm.email = newUser.email;
       }
     },
     ghLanguages() {
@@ -1122,6 +1226,12 @@ export default {
           });
         })
         .catch(() => {});
+    },
+
+    handleSendMagicLink() {
+      if (this.authEmail.trim()) {
+        this.sendMagicLink(this.authEmail.trim());
+      }
     },
 
     submitContact() {

@@ -21,14 +21,14 @@ onAuthStateChanged(auth, (firebaseUser) => {
   authLoading.value = false;
 });
 
-const actionCodeSettings = {
-  url: "https://nicolafricker.github.io/PortfolioPage/",
-  handleCodeInApp: true,
-};
-
 async function sendMagicLink(email) {
   authError.value = "";
   linkSent.value = false;
+
+  const actionCodeSettings = {
+    url: window.location.origin + window.location.pathname,
+    handleCodeInApp: true,
+  };
 
   try {
     await sendSignInLinkToEmail(auth, email, actionCodeSettings);

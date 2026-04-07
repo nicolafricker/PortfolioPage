@@ -186,7 +186,7 @@
             <p class="about__text">
               After working as an Application Developer and graduating from HF
               Technik Mittelland, I found myself drawn increasingly to the
-              bigger picture — the processes, the stakeholders, and the space
+              bigger picture: the processes, the stakeholders, and the space
               between technical implementation and business needs. That pull led
               me toward a Business IT Analyst role, where I now work as the link
               between domain experts and development teams. I currently study
@@ -234,7 +234,7 @@
               configure, and remove device pools across multiple environments.
             </p>
             <span class="project-card__flip-hint" aria-hidden="true"
-              >Details ↗</span
+              >Details</span
             >
           </div>
 
@@ -273,7 +273,7 @@
             <span
               class="project-card__flip-hint project-card__flip-hint--back"
               aria-hidden="true"
-              >← Back</span
+              >Back</span
             >
           </div>
         </article>
@@ -301,12 +301,12 @@
             <h3 class="project-card__name">Document Management System</h3>
             <p class="project-card__summary">
               Designed and built an internal document management system covering
-              the full document lifecycle — from creation with unique
+              the full document lifecycle, from creation with unique
               identifiers through versioning to archiving, bridging physical and
               digital filing structures.
             </p>
             <span class="project-card__flip-hint" aria-hidden="true"
-              >Details ↗</span
+              >Details</span
             >
           </div>
 
@@ -344,7 +344,7 @@
             <span
               class="project-card__flip-hint project-card__flip-hint--back"
               aria-hidden="true"
-              >← Back</span
+              >Back</span
             >
           </div>
         </article>
@@ -376,7 +376,7 @@
               bidirectional remote configuration over The Things Network.
             </p>
             <span class="project-card__flip-hint" aria-hidden="true"
-              >Details ↗</span
+              >Details</span
             >
           </div>
 
@@ -413,7 +413,7 @@
             <span
               class="project-card__flip-hint project-card__flip-hint--back"
               aria-hidden="true"
-              >← Back</span
+              >Back</span
             >
           </div>
         </article>
@@ -713,7 +713,7 @@
                 :disabled="contactSent"
               >
                 <span v-if="!contactSent">Send Message</span>
-                <span v-else>Opening Mail Client ✓</span>
+                <span v-else>Opening Mail Client</span>
               </button>
             </div>
           </div>

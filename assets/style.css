@@ -393,15 +393,6 @@ body {
   transform: rotate(45deg) translateY(-3px);
 }
 
-/* Hero height adjustment for mobile bottom nav */
-@media (max-width: 900px) {
-  .hero {
-    min-height: calc(100vh - 56px);
-  }
-  .hero__scroll {
-    bottom: 3rem;
-  }
-}
 
 /* ─── Hero corner keywords ─────────────────────────────── */
 .hero__corner {
@@ -1764,97 +1755,6 @@ label:focus-visible {
   outline-offset: 3px;
 }
 
-/* ─── Mobile Bottom Navigation ───────────────────────────── */
-.mobile-nav {
-  display: none;
-}
-
-@media (max-width: 900px) {
-  .app {
-    padding-bottom: 56px;
-  }
-
-  .mobile-nav {
-    display: flex;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 56px;
-    z-index: 999;
-    background-color: var(--bg);
-    border-top: 1px solid var(--border-hard);
-    transition:
-      background-color 0.35s ease,
-      border-color 0.35s ease;
-  }
-
-  .mobile-nav__item {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.15rem;
-    text-decoration: none;
-    color: var(--text-muted);
-    font-family: var(--font-cond);
-    font-size: 0.5rem;
-    font-weight: 700;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    min-height: 44px;
-    padding: 0.25rem 0.1rem;
-    transition: color 0.2s ease;
-    position: relative;
-  }
-
-  .mobile-nav__item::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 20%;
-    right: 20%;
-    height: 2px;
-    background-color: var(--accent);
-    transform: scaleX(0);
-    transition: transform 0.2s ease;
-  }
-
-  .mobile-nav__item--active {
-    color: var(--accent);
-  }
-
-  .mobile-nav__item--active::before {
-    transform: scaleX(1);
-  }
-
-  .mobile-nav__dot {
-    font-size: 0.5rem;
-    opacity: 0;
-    color: var(--accent);
-    line-height: 1;
-    transition: opacity 0.2s ease;
-  }
-
-  .mobile-nav__icon {
-    width: 14px;
-    height: 14px;
-    opacity: 0;
-    color: var(--accent);
-    transition: opacity 0.2s ease;
-    flex-shrink: 0;
-  }
-
-  .mobile-nav__item--active .mobile-nav__dot,
-  .mobile-nav__item--active .mobile-nav__icon {
-    opacity: 1;
-  }
-
-  .mobile-nav__label {
-    line-height: 1;
-  }
-}
 
 /* ─── Narrow-phone fixes (≤480px) ───────────────────────── */
 @media (max-width: 480px) {

@@ -1817,6 +1817,28 @@ label:focus-visible {
   }
 }
 
+/* ─── Narrow-phone fixes (≤480px) ───────────────────────── */
+@media (max-width: 480px) {
+  .media-gallery {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─── Extra-narrow fixes (≤360px) ───────────────────────── */
+@media (max-width: 360px) {
+  /* Hide bottom corners — they overlap the hero inner text at this width */
+  .hero__corner--bl,
+  .hero__corner--br {
+    display: none;
+  }
+
+  /* Tighten top corners so they don't crowd the centred name */
+  .hero__corner--tl,
+  .hero__corner--tr {
+    width: 100px;
+  }
+}
+
 /* ─── Desktop gutters ────────────────────────────────────── */
 @media (min-width: 1100px) {
   .work__header,

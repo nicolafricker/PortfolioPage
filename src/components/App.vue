@@ -289,9 +289,9 @@
             <h3 class="project-card__name">Document Management System</h3>
             <p class="project-card__summary">
               Designed and built an internal document management system covering
-              the full document lifecycle, from creation with unique
-              identifiers through versioning to archiving, bridging physical and
-              digital filing structures.
+              the full document lifecycle, from creation with unique identifiers
+              through versioning to archiving, bridging physical and digital
+              filing structures.
             </p>
             <span class="project-card__flip-hint" aria-hidden="true"
               >Details</span
@@ -573,6 +573,32 @@
         <p class="media__sub">Nature, Urban &amp; Cars</p>
       </div>
 
+      <div class="media-carousel reveal reveal--d1" aria-label="Photo carousel">
+        <div class="media-carousel__track">
+          <figure
+            v-for="photo in mediaPhotos"
+            :key="photo.jpg"
+            class="media-carousel__slide"
+          >
+            <picture>
+              <source :srcset="baseUrl + photo.webp" type="image/webp" />
+              <img
+                :src="baseUrl + photo.jpg"
+                :alt="photo.alt"
+                class="media-carousel__image"
+                :style="
+                  photo.objectPosition
+                    ? { objectPosition: photo.objectPosition }
+                    : {}
+                "
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
+          </figure>
+        </div>
+      </div>
+
       <div class="media-gallery reveal reveal--d1">
         <figure
           v-for="photo in mediaPhotos"
@@ -631,7 +657,9 @@
                   v-model="authEmail"
                   @keyup.enter="handleSendMagicLink"
                 />
-                <span v-if="authError" class="footer__error">{{ authError }}</span>
+                <span v-if="authError" class="footer__error">{{
+                  authError
+                }}</span>
               </div>
               <div class="footer__form-actions">
                 <button
@@ -662,10 +690,7 @@
               <p class="auth-widget__sent-text">
                 Check your inbox! Click the link to verify.
               </p>
-              <button
-                class="auth-widget__resend"
-                @click="linkSent = false"
-              >
+              <button class="auth-widget__resend" @click="linkSent = false">
                 Send again
               </button>
             </div>
@@ -674,8 +699,12 @@
           <!-- Contact Form — Authenticated -->
           <div v-else class="footer__form">
             <div class="auth-widget__verified">
-              <span>Verified as <strong>{{ user.email }}</strong></span>
-              <button class="auth-widget__logout" @click="logout">Logout</button>
+              <span
+                >Verified as <strong>{{ user.email }}</strong></span
+              >
+              <button class="auth-widget__logout" @click="logout">
+                Logout
+              </button>
             </div>
 
             <!-- Success state -->
@@ -693,7 +722,9 @@
               >
                 <polyline points="20 6 9 17 4 12" />
               </svg>
-              <p class="contact-success__text">Message sent! I'll be in touch.</p>
+              <p class="contact-success__text">
+                Message sent! I'll be in touch.
+              </p>
               <button class="auth-widget__resend" @click="resetContactForm">
                 Send another
               </button>
@@ -724,7 +755,9 @@
                 }}</span>
               </div>
               <div class="footer__field">
-                <label class="footer__label" for="footer-message">Message</label>
+                <label class="footer__label" for="footer-message"
+                  >Message</label
+                >
                 <textarea
                   id="footer-message"
                   class="footer__textarea"
@@ -790,7 +823,6 @@
         </p>
       </div>
     </footer>
-
   </div>
 </template>
 
@@ -812,8 +844,13 @@ export default {
       logout,
     } = useAuth();
 
-    const { submitting, success, error: contactError, submitContactForm, resetForm } =
-      useContactForm();
+    const {
+      submitting,
+      success,
+      error: contactError,
+      submitContactForm,
+      resetForm,
+    } = useContactForm();
 
     return {
       user,

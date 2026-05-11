@@ -1191,6 +1191,39 @@ body {
   display: block;
 }
 
+.media-carousel {
+  display: none;
+}
+
+.media-carousel__track {
+  display: flex;
+  gap: var(--space-4);
+  overflow-x: auto;
+  padding: 0 var(--space-6) var(--space-4);
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--space-6);
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.media-carousel__track::-webkit-scrollbar {
+  display: none;
+}
+
+.media-carousel__slide {
+  flex: 0 0 min(82vw, 360px);
+  scroll-snap-align: start;
+  background-color: var(--bg-alt);
+  overflow: hidden;
+}
+
+.media-carousel__image {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  display: block;
+}
+
 /* ─── Spotify section ────────────────────────────────────── */
 .spotify-section {
   background-color: var(--bg);
@@ -1694,8 +1727,13 @@ body {
     gap: var(--space-2);
   }
 
+  .media-carousel {
+    display: block;
+    margin-top: 2rem;
+  }
+
   .media-gallery {
-    grid-template-columns: repeat(2, 1fr);
+    display: none;
   }
 
   .media-gallery__image {

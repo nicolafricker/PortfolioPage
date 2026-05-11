@@ -1820,7 +1820,17 @@ label:focus-visible {
     transition: opacity 0.2s ease;
   }
 
-  .mobile-nav__item--active .mobile-nav__dot {
+  .mobile-nav__icon {
+    width: 14px;
+    height: 14px;
+    opacity: 0;
+    color: var(--accent);
+    transition: opacity 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .mobile-nav__item--active .mobile-nav__dot,
+  .mobile-nav__item--active .mobile-nav__icon {
     opacity: 1;
   }
 

@@ -810,7 +810,23 @@
         :aria-label="'Go to ' + item.label + ' section'"
         :aria-current="activeSection === item.id ? 'true' : undefined"
       >
-        <span class="mobile-nav__dot" aria-hidden="true">◆</span>
+        <svg
+          v-if="item.id === 'contact'"
+          class="mobile-nav__icon"
+          aria-hidden="true"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <rect x="2" y="4" width="20" height="16" rx="2" />
+          <polyline points="22,4 12,13 2,4" />
+        </svg>
+        <span v-else class="mobile-nav__dot" aria-hidden="true">◆</span>
         <span class="mobile-nav__label">{{ item.label }}</span>
       </a>
     </nav>
@@ -865,8 +881,8 @@ export default {
         { id: "about", label: "About" },
         { id: "work", label: "Work" },
         { id: "skills", label: "Skills" },
-        { id: "methods", label: "Methods" },
         { id: "media", label: "Media" },
+        { id: "contact", label: "Contact" },
       ],
       mediaPhotos: [
         {

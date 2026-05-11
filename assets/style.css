@@ -34,30 +34,30 @@
   --bg-glass: rgba(245, 244, 240, 0.9);
 
   /* ── Extended color tokens ──────────────────────────────── */
-  --footer-bg:    #0a0a0a;
-  --accent-dark:  #a8160f;
+  --footer-bg: #0a0a0a;
+  --accent-dark: #a8160f;
   --text-on-dark: #f5f4f0;
 
   /* ── Typography scale ───────────────────────────────────── */
-  --text-xs:      0.72rem;   /* uppercase labels, metadata, badges  */
-  --text-sm:      0.8rem;    /* secondary text, form labels          */
-  --text-base:    0.9rem;    /* body text, inputs                    */
-  --text-lg:      1.1rem;    /* emphasis, strengths labels           */
-  --text-xl:      2rem;      /* large labels, footer name            */
-  --text-display: 2.5rem;    /* overlay / menu links                 */
+  --text-xs: 0.72rem; /* uppercase labels, metadata, badges  */
+  --text-sm: 0.8rem; /* secondary text, form labels          */
+  --text-base: 0.9rem; /* body text, inputs                    */
+  --text-lg: 1.1rem; /* emphasis, strengths labels           */
+  --text-xl: 2rem; /* large labels, footer name            */
+  --text-display: 2.5rem; /* overlay / menu links                 */
 
   /* ── Spacing scale (4 px grid) ──────────────────────────── */
-  --space-1:  0.25rem;  /*  4 px */
-  --space-2:  0.5rem;   /*  8 px */
-  --space-3:  0.75rem;  /* 12 px */
-  --space-4:  1rem;     /* 16 px */
-  --space-5:  1.25rem;  /* 20 px */
-  --space-6:  1.5rem;   /* 24 px */
-  --space-7:  2rem;     /* 32 px */
-  --space-8:  2.5rem;   /* 40 px */
-  --space-9:  3.5rem;   /* 56 px */
-  --space-10: 5rem;     /* 80 px */
-  --space-11: 6rem;     /* 96 px */
+  --space-1: 0.25rem; /*  4 px */
+  --space-2: 0.5rem; /*  8 px */
+  --space-3: 0.75rem; /* 12 px */
+  --space-4: 1rem; /* 16 px */
+  --space-5: 1.25rem; /* 20 px */
+  --space-6: 1.5rem; /* 24 px */
+  --space-7: 2rem; /* 32 px */
+  --space-8: 2.5rem; /* 40 px */
+  --space-9: 3.5rem; /* 56 px */
+  --space-10: 5rem; /* 80 px */
+  --space-11: 6rem; /* 96 px */
 }
 
 [data-theme="dark"] {
@@ -392,7 +392,6 @@ body {
   border-bottom: 2px solid rgba(255, 255, 255, 0.8);
   transform: rotate(45deg) translateY(-3px);
 }
-
 
 /* ─── Hero corner keywords ─────────────────────────────── */
 .hero__corner {
@@ -1333,14 +1332,12 @@ body {
   text-transform: uppercase;
   letter-spacing: -0.01em;
   color: var(--text-on-dark);
-  margin-bottom: var(--space-4);
 }
 
 .footer__links {
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  margin-bottom: var(--space-6);
 }
 
 .footer__link {
@@ -1374,7 +1371,6 @@ body {
   letter-spacing: 0.08em;
   color: rgba(245, 244, 240, 0.35);
 }
-
 
 .footer__form {
   display: flex;
@@ -1751,7 +1747,13 @@ body {
 
   /* Footer responsive */
   .footer__inner {
-    padding: var(--space-7) var(--space-6);
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-5);
+    flex-direction: column;
+    padding: var(--space-7) var(--space-7);
   }
 }
 
@@ -1792,7 +1794,6 @@ label:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
-
 
 /* ─── Narrow-phone fixes (≤480px) ───────────────────────── */
 @media (max-width: 480px) {

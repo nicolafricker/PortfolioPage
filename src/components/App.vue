@@ -67,6 +67,8 @@
     <section class="hero">
       <video
         class="hero__video"
+        :poster="baseUrl + '/img/hero-poster.jpg'"
+        preload="metadata"
         autoplay
         loop
         muted

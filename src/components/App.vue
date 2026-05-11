@@ -1,32 +1,20 @@
 <template>
   <div class="app">
-    <!-- ─── Desktop Hamburger Menu ──────────────────────────── -->
-    <button
-      class="hamburger"
-      :class="{ 'hamburger--open': menuOpen }"
-      @click="toggleMenu"
-      :aria-label="menuOpen ? 'Close menu' : 'Open menu'"
-      aria-controls="desktop-menu-overlay"
-    >
-      <span class="hamburger__line"></span>
-      <span class="hamburger__line"></span>
-      <span class="hamburger__line"></span>
-    </button>
-
-    <div
-      id="desktop-menu-overlay"
-      class="menu-overlay"
-      :class="{ 'menu-overlay--open': menuOpen }"
-    >
+    <!-- ─── Desktop anchor nav ──────────────────────────────── -->
+    <nav class="anchor-nav" aria-label="Section navigation">
       <a
         v-for="item in mobileNavItems"
-        :key="'menu-' + item.id"
+        :key="'anchor-' + item.id"
         :href="'#' + item.id"
-        class="menu-overlay__link"
-        @click="menuOpen = false"
-        >{{ item.label }}</a
+        class="anchor-nav__item"
+        :class="{ 'anchor-nav__item--active': activeSection === item.id }"
+        :aria-current="activeSection === item.id ? 'location' : undefined"
+        @click.prevent="anchorNavClick(item.id)"
       >
-    </div>
+        <span class="anchor-nav__dot" aria-hidden="true"></span>
+        <span class="anchor-nav__label">{{ item.label }}</span>
+      </a>
+    </nav>
 
     <!-- ─── Fixed theme toggle ─────────────────────────────── -->
     <div class="theme-bar">
@@ -559,6 +547,25 @@
       </div>
     </section>
 
+    <!-- ─── Spotify ─────────────────────────────────────────── -->
+    <section class="spotify-section">
+      <span class="spotify__label">Something Personal</span>
+      <h2 class="spotify__title">Currently on Repeat</h2>
+      <iframe
+        class="spotify__embed"
+        src="https://open.spotify.com/embed/track/1w5r3hEoLfLaltoXj1AwW4?utm_source=generator&theme=0"
+        frameborder="0"
+        allow="
+          autoplay;
+          clipboard-write;
+          encrypted-media;
+          fullscreen;
+          picture-in-picture;
+        "
+        loading="lazy"
+      />
+    </section>
+
     <!-- ─── Media section ──────────────────────────────────── -->
     <section id="media" class="media">
       <div class="media__header reveal">
@@ -589,78 +596,15 @@
       </div>
     </section>
 
-    <!-- ─── Spotify ─────────────────────────────────────────── -->
-    <section class="spotify-section">
-      <span class="spotify__label">Something Personal</span>
-      <h2 class="spotify__title">Currently on Repeat</h2>
-      <iframe
-        class="spotify__embed"
-        src="https://open.spotify.com/embed/track/1w5r3hEoLfLaltoXj1AwW4?utm_source=generator&theme=0"
-        frameborder="0"
-        allow="
-          autoplay;
-          clipboard-write;
-          encrypted-media;
-          fullscreen;
-          picture-in-picture;
-        "
-        loading="lazy"
-      />
-    </section>
-
-    <!-- ─── Footer ─────────────────────────────────────────── -->
-    <footer class="footer">
-      <div class="footer__inner">
-        <!-- Left: Identity -->
-        <div class="footer__col footer__col--identity">
-          <span class="footer__name">Nicola Fricker</span>
-          <div class="footer__links">
-            <a
-              href="https://github.com/nicolafricker"
-              target="_blank"
-              rel="noopener"
-              class="footer__link"
-              aria-label="GitHub"
-              >GitHub</a
-            >
-            <span class="footer__link-sep">◆</span>
-            <a
-              href="https://www.linkedin.com/in/nicola-fricker-0674a5294/"
-              target="_blank"
-              rel="noopener"
-              class="footer__link"
-              aria-label="LinkedIn"
-              >LinkedIn</a
-            >
-          </div>
-          <div class="footer__meta">
-            <span>Bern, Switzerland</span>
-            <span
-              ><svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                style="vertical-align: -2px; margin-right: 4px"
-              >
-                <rect x="2" y="4" width="20" height="16" rx="2" />
-                <polyline points="22,4 12,13 2,4" /></svg
-              >nicola.fricker@bfh.ch</span
-            >
-          </div>
+    <!-- ─── Contact section ───────────────────────────────── -->
+    <section id="contact" class="contact-section">
+      <div class="contact-section__inner">
+        <div class="contact-section__header reveal">
+          <span class="contact-section__label">Get in Touch</span>
+          <h2 class="contact-section__title">Contact</h2>
         </div>
 
-        <!-- Divider -->
-        <div class="footer__divider" aria-hidden="true"></div>
-
-        <!-- Right: Contact form -->
-        <div class="footer__col footer__col--contact">
-          <span class="footer__section-label">Get in Touch</span>
-
+        <div class="contact-section__body reveal reveal--d1">
           <!-- Auth Loading State -->
           <div v-if="authLoading" class="auth-widget">
             <div class="auth-widget__loading">
@@ -733,7 +677,38 @@
               <span>Verified as <strong>{{ user.email }}</strong></span>
               <button class="auth-widget__logout" @click="logout">Logout</button>
             </div>
-            <div class="footer__form-row">
+
+            <!-- Success state -->
+            <div v-if="contactSuccess" class="contact-success">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+              <p class="contact-success__text">Message sent! I'll be in touch.</p>
+              <button class="auth-widget__resend" @click="resetContactForm">
+                Send another
+              </button>
+            </div>
+
+            <!-- Error state -->
+            <p v-else-if="contactError" class="footer__error contact-error">
+              {{ contactError }}
+              <button class="auth-widget__resend" @click="resetContactForm">
+                Try again
+              </button>
+            </p>
+
+            <!-- Idle / submitting -->
+            <template v-else>
               <div class="footer__field">
                 <label class="footer__label" for="footer-name">Name</label>
                 <input
@@ -749,45 +724,79 @@
                 }}</span>
               </div>
               <div class="footer__field">
-                <label class="footer__label" for="footer-email">Email</label>
-                <input
-                  id="footer-email"
-                  class="footer__input"
-                  :class="{ 'footer__input--error': contactErrors.email }"
-                  type="email"
-                  placeholder="your@email.com"
-                  v-model="contactForm.email"
-                />
-                <span v-if="contactErrors.email" class="footer__error">{{
-                  contactErrors.email
+                <label class="footer__label" for="footer-message">Message</label>
+                <textarea
+                  id="footer-message"
+                  class="footer__textarea"
+                  :class="{ 'footer__textarea--error': contactErrors.message }"
+                  rows="4"
+                  placeholder="What's on your mind?"
+                  v-model="contactForm.message"
+                ></textarea>
+                <span v-if="contactErrors.message" class="footer__error">{{
+                  contactErrors.message
                 }}</span>
               </div>
-            </div>
-            <div class="footer__field">
-              <label class="footer__label" for="footer-message">Message</label>
-              <textarea
-                id="footer-message"
-                class="footer__textarea"
-                :class="{ 'footer__textarea--error': contactErrors.message }"
-                rows="4"
-                placeholder="What's on your mind?"
-                v-model="contactForm.message"
-              ></textarea>
-              <span v-if="contactErrors.message" class="footer__error">{{
-                contactErrors.message
-              }}</span>
-            </div>
-            <div class="footer__form-actions">
-              <button
-                class="footer__submit"
-                @click="submitContact"
-                :disabled="contactSent"
-              >
-                <span v-if="!contactSent">Send Message</span>
-                <span v-else>Opening Mail Client</span>
-              </button>
-            </div>
+              <div class="footer__form-actions">
+                <button
+                  class="footer__submit"
+                  @click="handleSubmitContact"
+                  :disabled="submitting"
+                >
+                  <span v-if="!submitting">Send Message</span>
+                  <span v-else class="contact-submit-sending">
+                    <span class="auth-widget__spinner"></span>
+                    Sending&hellip;
+                  </span>
+                </button>
+              </div>
+            </template>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Footer ─────────────────────────────────────────── -->
+    <footer class="footer">
+      <div class="footer__inner">
+        <span class="footer__name">Nicola Fricker</span>
+        <div class="footer__links">
+          <a
+            href="https://github.com/nicolafricker"
+            target="_blank"
+            rel="noopener"
+            class="footer__link"
+            aria-label="GitHub"
+            >GitHub</a
+          >
+          <span class="footer__link-sep">◆</span>
+          <a
+            href="https://www.linkedin.com/in/nicola-fricker-0674a5294/"
+            target="_blank"
+            rel="noopener"
+            class="footer__link"
+            aria-label="LinkedIn"
+            >LinkedIn</a
+          >
+        </div>
+        <div class="footer__meta">
+          <span>Bern, Switzerland</span>
+          <span
+            ><svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              style="vertical-align: -2px; margin-right: 4px"
+            >
+              <rect x="2" y="4" width="20" height="16" rx="2" />
+              <polyline points="22,4 12,13 2,4" /></svg
+            >nicola.fricker@bfh.ch</span
+          >
         </div>
       </div>
 
@@ -798,26 +807,12 @@
       </div>
     </footer>
 
-    <!-- ─── Mobile Bottom Navigation ───────────────────────── -->
-    <nav class="mobile-nav" aria-label="Main navigation">
-      <a
-        v-for="item in mobileNavItems"
-        :key="item.id"
-        :href="'#' + item.id"
-        class="mobile-nav__item"
-        :class="{ 'mobile-nav__item--active': activeSection === item.id }"
-        :aria-label="'Go to ' + item.label + ' section'"
-        :aria-current="activeSection === item.id ? 'true' : undefined"
-      >
-        <span class="mobile-nav__dot" aria-hidden="true">◆</span>
-        <span class="mobile-nav__label">{{ item.label }}</span>
-      </a>
-    </nav>
   </div>
 </template>
 
 <script>
 import { useAuth } from "../composables/useAuth.js";
+import { useContactForm } from "../composables/useContactForm.js";
 
 export default {
   name: "App",
@@ -833,6 +828,9 @@ export default {
       logout,
     } = useAuth();
 
+    const { submitting, success, error: contactError, submitContactForm, resetForm } =
+      useContactForm();
+
     return {
       user,
       isAuthenticated,
@@ -842,30 +840,32 @@ export default {
       sendMagicLink,
       completeMagicLinkSignIn,
       logout,
+      submitting,
+      contactSuccess: success,
+      contactError,
+      submitContactForm,
+      resetContactForm: resetForm,
     };
   },
   data() {
     return {
       baseUrl: import.meta.env.BASE_URL.replace(/\/$/, ""),
       isDark: true,
-      menuOpen: false,
       heroVideoLoaded: false,
       activeSection: "about",
       expandedCards: { 0: false, 1: false, 2: false },
       authEmail: "",
       contactForm: {
         name: "",
-        email: "",
         message: "",
       },
-      contactSent: false,
-      contactErrors: { name: "", email: "", message: "" },
+      contactErrors: { name: "", message: "" },
       mobileNavItems: [
         { id: "about", label: "About" },
         { id: "work", label: "Work" },
         { id: "skills", label: "Skills" },
-        { id: "methods", label: "Methods" },
         { id: "media", label: "Media" },
+        { id: "contact", label: "Contact" },
       ],
       mediaPhotos: [
         {
@@ -958,9 +958,6 @@ export default {
   },
 
   watch: {
-    menuOpen(val) {
-      document.body.style.overflow = val ? "hidden" : "";
-    },
     isDark(val) {
       document.documentElement.setAttribute(
         "data-theme",
@@ -1006,8 +1003,10 @@ export default {
   },
 
   methods: {
-    toggleMenu() {
-      this.menuOpen = !this.menuOpen;
+    anchorNavClick(id) {
+      this.activeSection = id;
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
     },
     initObservers() {
       const revealObserver = new IntersectionObserver(
@@ -1234,19 +1233,12 @@ export default {
       }
     },
 
-    submitContact() {
-      const errors = { name: "", email: "", message: "" };
+    async handleSubmitContact() {
+      const errors = { name: "", message: "" };
       let valid = true;
 
       if (!this.contactForm.name.trim()) {
         errors.name = "Name is required";
-        valid = false;
-      }
-      if (!this.contactForm.email.trim()) {
-        errors.email = "Email is required";
-        valid = false;
-      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.contactForm.email)) {
-        errors.email = "Please enter a valid email";
         valid = false;
       }
       if (!this.contactForm.message.trim()) {
@@ -1257,26 +1249,15 @@ export default {
       this.contactErrors = errors;
       if (!valid) return;
 
-      const subject = encodeURIComponent(
-        "Portfolio Contact from " + this.contactForm.name.trim(),
-      );
-      const body = encodeURIComponent(
-        this.contactForm.message.trim() +
-          "\n\nFrom: " +
-          this.contactForm.name.trim() +
-          " (" +
-          this.contactForm.email.trim() +
-          ")",
-      );
-      window.location.href =
-        "mailto:nicola.fricker@bfh.ch?subject=" + subject + "&body=" + body;
+      await this.submitContactForm({
+        name: this.contactForm.name,
+        message: this.contactForm.message,
+      });
 
-      this.contactSent = true;
-      setTimeout(() => {
-        this.contactSent = false;
-        this.contactForm = { name: "", email: "", message: "" };
-        this.contactErrors = { name: "", email: "", message: "" };
-      }, 4000);
+      if (this.contactSuccess) {
+        this.contactForm = { name: "", message: "" };
+        this.contactErrors = { name: "", message: "" };
+      }
     },
   },
 };

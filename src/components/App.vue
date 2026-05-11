@@ -1,32 +1,20 @@
 <template>
   <div class="app">
-    <!-- ─── Desktop Hamburger Menu ──────────────────────────── -->
-    <button
-      class="hamburger"
-      :class="{ 'hamburger--open': menuOpen }"
-      @click="toggleMenu"
-      :aria-label="menuOpen ? 'Close menu' : 'Open menu'"
-      aria-controls="desktop-menu-overlay"
-    >
-      <span class="hamburger__line"></span>
-      <span class="hamburger__line"></span>
-      <span class="hamburger__line"></span>
-    </button>
-
-    <div
-      id="desktop-menu-overlay"
-      class="menu-overlay"
-      :class="{ 'menu-overlay--open': menuOpen }"
-    >
+    <!-- ─── Desktop anchor nav ──────────────────────────────── -->
+    <nav class="anchor-nav" aria-label="Section navigation">
       <a
         v-for="item in mobileNavItems"
-        :key="'menu-' + item.id"
+        :key="'anchor-' + item.id"
         :href="'#' + item.id"
-        class="menu-overlay__link"
-        @click="menuOpen = false"
-        >{{ item.label }}</a
+        class="anchor-nav__item"
+        :class="{ 'anchor-nav__item--active': activeSection === item.id }"
+        :aria-current="activeSection === item.id ? 'location' : undefined"
+        @click.prevent="anchorNavClick(item.id)"
       >
-    </div>
+        <span class="anchor-nav__dot" aria-hidden="true"></span>
+        <span class="anchor-nav__label">{{ item.label }}</span>
+      </a>
+    </nav>
 
     <!-- ─── Fixed theme toggle ─────────────────────────────── -->
     <div class="theme-bar">
@@ -865,7 +853,6 @@ export default {
     return {
       baseUrl: import.meta.env.BASE_URL.replace(/\/$/, ""),
       isDark: true,
-      menuOpen: false,
       heroVideoLoaded: false,
       activeSection: "about",
       expandedCards: { 0: false, 1: false, 2: false },
@@ -975,9 +962,6 @@ export default {
   },
 
   watch: {
-    menuOpen(val) {
-      document.body.style.overflow = val ? "hidden" : "";
-    },
     isDark(val) {
       document.documentElement.setAttribute(
         "data-theme",
@@ -1023,8 +1007,10 @@ export default {
   },
 
   methods: {
-    toggleMenu() {
-      this.menuOpen = !this.menuOpen;
+    anchorNavClick(id) {
+      this.activeSection = id;
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
     },
     initObservers() {
       const revealObserver = new IntersectionObserver(

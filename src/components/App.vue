@@ -559,6 +559,25 @@
       </div>
     </section>
 
+    <!-- ─── Spotify ─────────────────────────────────────────── -->
+    <section class="spotify-section">
+      <span class="spotify__label">Something Personal</span>
+      <h2 class="spotify__title">Currently on Repeat</h2>
+      <iframe
+        class="spotify__embed"
+        src="https://open.spotify.com/embed/track/1w5r3hEoLfLaltoXj1AwW4?utm_source=generator&theme=0"
+        frameborder="0"
+        allow="
+          autoplay;
+          clipboard-write;
+          encrypted-media;
+          fullscreen;
+          picture-in-picture;
+        "
+        loading="lazy"
+      />
+    </section>
+
     <!-- ─── Media section ──────────────────────────────────── -->
     <section id="media" class="media">
       <div class="media__header reveal">
@@ -589,78 +608,15 @@
       </div>
     </section>
 
-    <!-- ─── Spotify ─────────────────────────────────────────── -->
-    <section class="spotify-section">
-      <span class="spotify__label">Something Personal</span>
-      <h2 class="spotify__title">Currently on Repeat</h2>
-      <iframe
-        class="spotify__embed"
-        src="https://open.spotify.com/embed/track/1w5r3hEoLfLaltoXj1AwW4?utm_source=generator&theme=0"
-        frameborder="0"
-        allow="
-          autoplay;
-          clipboard-write;
-          encrypted-media;
-          fullscreen;
-          picture-in-picture;
-        "
-        loading="lazy"
-      />
-    </section>
-
-    <!-- ─── Footer ─────────────────────────────────────────── -->
-    <footer class="footer">
-      <div class="footer__inner">
-        <!-- Left: Identity -->
-        <div class="footer__col footer__col--identity">
-          <span class="footer__name">Nicola Fricker</span>
-          <div class="footer__links">
-            <a
-              href="https://github.com/nicolafricker"
-              target="_blank"
-              rel="noopener"
-              class="footer__link"
-              aria-label="GitHub"
-              >GitHub</a
-            >
-            <span class="footer__link-sep">◆</span>
-            <a
-              href="https://www.linkedin.com/in/nicola-fricker-0674a5294/"
-              target="_blank"
-              rel="noopener"
-              class="footer__link"
-              aria-label="LinkedIn"
-              >LinkedIn</a
-            >
-          </div>
-          <div class="footer__meta">
-            <span>Bern, Switzerland</span>
-            <span
-              ><svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                style="vertical-align: -2px; margin-right: 4px"
-              >
-                <rect x="2" y="4" width="20" height="16" rx="2" />
-                <polyline points="22,4 12,13 2,4" /></svg
-              >nicola.fricker@bfh.ch</span
-            >
-          </div>
+    <!-- ─── Contact section ───────────────────────────────── -->
+    <section id="contact" class="contact-section">
+      <div class="contact-section__inner">
+        <div class="contact-section__header reveal">
+          <span class="contact-section__label">Get in Touch</span>
+          <h2 class="contact-section__title">Contact</h2>
         </div>
 
-        <!-- Divider -->
-        <div class="footer__divider" aria-hidden="true"></div>
-
-        <!-- Right: Contact form -->
-        <div class="footer__col footer__col--contact">
-          <span class="footer__section-label">Get in Touch</span>
-
+        <div class="contact-section__body reveal reveal--d1">
           <!-- Auth Loading State -->
           <div v-if="authLoading" class="auth-widget">
             <div class="auth-widget__loading">
@@ -788,6 +744,51 @@
               </button>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Footer ─────────────────────────────────────────── -->
+    <footer class="footer">
+      <div class="footer__inner">
+        <span class="footer__name">Nicola Fricker</span>
+        <div class="footer__links">
+          <a
+            href="https://github.com/nicolafricker"
+            target="_blank"
+            rel="noopener"
+            class="footer__link"
+            aria-label="GitHub"
+            >GitHub</a
+          >
+          <span class="footer__link-sep">◆</span>
+          <a
+            href="https://www.linkedin.com/in/nicola-fricker-0674a5294/"
+            target="_blank"
+            rel="noopener"
+            class="footer__link"
+            aria-label="LinkedIn"
+            >LinkedIn</a
+          >
+        </div>
+        <div class="footer__meta">
+          <span>Bern, Switzerland</span>
+          <span
+            ><svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              style="vertical-align: -2px; margin-right: 4px"
+            >
+              <rect x="2" y="4" width="20" height="16" rx="2" />
+              <polyline points="22,4 12,13 2,4" /></svg
+            >nicola.fricker@bfh.ch</span
+          >
         </div>
       </div>
 

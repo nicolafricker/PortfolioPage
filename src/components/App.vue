@@ -677,7 +677,38 @@
               <span>Verified as <strong>{{ user.email }}</strong></span>
               <button class="auth-widget__logout" @click="logout">Logout</button>
             </div>
-            <div class="footer__form-row">
+
+            <!-- Success state -->
+            <div v-if="contactSuccess" class="contact-success">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+              <p class="contact-success__text">Message sent! I'll be in touch.</p>
+              <button class="auth-widget__resend" @click="resetContactForm">
+                Send another
+              </button>
+            </div>
+
+            <!-- Error state -->
+            <p v-else-if="contactError" class="footer__error contact-error">
+              {{ contactError }}
+              <button class="auth-widget__resend" @click="resetContactForm">
+                Try again
+              </button>
+            </p>
+
+            <!-- Idle / submitting -->
+            <template v-else>
               <div class="footer__field">
                 <label class="footer__label" for="footer-name">Name</label>
                 <input
@@ -693,44 +724,33 @@
                 }}</span>
               </div>
               <div class="footer__field">
-                <label class="footer__label" for="footer-email">Email</label>
-                <input
-                  id="footer-email"
-                  class="footer__input"
-                  :class="{ 'footer__input--error': contactErrors.email }"
-                  type="email"
-                  placeholder="your@email.com"
-                  v-model="contactForm.email"
-                />
-                <span v-if="contactErrors.email" class="footer__error">{{
-                  contactErrors.email
+                <label class="footer__label" for="footer-message">Message</label>
+                <textarea
+                  id="footer-message"
+                  class="footer__textarea"
+                  :class="{ 'footer__textarea--error': contactErrors.message }"
+                  rows="4"
+                  placeholder="What's on your mind?"
+                  v-model="contactForm.message"
+                ></textarea>
+                <span v-if="contactErrors.message" class="footer__error">{{
+                  contactErrors.message
                 }}</span>
               </div>
-            </div>
-            <div class="footer__field">
-              <label class="footer__label" for="footer-message">Message</label>
-              <textarea
-                id="footer-message"
-                class="footer__textarea"
-                :class="{ 'footer__textarea--error': contactErrors.message }"
-                rows="4"
-                placeholder="What's on your mind?"
-                v-model="contactForm.message"
-              ></textarea>
-              <span v-if="contactErrors.message" class="footer__error">{{
-                contactErrors.message
-              }}</span>
-            </div>
-            <div class="footer__form-actions">
-              <button
-                class="footer__submit"
-                @click="submitContact"
-                :disabled="contactSent"
-              >
-                <span v-if="!contactSent">Send Message</span>
-                <span v-else>Opening Mail Client</span>
-              </button>
-            </div>
+              <div class="footer__form-actions">
+                <button
+                  class="footer__submit"
+                  @click="handleSubmitContact"
+                  :disabled="submitting"
+                >
+                  <span v-if="!submitting">Send Message</span>
+                  <span v-else class="contact-submit-sending">
+                    <span class="auth-widget__spinner"></span>
+                    Sending&hellip;
+                  </span>
+                </button>
+              </div>
+            </template>
           </div>
         </div>
       </div>
@@ -823,6 +843,7 @@
 
 <script>
 import { useAuth } from "../composables/useAuth.js";
+import { useContactForm } from "../composables/useContactForm.js";
 
 export default {
   name: "App",
@@ -838,6 +859,9 @@ export default {
       logout,
     } = useAuth();
 
+    const { submitting, success, error: contactError, submitContactForm, resetForm } =
+      useContactForm();
+
     return {
       user,
       isAuthenticated,
@@ -847,6 +871,11 @@ export default {
       sendMagicLink,
       completeMagicLinkSignIn,
       logout,
+      submitting,
+      contactSuccess: success,
+      contactError,
+      submitContactForm,
+      resetContactForm: resetForm,
     };
   },
   data() {
@@ -859,11 +888,9 @@ export default {
       authEmail: "",
       contactForm: {
         name: "",
-        email: "",
         message: "",
       },
-      contactSent: false,
-      contactErrors: { name: "", email: "", message: "" },
+      contactErrors: { name: "", message: "" },
       mobileNavItems: [
         { id: "about", label: "About" },
         { id: "work", label: "Work" },
@@ -1237,19 +1264,12 @@ export default {
       }
     },
 
-    submitContact() {
-      const errors = { name: "", email: "", message: "" };
+    async handleSubmitContact() {
+      const errors = { name: "", message: "" };
       let valid = true;
 
       if (!this.contactForm.name.trim()) {
         errors.name = "Name is required";
-        valid = false;
-      }
-      if (!this.contactForm.email.trim()) {
-        errors.email = "Email is required";
-        valid = false;
-      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.contactForm.email)) {
-        errors.email = "Please enter a valid email";
         valid = false;
       }
       if (!this.contactForm.message.trim()) {
@@ -1260,26 +1280,15 @@ export default {
       this.contactErrors = errors;
       if (!valid) return;
 
-      const subject = encodeURIComponent(
-        "Portfolio Contact from " + this.contactForm.name.trim(),
-      );
-      const body = encodeURIComponent(
-        this.contactForm.message.trim() +
-          "\n\nFrom: " +
-          this.contactForm.name.trim() +
-          " (" +
-          this.contactForm.email.trim() +
-          ")",
-      );
-      window.location.href =
-        "mailto:nicola.fricker@bfh.ch?subject=" + subject + "&body=" + body;
+      await this.submitContactForm({
+        name: this.contactForm.name,
+        message: this.contactForm.message,
+      });
 
-      this.contactSent = true;
-      setTimeout(() => {
-        this.contactSent = false;
-        this.contactForm = { name: "", email: "", message: "" };
-        this.contactErrors = { name: "", email: "", message: "" };
-      }, 4000);
+      if (this.contactSuccess) {
+        this.contactForm = { name: "", message: "" };
+        this.contactErrors = { name: "", message: "" };
+      }
     },
   },
 };

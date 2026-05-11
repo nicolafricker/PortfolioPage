@@ -781,22 +781,6 @@
         </div>
         <div class="footer__meta">
           <span>Bern, Switzerland</span>
-          <span
-            ><svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              style="vertical-align: -2px; margin-right: 4px"
-            >
-              <rect x="2" y="4" width="20" height="16" rx="2" />
-              <polyline points="22,4 12,13 2,4" /></svg
-            >nicola.fricker@bfh.ch</span
-          >
         </div>
       </div>
 

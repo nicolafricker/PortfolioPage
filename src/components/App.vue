@@ -73,6 +73,7 @@
         loop
         muted
         playsinline
+        preload="auto"
         @canplay="heroVideoLoaded = true"
       >
         <source
@@ -564,7 +565,6 @@
           fullscreen;
           picture-in-picture;
         "
-        loading="lazy"
       />
     </section>
 
@@ -978,6 +978,12 @@ export default {
     });
 
     this.fetchGhLanguages();
+    // Pre-warm the chart module cache so renderTreemap() has nothing to download
+    // when the skills section scrolls into view
+    Promise.all([
+      import("chart.js"),
+      import("chartjs-chart-treemap"),
+    ]).catch(() => {});
   },
 
   watch: {

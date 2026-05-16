@@ -67,8 +67,8 @@
     <section class="hero">
       <video
         class="hero__video"
-        :poster="baseUrl + '/img/hero-poster.jpg'"
-        preload="metadata"
+        :poster="baseUrl + '/video/hero-poster.jpg'"
+        preload="auto"
         autoplay
         loop
         muted
@@ -564,7 +564,6 @@
           fullscreen;
           picture-in-picture;
         "
-        loading="lazy"
       />
     </section>
 
@@ -978,6 +977,12 @@ export default {
     });
 
     this.fetchGhLanguages();
+    // Pre-warm the chart module cache so renderTreemap() has nothing to download
+    // when the skills section scrolls into view
+    Promise.all([
+      import("chart.js"),
+      import("chartjs-chart-treemap"),
+    ]).catch(() => {});
   },
 
   watch: {

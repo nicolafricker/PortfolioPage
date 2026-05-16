@@ -67,13 +67,12 @@
     <section class="hero">
       <video
         class="hero__video"
-        :poster="baseUrl + '/img/hero-poster.jpg'"
-        preload="metadata"
+        :poster="baseUrl + '/video/hero-poster.jpg'"
+        preload="auto"
         autoplay
         loop
         muted
         playsinline
-        preload="auto"
         @canplay="heroVideoLoaded = true"
       >
         <source
